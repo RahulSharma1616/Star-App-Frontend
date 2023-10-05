@@ -312,9 +312,9 @@ export default function Timesheet() {
                                         projectHours && projectHours.map((pHour, dayIndex) => {
                                             return (
                                                 <td key={dayIndex} className="col-xs-2">
-                                                    <input value={pHour} onChange={
+                                                    <input type="number" value={pHour} onChange={
                                                         (e) => {
-                                                            if (e.target.value > 24) {
+                                                            if (e.target.value > 24 ||  e.target.value < 0) {
                                                                 setMessage("Enter a valid value!");
                                                             } else {
                                                                 handleInputChange(project._id, dayIndex, e.target.value)

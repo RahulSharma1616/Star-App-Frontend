@@ -17,8 +17,6 @@ function App() {
      <Route path="/create-timesheet" element={<Timesheet/>}/>
      <Route path="/projects" element={<Projects/>}/>
      <Route path="/tickets" element={<Tickets/>}/>
-
-
    </Routes>
    </BrowserRouter>
   );
