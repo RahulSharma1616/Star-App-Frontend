@@ -39,7 +39,7 @@ export default function Header() {
                             <span className='h2 m2' style={{ fontWeight: "350", verticalAlign: 'middle' }}>Raise a ticket</span>
                             <button type="button" className="btn-close" aria-label="Close" onClick={closeModal}></button>
                         </div>
-                        <TicketForm />
+                        <TicketForm closeWin={closeModal} />
                     </Modal>
                 </div>
             </div>

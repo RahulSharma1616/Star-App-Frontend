@@ -2,8 +2,28 @@ import { Link } from "react-router-dom";
 import SideNav from "./SideNav";
 import Header from "./Header";
 import TicketCard from "./TicketCard";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 
 export default function Tickets() {
+
+    const [cookies, setCookie] = useCookies(['token']);
+    const [ticketsData, setTicketsData] = useState([]);
+    const [name, setName] = useState("")
+
+    useEffect(() => {
+        axios({
+            method: "get",
+            url: "http://localhost:4000/ticket/raised",
+            headers: {
+                'Authorization': `Bearer ${cookies.token}`,
+            }
+        }).then((response) => {
+            setTicketsData(response.data.tickets);
+            setName(response.data.name);
+        }, [])
+    })
 
     return (
         <>
@@ -21,7 +41,13 @@ export default function Tickets() {
                                 </div>
                             </div>
                             <div>
-                                <TicketCard />
+                                {
+                                    ticketsData.map((ticket) => {
+                                        return (
+                                            <TicketCard key={ticket._id} name={name} ticket={ticket} />
+                                        )
+                                    })
+                                }
                             </div>
                         </div>
                     </div>

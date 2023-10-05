@@ -1,4 +1,4 @@
-export default function TicketCard() {
+export default function TicketCard({name, ticket}) {
     return (
         <>
             <div>
@@ -6,10 +6,10 @@ export default function TicketCard() {
                     <li>
                         <div className="shadow-lg p-3 ticketcard">
                             <div className="d-flex">
-                                <div className="mx-3 p-3"><h3 className="bg-dark text-white border-rounded p-2">VJ</h3></div>
-                                <div className="p-3"> <h3>Vishal Jaiswal</h3></div>
+                                <div className="mx-3 p-3"><h3 className="bg-dark text-white border-rounded p-2">{name.split(" ")[0][0]+name.split(" ")[1][0]}</h3></div>
+                                <div className="p-3"> <h3>{ticket.subject}</h3></div>
                             </div>
-                            <p> It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                            <p>{ticket.description}</p>
                         </div>
                     </li>
                 </ul>
