@@ -1,28 +1,23 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import 'select2/dist/css/select2.min.css';
-import 'select2/dist/js/select2';
-import 'jquery/dist/jquery.min';
-import $ from 'jquery';
+import Select from 'react-select'
 
-export default function TicketForm() {
+export default function TicketForm({closeWin}) {
 
     const [cookies, setCookie] = useCookies(['token']);
 
-    const [projects, setProjects] = useState("")
+    const [projects, setProjects] = useState("");
 
     const [subject, setSubject] = useState("");
     const [category, setCategory] = useState("");
-    const [projectID, setProjectID] = useState("");
+    const [projectID, setProjectID] = useState(null);
     const [description, setDescription] = useState("");
-
-    const [inputValue, setInputValue] = useState(""); // Input value for project code
-    const [filteredOptions, setFilteredOptions] = useState([]); // Filtered project options
 
     const [showProjectField, setShowProjectField] = useState(false);
     const [formSubmitted, setFormSubmitted] = useState(false);
 
+    const [projectOptions, setProjectOptions] = useState([])
 
     useEffect(() => {
         axios({
@@ -32,8 +27,16 @@ export default function TicketForm() {
                 'Authorization': `Bearer ${cookies.token}`,
             }
         }).then(function (response) {
-            console.log(response.data)
+            
             setProjects(response.data)
+
+            setProjectOptions(response.data.map((item) => {
+                return ({
+                    value: item._id,
+                    label: item.id
+                })
+            }))
+            
         }, function (error) {
             console.log("error: ", error)
         })
@@ -52,23 +55,9 @@ export default function TicketForm() {
         }
     }
 
-    const handleProjectInput = (e) => {
-        const value = e.target.value;
-        setInputValue(value)
-
-        const filtered = projects.filter((option) =>
-            option.id.toLowerCase().includes(value.toLowerCase())
-        );
-
-        setFilteredOptions(filtered);
+    const handleProjectID = (option) => {
+        setProjectID(option)
     }
-
-    // Function to handle project option selection
-    const handleProjectOptionSelect = (option) => {
-        setInputValue(option);
-        setProjectID(option); // Update selected project code
-        setFilteredOptions([]); // Clear filtered options
-    };
 
     const handleDescription = (e) => {
         setDescription(e.target.value);
@@ -84,15 +73,15 @@ export default function TicketForm() {
             data: {
                 subject,
                 category,
-                projectID,
+                projectID: projectID.value,
                 description,
-
             },
             headers: {
                 'Authorization': `Bearer ${cookies.token}`,
             }
         }).then(function (response) {
-            console.log(response)
+            closeWin()
+
         }, function (error) {
             console.log("error: ", error)
         })
@@ -127,42 +116,17 @@ export default function TicketForm() {
                     </select>
                     <div className="invalid-feedback">Please select a category.</div>
                 </div>
-                {
-                    showProjectField && (
-                        <div className="mb-3 m-2">
-                            <label htmlFor="projectCode" className="col-form-label">Project Code</label>
-                            <select
-                                className="form-select"
-                                onChange={handleProjectInput}
-                                id="projectCode"
-                                value={inputValue}
-                                required
-                            >
-                                <option value="" disabled>Select Project ID</option>
-                                {
-                                    filteredOptions.map((option) => {
-                                        console.log(option)
-                                        return (
-                                            <option value={option.id}>{option.id}</option>
-                                        )
-                                    })
-                                }
-                            </select>
-                        </div>
-                    )}
-                {showProjectField && (
-                    <div className="mb-3 m-2">
-                        <label htmlFor="project" className="col-form-label">Project Code</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            onChange={handleProjectInput}
-                            id="project"
-                            required
-                        />
-                        <div className="invalid-feedback">Please provide a project code.</div>
-                    </div>
-                )}
+                {showProjectField && <div className="mb-3 m-2">
+                    <label htmlFor="projectID">Project ID</label>
+                    <Select
+                        id="projectID"
+                        name="projectID"
+                        value={projectID}
+                        onChange={handleProjectID}
+                        options={projectOptions}
+                        placeholder="Select Project ID"
+                    />
+                </div>}
                 <div className="mb-3 m-2">
                     <label htmlFor="message-text" className="col-form-label">Message</label>
                     <textarea
