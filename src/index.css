@@ -255,5 +255,29 @@ li {
 
 .ticketcard {
   border-radius: 12px;
-}
+
+  }
+  .loginbanner{
+    height: 400px;
+    width: 400px;
+  }
+  .modal-icon{
+    height: 60px;
+    width: 60px;
+  }
+  .teamMember{
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 160px;
+    background-color: whitesmoke;
+    padding: 10px;
+  }
+  .timesheetTable{
+    overflow-y: auto;
+    position: relative;
+    background-color: whitesmoke;
+    padding: 10px;
+    height: 400px;
+  }
+  
 

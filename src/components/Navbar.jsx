@@ -2,10 +2,7 @@ import { useState } from "react";
 
 export default function Navbar(){
 
-     const [icon,setIcon]=useState(false);
-     function handleClick(){
-        setIcon(!icon);
-     }
+   
 
     return(
         <>
@@ -16,16 +13,9 @@ export default function Navbar(){
                     <img className="logo" src="https://www.incedoinc.com/wp-content/uploads/incedo-logo.png" alt="logo" />
                 </div>
                 <div>
-                    <h5 onClick={handleClick()} className="text-white bg-dark p-2">VJ</h5>
+                    <h5 className="text-white bg-dark p-2">VJ</h5>
 
-                    {{icon}?
-                    <div>
-                        <ul>
-                            <li>logout</li>
-                            <li>Edit profile</li>
-                        </ul>
-                    </div>: ""
-                    }
+                    
                 </div>
 
             </div>
