@@ -1,4 +1,4 @@
-import banner from "../images/loginbanner.png";
+import banner from "../images/timesheetbanner.jpg";
 import loginicon from "../images/OIP 1.png";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";

@@ -58,7 +58,7 @@ export default function HomePage() {
           </div>
         </div>
       )}
-      <div className="d-flex">
+      <div className="d-flex homePage">
         <SideNav />
         <div className="table-container">
           <div className="timesheet-header d-flex justify-content-between">
@@ -76,7 +76,7 @@ export default function HomePage() {
                 <th scope="col">Status</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="timesheetTable">
               {
                 timesheets.map((timesheet) => {
 
