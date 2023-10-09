@@ -70,15 +70,28 @@ export default function HomePage() {
           <table className="table">
             <thead>
               <tr style={{ fontWeight: "600" }}>
-                <th scope="col">Time Period</th>
-                <th scope="col">Project</th>
-                <th scope="col">Total Hours</th>
-                <th scope="col">Status</th>
+                <th scope="col" style={{ textAlign: "center" }}></th>
+                <th scope="col" style={{ textAlign: "center" }}>Time Period</th>
+                <th scope="col" style={{ textAlign: "center" }}>Project</th>
+                <th scope="col" style={{ textAlign: "center" }}>Total Hours</th>
+                <th scope="col" style={{ textAlign: "center" }}>Status</th>
               </tr>
             </thead>
             <tbody>
               {
                 timesheets.map((timesheet) => {
+
+                  let statusClass = "primary"
+
+                  if (timesheet.status == "Pending") {
+                    statusClass = "primary"
+                  } else if (timesheet.status == "Rejected") {
+                    statusClass = "danger"
+                  } else if (timesheet.status == "Accepted") {
+                    statusClass = "success"
+                  } else {
+                    statusClass = "secondary"
+                  }
 
                   const hours = timesheet.totalHours.reduce((accumulator, currentValue) => {
                     return accumulator + currentValue;
@@ -86,10 +99,11 @@ export default function HomePage() {
 
                   return (
                     <tr style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
-                      <td scope=" d-flex"> <span><RiArrowDropDownLine size={24} /></span> {moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
-                      <td>{timesheet.projectName}</td>
-                      <td>{hours}</td>
-                      <td>{timesheet.status}</td>
+                      <td style={{ textAlign: "center" }}><span><RiArrowDropDownLine size={24} /></span></td>
+                      <td scope=" d-flex" style={{ textAlign: "center" }}>{moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
+                      <td style={{ textAlign: "center" }}>{timesheet.projectName}</td>
+                      <td style={{ textAlign: "center" }}>{hours}</td>
+                      <td style={{ textAlign: "center" }}><span className={`badge bg-${statusClass} text-light`}>{timesheet.status}</span></td>
                       <td>
                         {/* Add the dropdown menu */}
                         <div className="dropdown">
