@@ -122,7 +122,6 @@ export default function HomePage() {  //
           <table className="table">
             <thead>
               <tr style={{ fontWeight: "600" }}>
-                <th scope="col" style={{ textAlign: "center" }}></th>
                 <th scope="col" style={{ textAlign: "center" }}>Time Period</th>
                 <th scope="col" style={{ textAlign: "center" }}>Project</th>
                 <th scope="col" style={{ textAlign: "center" }}>Total Hours</th>

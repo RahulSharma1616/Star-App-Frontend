@@ -5,6 +5,8 @@ import { useCookies } from 'react-cookie';
 import Calendar from 'react-calendar';
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import 'react-calendar/dist/Calendar.css';
+import Navbar from "./Navbar";
+import SideNav from "./SideNav";
 
 export default function Timesheet() {
 
@@ -235,6 +237,7 @@ export default function Timesheet() {
 
     return (
         <>
+        <Navbar/>
             {isLoading && (
                 <div className="loader-overlay">
                     <div className="bouncing-loader">
@@ -244,6 +247,8 @@ export default function Timesheet() {
                     </div>
                 </div>
             )}
+    <div className="d-flex"><SideNav/>
+    <div className="timesheet-container">
             <div className="d-flex justify-content-between p-4">
                 <span className="h1" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Create Timesheet</span>
 
@@ -342,6 +347,8 @@ export default function Timesheet() {
                 <button disabled onClick={handleSave} className="btn btn-outline-dark m-1">Save</button>
                 <button disabled onClick={handleSubmit} className="btn btn-dark m-1">Submit</button>
             </div>}
+            </div>
+            </div>
         </>
     );
 }
