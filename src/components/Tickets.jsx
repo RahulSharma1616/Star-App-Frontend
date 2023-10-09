@@ -5,6 +5,7 @@ import TicketCard from "./TicketCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import Navbar from "./Navbar";
 
 export default function Tickets() {
 
@@ -27,6 +28,7 @@ export default function Tickets() {
 
     return (
         <>
+        <Navbar/>
             <div className="d-flex">
                 <SideNav />
                 <div className="ticketsContainer ">
