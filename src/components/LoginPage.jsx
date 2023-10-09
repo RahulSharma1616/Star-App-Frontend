@@ -33,8 +33,12 @@ export default function LoginPage() {
         setLoading(false);
 
         if (response.data.token) {
-          setCookie("token", response.data.token, { path: "/" });
-          navigation("/home")
+
+          const expirationTime = new Date();
+          expirationTime.setHours(expirationTime.getHours() + 24);
+
+          setCookie("token", response.data.token, { path: "/", expires: expirationTime });
+          navigation("/")
           setError("");
         } else {
           setError("Invalid Credentials");

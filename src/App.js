@@ -7,6 +7,8 @@ import Projects from './components/Projects';
 import Timesheet from './components/Timesheet';
 import Tickets from './components/Tickets';
 import { useCookies } from 'react-cookie';
+import ApprovalPage from './components/ApprovalPage';
+import Activities from './components/Activities';
 
 function App() {
 
@@ -22,6 +24,8 @@ function App() {
      <Route path="/create-timesheet" element={<Timesheet/>}/>
      <Route path="/projects" element={<Projects/>}/>
      <Route path="/tickets" element={<Tickets/>}/>
+     <Route path="/manager-dashboard" element={<ApprovalPage/>}/>
+     <Route path="/manager-activities" element={<Activities/>}/>
    </Routes>
    </BrowserRouter>
   );
