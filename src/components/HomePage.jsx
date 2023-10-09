@@ -5,11 +5,32 @@ import { Link } from "react-router-dom";
 import SideNav from "./SideNav";
 import axios from "axios";
 import moment from 'moment';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import Projects from "./Projects";
 import Timesheet from "./Timesheet";
 import Header from "./Header";
 
-export default function HomePage() {
+import Box from '@mui/material/Box';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Navbar from "./Navbar";
+
+const steps = [
+  'Creation date',
+  'Project Manager',
+  'Approved',
+];
+
+export default function HomePage() {  //
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+
 
   let [isLoading, setIsLoading] = useState(true);
   let [isDeleted, setIsDeleted] = useState(0);
@@ -49,6 +70,35 @@ export default function HomePage() {
 
   return (
     <>
+
+<Modal show={show} onHide={handleClose} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>Activity</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Box sx={{ width: '100%' }}>
+      <Stepper activeStep={1} alternativeLabel>
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+    </Box>
+
+        </Modal.Body>
+        <Modal.Footer>
+          
+          <Button variant="primary" onClick={handleClose}>
+            Raise a ticket
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+
+
+
       {isLoading && (
         <div className="loader-overlay">
           <div className="bouncing-loader">
@@ -58,6 +108,8 @@ export default function HomePage() {
           </div>
         </div>
       )}
+
+      <Navbar/>
       <div className="d-flex homePage">
         <SideNav />
         <div className="table-container">
@@ -85,7 +137,8 @@ export default function HomePage() {
                   }, 0);
 
                   return (
-                    <tr style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
+                    
+                    <tr onClick={handleShow} style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
                       <td scope=" d-flex"> <span><RiArrowDropDownLine size={24} /></span> {moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
                       <td>{timesheet.projectName}</td>
                       <td>{hours}</td>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import Navbar from "./Navbar";
 
 export default function LoginPage() {
   var [isLoading, setLoading] = useState(false);
@@ -49,6 +50,7 @@ export default function LoginPage() {
 
   return (
     <>
+    <Navbar/>
       <div className="">
         <div className="row">
           <div className="col-lg-6">
