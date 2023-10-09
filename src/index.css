@@ -258,8 +258,8 @@ li {
 
   }
   .loginbanner{
-    height: 400px;
-    width: 400px;
+    height: 553px;
+    width: 702px;
   }
   .modal-icon{
     height: 60px;
@@ -278,6 +278,9 @@ li {
     background-color: whitesmoke;
     padding: 10px;
     height: 400px;
+  }
+  .timesheet-container{
+    width: -webkit-fill-available;
   }
   
 

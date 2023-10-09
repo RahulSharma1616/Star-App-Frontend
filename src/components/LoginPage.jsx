@@ -1,4 +1,4 @@
-import banner from "../images/timesheetbanner.jpg";
+import banner from "../images/STAR (1).gif";
 import loginicon from "../images/OIP 1.png";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -58,7 +58,7 @@ export default function LoginPage() {
       <div className="">
         <div className="row">
           <div className="col-lg-6">
-            <img className="loginbanner" src={banner} alt="" />
+            <img mx-2 className="loginbanner" src={banner} alt="" />
           </div>
           <div className="col-lg-6">
             <div className="login-container">
