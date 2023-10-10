@@ -255,7 +255,6 @@ li {
 
 .ticketcard {
   border-radius: 12px;
-
 }
 
 .loginbanner {
@@ -267,6 +266,33 @@ li {
   height: 60px;
   width: 60px;
 }
+
+  .loginbanner{
+    height: 553px;
+    width: 702px;
+  }
+  .modal-icon{
+    height: 60px;
+    width: 60px;
+  }
+
+  .teamMember{
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 160px;
+    background-color: whitesmoke;
+    padding: 10px;
+  }
+  .timesheetTable{
+    overflow-y: auto;
+    position: relative;
+    background-color: whitesmoke;
+    padding: 10px;
+    height: 400px;
+  }
+  .timesheet-container{
+    width: -webkit-fill-available;
+  }
 
 .teamMember {
   overflow-x: hidden;

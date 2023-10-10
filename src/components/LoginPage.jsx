@@ -1,9 +1,10 @@
-import banner from "../images/timesheetbanner.jpg";
+import banner from "../images/STAR (1).gif";
 import loginicon from "../images/OIP 1.png";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import Navbar from "./Navbar";
 
 export default function LoginPage() {
   var [isLoading, setLoading] = useState(false);
@@ -53,10 +54,11 @@ export default function LoginPage() {
 
   return (
     <>
+    <Navbar/>
       <div className="">
         <div className="row">
           <div className="col-lg-6">
-            <img className="loginbanner" src={banner} alt="" />
+            <img mx-2 className="loginbanner" src={banner} alt="" />
           </div>
           <div className="col-lg-6">
             <div className="login-container">
