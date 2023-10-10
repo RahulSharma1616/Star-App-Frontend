@@ -23,7 +23,7 @@ function App() {
         <Route path="/" exact element={cookies.token ? <HomePage /> : <LoginPage />} />
         {/* <Route path="/home" element={<HomePage/>}/> */}
         <Route path="/create-timesheet" element={<Timesheet />} />
-        {/* <Route path="/projects" element={<Projects/>}/> */}
+        <Route path="/projects" element={<Projects/>}/>
         <Route path="/tickets" element={<Tickets />} />
         <Route path="/manager-dashboard" element={<ApprovalPage />} />
         <Route path="/manager-activities" element={<Activities />} />
