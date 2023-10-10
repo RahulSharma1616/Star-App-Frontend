@@ -3,45 +3,57 @@ import moment from 'moment';
 import axios from "axios";
 import { useCookies } from 'react-cookie';
 import Calendar from 'react-calendar';
-import { Link, Navigate, useNavigate } from "react-router-dom";
 import 'react-calendar/dist/Calendar.css';
 
 export default function Timesheet() {
 
-    const navigation = useNavigate();
+    const [isLoading, setIsLoading] = useState(true); // State variable for managing loading state
+    const [cookies, setCookie] = useCookies(['token']); // State variable for managing cookies, specifically the 'token' cookie
 
-    const [isLoading, setIsLoading] = useState(true);
-    const [cookies, setCookie] = useCookies(['token']);
+    const [date, setDate] = useState(new Date()); //Variable to keep the selected date
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false); // State variable for controlling the visibility of the calendar component
 
-    const [date, setDate] = useState(new Date());
-    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const dateContainer = []; // Array for storing current week's date-related data
 
-    const dateContainer = [];
+    let [message, setMessage] = useState(""); // State variable for managing a message
+    let [enableButton, setEB] = useState(false); // State variable for enabling/disabling the save and submit button
 
-    let [message, setMessage] = useState("")
-    let [enableButton, setEB] = useState(false)
+    const [projects, setProjects] = useState([]); // State variable for storing project-related data
 
+    const [currentWeekStartDate, setCurrentWeekStartDate] = useState(moment().startOf('week')); // State variable for storing the start date of the current week
+
+    let [dateChange, setDateChange] = useState(0); // State variable for tracking date changes
+    let [hours, setHours] = useState([]); // State variable for managing daily working hours
+
+    const [projectInputValues, setProjectInputValues] = useState({}); // State variable for storing input values related to projects
+    let [comment, setComment] = useState(""); // State variable for managing comments
+
+    // Update the moment.js locale to start the week on Monday
     moment.updateLocale(moment.locale(), {
         week: {
             dow: 1, // 1 = Monday
         },
     });
 
+    // Function to open the calendar
     const openCalendar = (e) => {
         e.stopPropagation(); // Prevent click event from propagating to document
         setIsCalendarOpen(true);
     };
 
+    // Function to close the calendar
     const closeCalendar = () => {
         setIsCalendarOpen(false);
     };
 
+    // Function to handle clicks within the calendar
     const handleCalendarClick = (e) => {
         e.stopPropagation(); // Prevent click event from propagating to document
         setDateChange(dateChange + 1)
         setProjectInputValues({})
     };
 
+    // Function to handle date changes
     const handleDateChange = (newDate) => {
         // Handle date change logic here
         setDate(newDate);
@@ -51,8 +63,7 @@ export default function Timesheet() {
         //console.log(moment(moment(newDate).format("DD-MM-YYYY")))
     };
 
-    const [projects, setProjects] = useState([]);
-
+    // Fetch projects data from the server on component mount
     useEffect(() => {
         setIsLoading(true)
         axios({
@@ -70,20 +81,97 @@ export default function Timesheet() {
         })
     }, []);
 
-    const [currentWeekStartDate, setCurrentWeekStartDate] = useState(moment().startOf('week'));
-
+    // Function to navigate to the previous week
     function prevWeek() {
         setCurrentWeekStartDate(currentWeekStartDate.clone().subtract(1, 'week'));
         setDateChange(dateChange + 1)
         setProjectInputValues({})
     }
 
+    // Function to navigate to the next week
     function nextWeek() {
         setCurrentWeekStartDate(currentWeekStartDate.clone().add(1, 'week'));
         setDateChange(dateChange + 1)
         setProjectInputValues({})
     }
 
+    // useEffect to fetch attendance data when 'dateChange' changes
+    useEffect(() => {
+        setIsLoading(true);
+        axios({
+            method: "post",
+            url: "http://localhost:4000/timesheet/getAttendance",
+            data: {
+                date: dateContainer[0]
+            },
+            headers: {
+                'Authorization': `Bearer ${cookies.token}`,
+            }
+        }).then((response) => {
+
+            setIsLoading(false);
+
+            // Check if there's data, and enable the button if it's not empty
+            if (response.data.length != 0) {
+                setEB(true);
+            }
+
+            // Map response data to 'hours' state
+            setHours(response.data.map((item) => {
+                return {
+                    projectID: item.projectID,
+                    hours: item.hours
+                }
+            }))
+        }, (error) => {
+            setIsLoading(false)
+            console.log("error: ", error)
+        })
+
+    }, [dateChange])
+
+    // useEffect to merge 'hours' data into 'projectInputValues'
+    useEffect(() => {
+        // Convert 'hours' data into an object with project IDs as keys
+        let temp = hours.map((item) => {
+            return {
+                [item.projectID]: item.hours
+            }
+        })
+
+        let mergedValues = { ...projectInputValues }; // Create a copy of the existing object
+
+        temp.forEach((item) => {
+            for (let key in item) {
+                mergedValues[key] = item[key]; // Merge each key-value pair into the object
+            }
+        });
+
+        // Update 'projectInputValues' with the merged values
+        setProjectInputValues(mergedValues);
+    }, [hours])
+
+    // Function to update input values for a specific project
+    function handleInputChange(projectID, dayIndex, value) {
+
+        setEB(true)
+
+        // Copy the current input values
+        const updatedInputValues = { ...projectInputValues };
+
+        // Get or create the project's input values object
+        if (!updatedInputValues[projectID]) {
+            updatedInputValues[projectID] = Array(7).fill(0);
+        }
+
+        // Update the input value for the specific day
+        updatedInputValues[projectID][dayIndex] = value;
+
+        // Update the state
+        setProjectInputValues(updatedInputValues);
+    }
+
+    // Function to render week dates for the calendar
     const renderWeekDates = () => {
         const dates = [];
 
@@ -106,86 +194,12 @@ export default function Timesheet() {
         });
     };
 
-    let [dateChange, setDateChange] = useState(0)
-    let [hours, setHours] = useState([])
-
-    useEffect(() => {
-        setIsLoading(true)
-        axios({
-            method: "post",
-            url: "http://localhost:4000/timesheet/getAttendance",
-            data: {
-                date: dateContainer[0]
-            },
-            headers: {
-                'Authorization': `Bearer ${cookies.token}`,
-            }
-        }).then((response) => {
-
-            setIsLoading(false)
-
-            if (response.data.length != 0) {
-                setEB(true)
-            }
-
-            setHours(response.data.map((item) => {
-                return {
-                    projectID: item.projectID,
-                    hours: item.hours
-                }
-            }))
-        }, (error) => {
-            setIsLoading(false)
-            console.log("error: ", error)
-        })
-
-    }, [dateChange])
-
-    useEffect(() => {
-        let temp = hours.map((item) => {
-            return {
-                [item.projectID]: item.hours
-            }
-        })
-
-        let mergedValues = { ...projectInputValues }; // Create a copy of the existing object
-
-        temp.forEach((item) => {
-            for (let key in item) {
-                mergedValues[key] = item[key]; // Merge each key-value pair into the object
-            }
-        });
-
-        setProjectInputValues(mergedValues);
-    }, [hours])
-
-    const [projectInputValues, setProjectInputValues] = useState({});
-    let [comment, setComment] = useState("")
-
-    // Function to update input values for a specific project
-    function handleInputChange(projectID, dayIndex, value) {
-
-        setEB(true)
-
-        // Copy the current input values
-        const updatedInputValues = { ...projectInputValues };
-
-        // Get or create the project's input values object
-        if (!updatedInputValues[projectID]) {
-            updatedInputValues[projectID] = Array(7).fill(0);
-        }
-
-        // Update the input value for the specific day
-        updatedInputValues[projectID][dayIndex] = value;
-
-        // Update the state
-        setProjectInputValues(updatedInputValues);
-    }
-
+    // Function to handle comment input change
     function handleComment(event) {
         setComment(event.target.value)
     }
 
+    // Function to save attendance data
     function handleSave() {
         setIsLoading(true)
         axios({
@@ -208,6 +222,7 @@ export default function Timesheet() {
         })
     }
 
+    // Function to submit timesheet data
     function handleSubmit() {
         setIsLoading(true)
         axios({
@@ -229,8 +244,6 @@ export default function Timesheet() {
             setMessage(error.message)
             console.log("error: ", error)
         })
-
-        //navigation("/home")
     }
 
     return (
@@ -314,13 +327,13 @@ export default function Timesheet() {
                                                 <td key={dayIndex} className="col-xs-2">
                                                     <input type="number" value={pHour} onChange={
                                                         (e) => {
-                                                            if (e.target.value > 24 ||  e.target.value < 0) {
+                                                            if (e.target.value > 24 || e.target.value < 0) {
                                                                 setMessage("Enter a valid value!");
                                                             } else {
                                                                 handleInputChange(project._id, dayIndex, e.target.value)
                                                             }
                                                         }
-                                                    } className={`timesheet-input shadow ${pHour < 0 || pHour > 24 ? 'is-invalid' : ''}`} min="0" max="24" />
+                                                    } className={`timesheet-input no-spinners shadow ${pHour < 0 || pHour > 24 ? 'is-invalid' : ''}`} min="0" max="24" />
                                                 </td>
                                             )
                                         })

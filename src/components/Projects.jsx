@@ -1,4 +1,4 @@
-import SideNav from "./SideNav";
+/* import SideNav from "./SideNav";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -158,3 +158,4 @@ export default function Projects() {
     </>
   );
 }
+ */
