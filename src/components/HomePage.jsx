@@ -177,7 +177,7 @@ export default function HomePage() {  //
                             <li>
                               <a onClick={(e) => {
                                 handleDelete(timesheet._id)
-                              }} className="dropdown-item" href="#">
+                              }} className={`dropdown-item${timesheet.status !== 'Pending' ? ' disabled' : ''}`} href="#">
                                 Delete
                               </a>
                             </li>

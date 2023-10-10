@@ -24,7 +24,6 @@ export default function Header() {
                     <Modal
                         isOpen={modalIsOpen}
                         onRequestClose={closeModal}
-                        contentLabel="Example Modal"
                         style={{
                             overlay: {
                                 backgroundColor: 'rgba(0, 0, 0, 0.5)', // Background overlay color
@@ -36,7 +35,7 @@ export default function Header() {
                         }}
                     >
                         <div className='d-flex justify-content-between'>
-                            <span className='h2 m2' style={{ fontWeight: "350", verticalAlign: 'middle' }}>Raise a ticket</span>
+                            <span className='h2 mb-2' style={{ fontWeight: "350", verticalAlign: 'middle' }}>Raise a ticket</span>
                             <button type="button" className="btn-close" aria-label="Close" onClick={closeModal}></button>
                         </div>
                         <TicketForm closeWin={closeModal} />
