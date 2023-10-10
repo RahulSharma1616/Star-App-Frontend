@@ -17,20 +17,20 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Navbar from "./Navbar";
 
-const steps = [
-  'Creation date',
-  'Project Manager',
-  'Approved',
-];
+export default function HomePage() {
 
-export default function HomePage() {  //
+  const [submissionDate, setSubmissionDate] = useState("");
+
+  const steps = [
+    `Submitted on ${submissionDate}`,
+    'Project Manager',
+    'Approved',
+  ];
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-
 
   let [isLoading, setIsLoading] = useState(true);
   let [isDeleted, setIsDeleted] = useState(0);
@@ -71,24 +71,24 @@ export default function HomePage() {  //
   return (
     <>
 
-<Modal show={show} onHide={handleClose} animation={false}>
+      <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Activity</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Box sx={{ width: '100%' }}>
-      <Stepper activeStep={1} alternativeLabel>
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-    </Box>
+          <Box sx={{ width: '100%' }}>
+            <Stepper activeStep={1} alternativeLabel>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Box>
 
         </Modal.Body>
         <Modal.Footer>
-          
+
           <Button variant="primary" onClick={handleClose}>
             Raise a ticket
           </Button>
@@ -109,7 +109,7 @@ export default function HomePage() {  //
         </div>
       )}
 
-      <Navbar/>
+      <Navbar />
       <div className="d-flex homePage">
         <SideNav />
         <div className="table-container">
@@ -132,6 +132,8 @@ export default function HomePage() {  //
               {
                 timesheets.map((timesheet) => {
 
+                  
+
                   let statusClass = "primary"
 
                   if (timesheet.status == "Pending") {
@@ -149,10 +151,10 @@ export default function HomePage() {  //
                   }, 0);
 
                   return (
-                    
+
                     <tr onClick={handleShow} style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
-                      
-                      
+
+
                       <td scope=" d-flex" style={{ textAlign: "center" }}>{moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
                       <td style={{ textAlign: "center" }}>{timesheet.projectName}</td>
                       <td style={{ textAlign: "center" }}>{hours}</td>
