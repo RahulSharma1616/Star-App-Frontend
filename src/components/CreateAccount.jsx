@@ -3,24 +3,35 @@ import axios from 'axios';
 
 export default function CreateAccount({ closeWin }) {
 
-    function handleName(e) {
+    let [isLoading, setIsLoading] = useState(false);
+    const [user, setUser] = useState({});
 
+    function handleName(e) {
+        user.name = e.target.value;
     }
 
     function handleEmail(e) {
-
+        user.email = e.target.value;
     }
 
     function handlePassword(e) {
-
+        user.password = e.target.value;
     }
 
     function handleDesignation(e) {
-
+        user.designation = e.target.value;
     }
 
     function handleSubmit(e) {
-
+        setIsLoading(true);
+        axios({
+            method: "post",
+            url: "http://localhost:4000/user/signup",
+            data: user
+        }).then((response) => {
+            console.log(response);
+            setIsLoading(false)
+        })
     }
 
     return (

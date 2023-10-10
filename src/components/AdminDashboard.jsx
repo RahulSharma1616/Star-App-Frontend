@@ -5,6 +5,7 @@ import axios from "axios";
 import SideNav from "./SideNav";
 import CreateProject from "./CreateProject";
 import CreateAccount from "./CreateAccount";
+import Navbar from "./Navbar";
 
 export default function AdminDashboard() {
 
@@ -47,6 +48,7 @@ export default function AdminDashboard() {
                     </div>
                 </div>
             )}
+            <Navbar />
             <div className="d-flex">
                 <SideNav />
                 <div className="table-container">
@@ -56,16 +58,16 @@ export default function AdminDashboard() {
                     <div className="row p-4">
                         <div className="col-sm-12">
                             <div className="card mb-3">
-                                <div class="card-body">
-                                    <div className="pb-4" style={{ "text-align": "center" }}>
-                                        <h5 class="card-title">User Management</h5>
+                                <div className="card-body">
+                                    <div className="pb-4" style={{ textAlign: "center" }}>
+                                        <h5 className="card-title">User Management</h5>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Create an Account</h5>
-                                                    <p class="card-text">Create new user accounts to streamline access and collaboration within the organization.</p>
+                                    <div className="row">
+                                        <div className="col-sm-6 mb-3 mb-sm-0">
+                                            <div className="card">
+                                                <div className="card-body">
+                                                    <h5 className="card-title">Create an Account</h5>
+                                                    <p className="card-text">Create new user accounts to streamline access and collaboration within the organization.</p>
                                                     <a onClick={openUserModal} className="btn btn-outline-primary">Create Account</a>
                                                     <Modal
                                                         isOpen={userModal}
@@ -93,16 +95,16 @@ export default function AdminDashboard() {
                                 </div>
                             </div>
                             <div className="card mb-3">
-                                <div class="card-body">
-                                    <div className="pb-4" style={{ "text-align": "center" }}>
-                                        <h5 class="card-title">Project Management</h5>
+                                <div className="card-body">
+                                    <div className="pb-4" style={{ textAlign: "center" }}>
+                                        <h5 className="card-title">Project Management</h5>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Add Project</h5>
-                                                    <p class="card-text">Drive progress and innovation!  Create projects and assign resources to steer your team towards achieving greatness.</p>
+                                    <div className="row">
+                                        <div className="col-sm-6 mb-3 mb-sm-0">
+                                            <div className="card">
+                                                <div className="card-body">
+                                                    <h5 className="card-title">Add Project</h5>
+                                                    <p className="card-text">Drive progress and innovation!  Create projects and assign resources to steer your team towards achieving greatness.</p>
                                                     <a onClick={openProjectModal} className="btn btn-outline-primary">Add Project</a>
                                                     <Modal
                                                         isOpen={projectModal}
