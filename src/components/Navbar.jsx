@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import profileIcon from "../images/projectManager.png"
 import logo from "../images/LOGO.png"
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import Modal from 'react-modal';
+import Profile from "./Profile";
 
 export default function Navbar() {
 
@@ -23,6 +24,15 @@ export default function Navbar() {
     }
   }, [])
 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+      setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+      setModalIsOpen(false);
+  };
 
   function handleLogout() {
     removeCookie('token');
@@ -58,13 +68,35 @@ export default function Navbar() {
                   }}
                 >
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <a onClick={openModal} className="dropdown-item" href="#">
                       My Profile
                     </a>
+                    <Modal
+                      isOpen={modalIsOpen}
+                      onRequestClose={closeModal}
+                      style={{
+                        overlay: {
+                          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Background overlay color
+                        },
+                        content: {
+                          width: '40%', // Width of the modal
+                          height: '80%',
+                          left: '30%', // Position from the left
+                          top: '10%'
+                        },
+                      }}
+                    >
+                      <div className='d-flex justify-content-between'>
+                        <span className='h2 mb-2' style={{ fontWeight: "350", verticalAlign: 'middle' }}>My Profile</span>
+                        <button type="button" className="btn-close" aria-label="Close" onClick={closeModal}></button>
+                      </div>
+                      <Profile closeWin={closeModal} />
+                    </Modal>
                   </li>
+                  <li><hr className="dropdown-divider" /></li>
                   <li>
                     <button
-                      className="btn btn-primary btn-sm"
+                      className="btn btn-outline-primary btn-sm"
                       onClick={handleLogout}
                       style={{
                         width: "200px",
