@@ -1,11 +1,46 @@
-import { RiArrowDropDownLine } from "react-icons/ri"
+import { FcInfo } from "react-icons/fc";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import Modal from 'react-bootstrap/Modal';
 import SideNav from "./SideNav";
 import axios from "axios";
+import Navbar from "./Navbar";
 import moment from 'moment';
 
+import Box from '@mui/material/Box';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+
 export default function ApprovalPage() {
+
+    const [selectedTimesheet, setSelectedTimesheet] = useState(null);
+    const [level, setLevel] = useState(1);
+
+    const steps = selectedTimesheet
+        ? [`Submitted on ${moment(selectedTimesheet.submissionDate).format('MMM D, YYYY')}`, `Project Manager\n${selectedTimesheet.status}`, 'Approved']
+        : ['Manager Approval', 'Approved'];
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    // Function to handle row click and set submission date
+    const handleRowClick = (timesheet) => {
+        setSelectedTimesheet(timesheet);
+
+        if (timesheet.status == "Accepted") {
+            setLevel(3);
+        }
+
+        else if (timesheet.status == "Rejected") {
+            setLevel(1);
+        }
+
+        //setSubmissionDate(moment(timesheet.submissionDate).format('MMM D, YYYY'));
+        handleShow(); // Open the modal
+    };
 
     let [isLoading, setIsLoading] = useState(true);
     let [secondaryLoading, setSecondaryLoading] = useState(false);
@@ -69,6 +104,52 @@ export default function ApprovalPage() {
 
     return (
         <>
+
+            <Modal show={show} onHide={handleClose} animation={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Activity</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Box sx={{ width: '100%' }}>
+                        <Stepper activeStep={level} alternativeLabel>
+                            {steps.map((label) => (
+                                <Step key={label}>
+                                    <StepLabel>{label}</StepLabel>
+                                </Step>
+                            ))}
+                        </Stepper>
+                    </Box>
+                </Modal.Body>
+                <Modal.Footer>
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col" style={{ textAlign: "center" }}>Date</th>
+                                <th scope="col" style={{ textAlign: "center" }}>Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {selectedTimesheet && selectedTimesheet.totalHours.map((item, index) => (
+                                <tr key={index}>
+                                    <td style={{ textAlign: "center" }}>{moment(selectedTimesheet.startDate).clone().add(index, 'days').format('MMM DD, YYYY')}</td>
+                                    <td style={{ textAlign: "center" }}>{item}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </Modal.Footer>
+                {selectedTimesheet && <div className="d-flex justify-content-around m-2 p-2">
+                        <span>
+                            <strong>Total Hours:</strong> {selectedTimesheet.totalHours.reduce((accumulator, currentValue) => {
+                                return accumulator + currentValue;
+                            }, 0)}
+                        </span>
+                        <br/>
+                        <span>
+                            <strong>Expected Hours:</strong> {selectedTimesheet.expectedHours}
+                        </span>
+                    </div>}
+            </Modal>
             {isLoading && (
                 <div className="loader-overlay">
                     <div className="bouncing-loader">
@@ -78,6 +159,7 @@ export default function ApprovalPage() {
                     </div>
                 </div>
             )}
+            <Navbar />
             <div className="d-flex">
                 <SideNav />
                 <div className="table-container">
@@ -105,7 +187,7 @@ export default function ApprovalPage() {
 
                                     return (
                                         <tr style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
-                                            <td style={{ textAlign: "center" }}><span><RiArrowDropDownLine size={24} /></span></td>
+                                            <td className="clickable-cell" onClick={() => handleRowClick(timesheet)} style={{ textAlign: "center" }}><span><FcInfo size={24} /></span></td>
                                             <td scope=" d-flex" style={{ textAlign: "center" }}>{moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
                                             <td style={{ textAlign: "center" }}>{timesheet.projectName}</td>
                                             <td style={{ textAlign: "center" }}>{timesheet.name}</td>

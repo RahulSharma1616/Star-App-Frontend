@@ -19,18 +19,33 @@ import Navbar from "./Navbar";
 
 export default function HomePage() {
 
-  const [submissionDate, setSubmissionDate] = useState("");
+  const [selectedTimesheet, setSelectedTimesheet] = useState(null);
+  const [level, setLevel] = useState(1);
 
-  const steps = [
-    `Submitted on ${submissionDate}`,
-    'Project Manager',
-    'Approved',
-  ];
+  const steps = selectedTimesheet
+    ? [`Submitted on ${moment(selectedTimesheet.submissionDate).format('MMM D, YYYY')}`, `Project Manager\n${selectedTimesheet.status}`, 'Approved']
+    : ['Manager Approval', 'Approved'];
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  // Function to handle row click and set submission date
+  const handleRowClick = (timesheet) => {
+    setSelectedTimesheet(timesheet);
+
+    if (timesheet.status == "Accepted") {
+      setLevel(3);
+    }
+
+    else if (timesheet.status == "Rejected") {
+      setLevel(1);
+    }
+
+    //setSubmissionDate(moment(timesheet.submissionDate).format('MMM D, YYYY'));
+    handleShow(); // Open the modal
+  };
 
   let [isLoading, setIsLoading] = useState(true);
   let [isDeleted, setIsDeleted] = useState(0);
@@ -77,7 +92,7 @@ export default function HomePage() {
         </Modal.Header>
         <Modal.Body>
           <Box sx={{ width: '100%' }}>
-            <Stepper activeStep={1} alternativeLabel>
+            <Stepper activeStep={level} alternativeLabel>
               {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel>{label}</StepLabel>
@@ -85,19 +100,33 @@ export default function HomePage() {
               ))}
             </Stepper>
           </Box>
-
         </Modal.Body>
         <Modal.Footer>
-
-          <Button variant="primary" onClick={handleClose}>
-            Raise a ticket
-          </Button>
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col" style={{ textAlign: "center" }}>Date</th>
+                <th scope="col" style={{ textAlign: "center" }}>Hours</th>
+              </tr>
+            </thead>
+            <tbody>
+              {selectedTimesheet && selectedTimesheet.totalHours.map((item, index) => (
+                <tr key={index}>
+                  <td style={{ textAlign: "center" }}>{moment(selectedTimesheet.startDate).clone().add(index, 'days').format('MMM DD, YYYY')}</td>
+                  <td style={{ textAlign: "center" }}>{item}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </Modal.Footer>
+        {selectedTimesheet && <div className="d-flex justify-content-around m-2 p-2">
+          <span>
+            <strong>Total Hours:</strong> {selectedTimesheet.totalHours.reduce((accumulator, currentValue) => {
+              return accumulator + currentValue;
+            }, 0)}
+          </span>
+        </div>}
       </Modal>
-
-
-
-
 
       {isLoading && (
         <div className="loader-overlay">
@@ -132,8 +161,6 @@ export default function HomePage() {
               {
                 timesheets.map((timesheet) => {
 
-                  
-
                   let statusClass = "primary"
 
                   if (timesheet.status == "Pending") {
@@ -152,7 +179,7 @@ export default function HomePage() {
 
                   return (
 
-                    <tr onClick={handleShow} style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
+                    <tr style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
 
 
                       <td scope=" d-flex" style={{ textAlign: "center" }}>{moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
@@ -176,6 +203,12 @@ export default function HomePage() {
                             className="dropdown-menu"
                             aria-labelledby={`dropdownMenuButton${timesheet.projectID}`}
                           >
+                            <li>
+                              <a onClick={() => handleRowClick(timesheet)}
+                                className={`dropdown-item`} href="#">
+                                View Details
+                              </a>
+                            </li>
                             <li>
                               <a onClick={(e) => {
                                 handleDelete(timesheet._id)
