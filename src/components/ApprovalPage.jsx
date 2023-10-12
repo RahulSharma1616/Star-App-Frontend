@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import { Link } from "react-router-dom";
 
 export default function ApprovalPage() {
 
@@ -139,16 +140,16 @@ export default function ApprovalPage() {
                     </table>
                 </Modal.Footer>
                 {selectedTimesheet && <div className="d-flex justify-content-around m-2 p-2">
-                        <span>
-                            <strong>Total Hours:</strong> {selectedTimesheet.totalHours.reduce((accumulator, currentValue) => {
-                                return accumulator + currentValue;
-                            }, 0)}
-                        </span>
-                        <br/>
-                        <span>
-                            <strong>Expected Hours:</strong> {selectedTimesheet.expectedHours}
-                        </span>
-                    </div>}
+                    <span>
+                        <strong>Total Hours:</strong> {selectedTimesheet.totalHours.reduce((accumulator, currentValue) => {
+                            return accumulator + currentValue;
+                        }, 0)}
+                    </span>
+                    <br />
+                    <span>
+                        <strong>Expected Hours:</strong> {selectedTimesheet.expectedHours}
+                    </span>
+                </div>}
             </Modal>
             {isLoading && (
                 <div className="loader-overlay">
@@ -165,6 +166,9 @@ export default function ApprovalPage() {
                 <div className="table-container">
                     <div className="timesheet-header d-flex justify-content-between">
                         <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Manager's Desk</h3>
+                        <Link to="/manager-activities">
+                            <button className="btn btn-outline-dark m-2">Activities</button>
+                        </Link>
                     </div>
                     <table className="table">
                         <thead>
