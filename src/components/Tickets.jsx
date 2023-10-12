@@ -12,8 +12,6 @@ export default function Tickets() {
     const [cookies, setCookie] = useCookies(['token']);
     const [ticketsData, setTicketsData] = useState([]);
 
-    console.log(ticketsData)
-
     useEffect(() => {
         axios({
             method: "get",
@@ -23,8 +21,8 @@ export default function Tickets() {
             }
         }).then((response) => {
             setTicketsData(response.data.tickets);
-        }, [])
-    })
+        })
+    }, [])
 
     return (
         <>

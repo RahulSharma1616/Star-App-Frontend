@@ -54,11 +54,11 @@ export default function LoginPage() {
 
   return (
     <>
-    <Navbar/>
+      <Navbar />
       <div className="">
         <div className="row">
-          <div className="col-lg-6">
-            <img mx-2 className="loginbanner" src={banner} alt="" />
+          <div className="col-lg-6 p-6" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img className="loginbanner" style={{ width: "600px", height: "400px" }} src={banner} alt="" />
           </div>
           <div className="col-lg-6">
             <div className="login-container">

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import Modal from 'react-modal';
 import Profile from "./Profile";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
 
@@ -95,6 +96,7 @@ export default function Navbar() {
                   </li>
                   <li><hr className="dropdown-divider" /></li>
                   <li>
+                    <Link to="/">
                     <button
                       className="btn btn-outline-primary btn-sm"
                       onClick={handleLogout}
@@ -107,6 +109,7 @@ export default function Navbar() {
                     >
                       Logout
                     </button>
+                    </Link>
                   </li>
                 </ul>
               </div>
