@@ -99,6 +99,10 @@ input:focus-visible {
 
 .navbar-container {
   background-color: whitesmoke;
+  width: 100%;
+
+  z-index: 1000;
+  position: fixed;
 }
 
 .logo {
@@ -115,9 +119,13 @@ li {
 .side-nav {
   background-color: #043365;
   color: white;
-  width: 100px;
+  width: 107px;
   min-height: 600px;
   text-align: left;
+  /* margin-top: 53px; */
+  position: fixed;
+  /* z-index: 1000 */
+  ;
   /* position: fixed; */
 }
 
@@ -131,6 +139,8 @@ li {
   background-color: rgb(216 216 232);
   padding: 8px 5px;
   text-align: left;
+  /* position: fixed; */
+  width: 100%;
 }
 
 .table-container {
@@ -251,6 +261,8 @@ li {
 
 .ticketsContainer {
   width: -webkit-fill-available;
+  margin-top: 54px;
+  margin-left: 100px;
 }
 
 .ticketcard {
@@ -319,4 +331,14 @@ li {
 
 .clickable-cell {
   cursor: pointer; /* Show hand cursor on hover */
+}
+.react-icon:hover{
+  transform: scale(1.1);
+  color: rgb(216 216 232);
+}
+.rr{
+  color: #E37815;
+}
+.mt-6{
+  margin-top: 54px !important;
 }
