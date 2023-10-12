@@ -73,7 +73,7 @@ export default function TicketForm({closeWin}) {
             data: {
                 subject,
                 category,
-                projectID: projectID.value,
+                projectID: showProjectField ? projectID.value : null,
                 description,
             },
             headers: {

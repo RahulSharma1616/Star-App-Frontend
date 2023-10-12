@@ -11,7 +11,8 @@ export default function Tickets() {
 
     const [cookies, setCookie] = useCookies(['token']);
     const [ticketsData, setTicketsData] = useState([]);
-    const [name, setName] = useState("")
+
+    console.log(ticketsData)
 
     useEffect(() => {
         axios({
@@ -22,31 +23,23 @@ export default function Tickets() {
             }
         }).then((response) => {
             setTicketsData(response.data.tickets);
-            setName(response.data.name);
         }, [])
     })
 
     return (
         <>
-        <Navbar/>
+            <Navbar />
             <div className="d-flex">
                 <SideNav />
                 <div className="ticketsContainer ">
                     <Header />
                     <div className="d-flex p-3">
                         <div className="recentTickets">
-                            <div className="container">
-                                <div className="row justify-content-center">
-                                    <div className="my-3 col-md-6">
-                                        <input type="search" className="form-control border border-dark" placeholder="Search" />
-                                    </div>
-                                </div>
-                            </div>
                             <div>
                                 {
                                     ticketsData.map((ticket) => {
                                         return (
-                                            <TicketCard key={ticket._id} name={name} ticket={ticket} />
+                                            <TicketCard key={ticket._id} ticket={ticket} />
                                         )
                                     })
                                 }
