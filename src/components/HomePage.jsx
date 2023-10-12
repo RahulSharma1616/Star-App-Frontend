@@ -139,15 +139,20 @@ export default function HomePage() {
       )}
 
       <Navbar />
-      <div className="d-flex homePage">
+      <div className="homePage">
+        <div className="row">
+        <div className="col-lg-1 mt-6">
         <SideNav />
+        </div>
+        <div className="col-lg-11 mt-6">
         <div className="table-container">
-          <div className="timesheet-header d-flex justify-content-between">
+          {/* <div className="timesheet-header d-flex justify-content-between">
             <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>My Timesheets</h3>
             <Link to="/create-timesheet">
               <button className="btn btn-outline-dark m-2">Create Timesheet</button>
             </Link>
-          </div>
+          </div> */}
+          <Header/>
           <table className="table">
             <thead>
               <tr style={{ fontWeight: "600" }}>
@@ -225,6 +230,8 @@ export default function HomePage() {
               }
             </tbody>
           </table>
+        </div>
+        </div>
         </div>
       </div>
     </>
