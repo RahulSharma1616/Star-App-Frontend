@@ -93,9 +93,6 @@ export default function LoginPage() {
                     placeholder="Password"
                   />
                 </div>
-                <div className="text-left my-3">
-                  <p className="forgot">Forgot password?</p>
-                </div>
                 <div className="my-3">
                   {isLoading == false && (
                     <button type="button" onClick={login} className="button-primary">

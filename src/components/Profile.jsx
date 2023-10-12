@@ -2,15 +2,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { TfiPencil } from "react-icons/tfi";
+import { Link } from "react-router-dom";
 
 export default function Profile({ closeWin }) {
+
     const [cookies, setCookie] = useCookies(['token']);
-    const [user, setUser] = useState(null); // Initialize user state
+    const [user, setUser] = useState(null);
     const [isEditingPassword, setIsEditingPassword] = useState(false);
     const [newPassword, setNewPassword] = useState("");
     const [isHovered, setIsHovered] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null); // State variable for selected image file
-    let fileInput; 
+    const [imageEdit, setImageEdit] = useState(false);
+
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
         axios({
@@ -27,45 +30,8 @@ export default function Profile({ closeWin }) {
             .catch(function (error) {
                 console.log("error: ", error);
             });
-    }, [cookies.token]); // Add cookies.token as a dependency to re-fetch data when the token changes
+    }, [cookies.token, imageEdit]); // Add cookies.token as a dependency to re-fetch data when the token changes
 
-
-    const handleFileInputChange = (e) => {
-        const file = e.target.files[0];
-        setSelectedImage(file);
-
-        if (file) {
-            handleSubmit();
-          }
-      };
-    
-      // Function to handle form submission
-      const handleSubmit = (e) => {
-        e.preventDefault();
-    
-        if (selectedImage) {
-          const formData = new FormData();
-          formData.append('image', selectedImage);
-    
-          axios({
-            method: 'post',
-            url: 'http://localhost:4000/user/image',
-            data: formData,
-            headers: {
-              'Authorization': `Bearer ${cookies.token}`,
-              'Content-Type': 'multipart/form-data', // Important for file upload
-            },
-          })
-            .then((response) => {
-              // Handle the response as needed
-              console.log('Image uploaded successfully:', response);
-              setIsHovered(false); // Close the file picker
-            })
-            .catch((error) => {
-              console.error('Image upload failed:', error);
-            });
-        }
-      };
 
     function handlePasswordEdit() {
         setIsEditingPassword(true)
@@ -90,9 +56,32 @@ export default function Profile({ closeWin }) {
         })
     }
 
+    const handleFileChange = (e) => {
+        setSelectedImage(e.target.files[0]);
+      };
+    
+      const handleFormSubmit = async (e) => {
+        e.preventDefault();
+    
+        const formData = new FormData();
+        formData.append('photo', selectedImage);
+    
+        try {
+          const response = await axios.post('http://localhost:4000/user/image', formData, {
+            headers: {
+              'Authorization': `Bearer ${cookies.token}`,
+              'Content-Type': 'multipart/form-data', // Important for file upload
+            },
+          });
+
+        setImageEdit(false);
+        } catch (error) {
+          console.error('Image upload failed:', error);
+        }
+      };
+
     return (
         <div className="profile-modal">
-            {/* Check if user data is available */}
             {user && (
                 <div className="text-center">
                     {!isHovered && <img
@@ -104,23 +93,17 @@ export default function Profile({ closeWin }) {
                         style={{ width: "100px", height: "100px", borderRadius: "50%" }}
                     />}
                     {isHovered &&
-                        <form action="http://localhost:4000/user/image" method="POST" enctype="multipart/form-data">
+                        <div>
                             <img
                                 src="https://res.cloudinary.com/djtkzefmk/image/upload/v1696966182/Untitled_design_xayf52.png"
                                 onMouseEnter={() => setIsHovered(true)}
                                 onMouseLeave={() => setIsHovered(false)}
-                                onClick={() => fileInput.click()}
+                                onClick={() => { setImageEdit(true) }}
                                 alt="User"
-                                className="user-image mb-3"
+                                className="user-image mb-3 clickable-cell"
                                 style={{ width: "100px", height: "100px", borderRadius: "50%" }}
                             />
-                            <input
-                                type="file"
-                                id="fileInput"
-                                ref={(input) => (fileInput = input)}
-                                style={{ display: 'none' }}
-                            />
-                        </form>
+                        </div>
                     }
 
                     <h4 className="fs-3 mb-1">{user.name}</h4>
@@ -128,8 +111,8 @@ export default function Profile({ closeWin }) {
                 </div>
             )}
             <hr style={{ margin: "30px" }} />
-            {user && (
-                <div style={{ margin: "20px" }} className="fs-5">
+            {user && !imageEdit && (
+                <div style={{ margin: "20px" }} className="fs-6">
                     <div><p><strong>Email:</strong> {user.email}</p></div>
                     {!isEditingPassword && <div>
                         <span><strong>Password:</strong> **********</span>
@@ -143,12 +126,24 @@ export default function Profile({ closeWin }) {
                             <input onChange={handlePasswordChange} type="password" class="form-control col" id="inputPassword2" placeholder="Password" />
                         </div>
                         <div class="col-auto m-3 text-end">
-                            <button type="button" onClick={handlePasswordSubmit} class="btn btn-outline-primary mb-3">Change Password</button>
+                            <button type="button" onClick={handlePasswordSubmit} class="btn btn-outline-primary btn-sm mb-3">Change Password</button>
                         </div>
                     </div>
                     }
                 </div>
             )}
+            {imageEdit &&
+
+                <form action="http://localhost:4000/user/image" method="POST" encType="multipart/form-data" onSubmit={handleFormSubmit}>
+                    <div className="mb-3">
+                        <label htmlFor="formFile" className="form-label"><strong>Select Profile Picture:</strong></label>
+                        <input name="photo" className="form-control" onChange={handleFileChange} type="file" id="formFile" accept=".jpg, .jpeg, .png, .gif" />
+                    </div>
+                    <div className="d-flex justify-content-end">
+                        <button className="btn btn-outline-primary">Upload</button>
+                    </div>
+                </form>
+            }
         </div>
     );
 }
