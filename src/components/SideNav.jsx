@@ -28,14 +28,29 @@ export default function SideNav() {
 
 
     return (
+
+import {SiFiles} from "react-icons/si"
+
+export default function SideNav(){
+
+//    function handleClick(id){
+//      document.getElementById.className.add("rr")
+//    }
+
+
+    return(
+
         <>
             <div className="side-nav">
                 <div className="">
                     <ul className="px-3">
+
                         <Link className="text-decoration-none text-white" to="/">
                             <li className="my-5 text-center"><AiFillHome size={24} /> <span className="">Home</span></li></Link>
                         <Link to="/create-timesheet" className="text-decoration-none text-white">  <li className="my-5 text-center"><BsFillCalendarCheckFill size={24} /> <span className="">Create Timesheet</span> </li></Link>
                         <Link to="/projects" className="text-decoration-none text-white"> <li className="my-5 text-center"><BsFillFilePptFill size={24} /> <span>Projects</span> </li></Link>
+
+                        
                         <Link to="/tickets" className="text-decoration-none text-white">
                             <li className="my-5 text-center"><FaTicketSimple size={24} /> <span>Tickets</span> </li>
                         </Link>
