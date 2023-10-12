@@ -80,9 +80,9 @@ export default function Navbar() {
                         },
                         content: {
                           width: '40%', // Width of the modal
-                          height: '80%',
+                          height: '83%',
                           left: '30%', // Position from the left
-                          top: '10%'
+                          top: '6%'
                         },
                       }}
                     >
