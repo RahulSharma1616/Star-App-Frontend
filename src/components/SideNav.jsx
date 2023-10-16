@@ -1,9 +1,4 @@
 import { BsFillCalendarCheckFill } from "react-icons/bs";
-
-import { BsFilesAlt } from "react-icons/bs";
-
-import { GrHomeRounded } from "react-icons/gr";
-
 import { BsFillFilePptFill } from "react-icons/bs";
 import { AiFillHome } from "react-icons/ai";
 import { FaTicketSimple } from "react-icons/fa6";
@@ -71,11 +66,7 @@ export default function SideNav() {
                 </li>
               </Link>
             )}
-          
 
-            
-
-            
 
             <Link to="/tickets" className="text-decoration-none text-white">
               <li className="my-3 text-center">
@@ -127,7 +118,6 @@ export default function SideNav() {
                   </li>
                 </Link>
 
-               
               </div>
             )}
 
