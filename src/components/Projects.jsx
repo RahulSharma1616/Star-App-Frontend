@@ -9,6 +9,8 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
+import Toast from 'react-bootstrap/Toast';
+import { MdInfoOutline } from "react-icons/md";
 
 export default function Projects() {
 
@@ -20,6 +22,16 @@ export default function Projects() {
   const [resources, setResources] = useState([]);
   const [render, setRender] = useState(0)
   var email = "";
+
+      
+  let [message, setMessage] = useState(""); // State variable for managing a message
+
+  // This state variable manages the visibility of the toast. 
+  const [showToast, setShowToast] = useState(false);
+
+  // This function is responsible for toggling the state of the showToast variable.
+  const toggleShowToast = () => setShowToast(!showToast);
+
 
   function MydModalWithGrid(props) {
     return (
@@ -67,6 +79,12 @@ export default function Projects() {
             </Row>
           </Container>
         </Modal.Body>
+        <Toast show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+          <Toast.Body className="bg-success text-white">
+            <strong><MdInfoOutline size={25} /> {message}</strong>
+            <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
+          </Toast.Body>
+        </Toast>
       </Modal>
     );
   }
@@ -120,7 +138,9 @@ export default function Projects() {
         Authorization: `Bearer ${cookies.token}`,
       },
     }).then((response) => {
-      setRender(render+1);
+      setMessage(response.data.message);
+      setShowToast(true);
+      setRender(render + 1);
     })
   }
 
@@ -135,8 +155,9 @@ export default function Projects() {
         Authorization: `Bearer ${cookies.token}`,
       },
     }).then((response) => {
-      console.log(response.data)
-      setRender(render+1);
+      setMessage(response.data.message);
+      setShowToast(true);
+      setRender(render + 1);
     })
   }
 

@@ -7,6 +7,8 @@ import CreateProject from "./CreateProject";
 import CreateAccount from "./CreateAccount";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
+import Toast from 'react-bootstrap/Toast';
+import { MdInfoOutline } from "react-icons/md";
 
 export default function AdminDashboard() {
 
@@ -14,6 +16,14 @@ export default function AdminDashboard() {
     const [cookies, setCookie] = useCookies(['token']);
 
     const [projectModal, setProjectModal] = useState(false);
+        
+    let [message, setMessage] = useState(""); // State variable for managing a message
+
+    // This state variable manages the visibility of the toast. 
+    const [showToast, setShowToast] = useState(false);
+
+    // This function is responsible for toggling the state of the showToast variable.
+    const toggleShowToast = () => setShowToast(!showToast);
 
     const openProjectModal = () => {
         setProjectModal(true);
@@ -90,7 +100,7 @@ export default function AdminDashboard() {
                                                             <span className='h2 mb-4' style={{ fontWeight: "350", verticalAlign: 'middle' }}>Create Account</span>
                                                             <button type="button" className="btn-close" aria-label="Close" onClick={closeUserModal}></button>
                                                         </div>
-                                                        <CreateAccount closeWin={closeUserModal} />
+                                                        <CreateAccount setMessage={setMessage} setShowToast={setShowToast} closeWin={closeUserModal} />
                                                     </Modal>
                                                 </div>
                                             </div>
@@ -127,7 +137,7 @@ export default function AdminDashboard() {
                                                             <span className='h2 mb-3' style={{ fontWeight: "350", verticalAlign: 'middle' }}>Add Project</span>
                                                             <button type="button" className="btn-close" aria-label="Close" onClick={closeProjectModal}></button>
                                                         </div>
-                                                        <CreateProject closeWin={closeProjectModal} />
+                                                        <CreateProject setMessage={setMessage} setShowToast={setShowToast} closeWin={closeProjectModal} />
                                                     </Modal>
                                                 </div>
                                             </div>
@@ -147,6 +157,12 @@ export default function AdminDashboard() {
                         </div>
                     </div>
                 </div>
+                <Toast show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+                    <Toast.Body className="bg-success text-white">
+                        <strong><MdInfoOutline size={25} /> {message}</strong>
+                        <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
+                    </Toast.Body>
+                </Toast>
             </div>
             </div>
         </>

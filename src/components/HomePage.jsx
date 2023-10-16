@@ -240,7 +240,7 @@ export default function HomePage() {
               padding: '1rem',
             }}
           >
-            <Toast show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+            <Toast show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
               <Toast.Body className="bg-success text-white">
                 <strong>{message}</strong>
                 <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
