@@ -10,6 +10,8 @@ import { useCookies } from 'react-cookie';
 import ApprovalPage from './components/ApprovalPage';
 import Activities from './components/Activities';
 import AdminDashboard from './components/AdminDashboard';
+import TicketsReceived from './components/TicketsReceived';
+import Analytics from './components/Analytics';
 
 function App() {
 
@@ -27,7 +29,9 @@ function App() {
         <Route path="/tickets" element={<Tickets />} />
         <Route path="/manager-dashboard" element={<ApprovalPage />} />
         <Route path="/manager-activities" element={<Activities />} />
+        <Route path="/tickets-received" element={<TicketsReceived />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/analytics" element={<Analytics />} />
       </Routes>
     </BrowserRouter>
   );

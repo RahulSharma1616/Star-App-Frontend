@@ -16,7 +16,7 @@ export default function TicketCard({ticket}) {
     } else if(ticket.status == "Approved") {
         statusClass="success"
     } else {
-        statusClass="secondary"
+        statusClass="info"
     }
 
     useEffect(() => {
@@ -38,10 +38,10 @@ export default function TicketCard({ticket}) {
             <div className="m-6" style={{ width: '83vw' }}>
                 <ul>
                     <li>
-                        <div className="shadow-lg col-lg-12 p-3 ">
+                        <div className="shadow-lg p-3 ticketcard">
                             <div className="d-flex">
                                 <div><img src={image.url} alt="User" className="user-image mb-3" style={{ width: "70px", height: "70px", borderRadius: "50%" }} /></div>
-                                <div className="p-3"> <span className="h3" style={{ fontWeight: "500"}}>{ticket.subject} </span><span class={`badge text-bg-${statusClass}`}>{ticket.status}</span></div>
+                                <div className="p-3"> <span className="h3" style={{ fontWeight: "500"}}>{ticket.subject} </span><span class={`badge text-bg-${statusClass} text-white`}>{ticket.status}</span></div>
                                                            
                             </div>
                             <div className="mb-3">

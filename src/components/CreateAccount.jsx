@@ -2,87 +2,81 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 export default function CreateAccount({ closeWin }) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [userData, setUserData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        designation: '',
+    });
 
-    let [isLoading, setIsLoading] = useState(false);
-    const [user, setUser] = useState({});
-
-    function handleName(e) {
-        user.name = e.target.value;
-    }
-
-    function handleEmail(e) {
-        user.email = e.target.value;
-    }
-
-    function handlePassword(e) {
-        user.password = e.target.value;
-    }
-
-    function handleDesignation(e) {
-        user.designation = e.target.value;
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setUserData({ ...userData, [name]: value });
     }
 
     function handleSubmit(e) {
+        e.preventDefault();
         setIsLoading(true);
+
         axios({
             method: "post",
             url: "http://localhost:4000/user/signup",
-            data: user
-        }).then((response) => {
-            console.log(response);
-            setIsLoading(false)
+            data: userData,
         })
+            .then((response) => {
+                closeWin()
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                console.error(error);
+                setIsLoading(false);
+            });
     }
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label className="form-label">
-                        Name
-                    </label>
+                    <label className="form-label">Name</label>
                     <input
                         className="form-control"
-                        onChange={handleName}
+                        name="name"
+                        value={userData.name}
+                        onChange={handleChange}
                         required
                     />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="email" className="form-label">
-                        Email
-                    </label>
+                    <label className="form-label">Email</label>
                     <input
                         type="email"
                         className="form-control"
-                        id="email"
                         name="email"
-                        onChange={handleEmail}
+                        value={userData.email}
+                        onChange={handleChange}
                         required
                     />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="password" className="form-label">
-                        Password
-                    </label>
+                    <label className="form-label">Password</label>
                     <input
                         type="password"
                         className="form-control"
-                        id="password"
                         name="password"
-                        onChange={handlePassword}
+                        value={userData.password}
+                        onChange={handleChange}
                         required
                     />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="designation" className="form-label">
-                        Designation
-                    </label>
+                    <label className="form-label">Designation</label>
                     <input
                         type="text"
                         className="form-control"
-                        id="designation"
                         name="designation"
-                        onChange={handleDesignation}
+                        value={userData.designation}
+                        onChange={handleChange}
                         required
                     />
                 </div>
@@ -91,5 +85,5 @@ export default function CreateAccount({ closeWin }) {
                 </button>
             </form>
         </div>
-    )
+    );
 }
