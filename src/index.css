@@ -324,4 +324,9 @@ li {
 .clickable-cell {
   cursor: pointer; /* Show hand cursor on hover */
 }
+.modal{
+  margin: 40px auto;
+  /* max-height: 800px; */
+  /* overflow-y: hidden !important; */
+}
 
