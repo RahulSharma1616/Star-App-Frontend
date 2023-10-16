@@ -11,7 +11,7 @@ export default function TicketForm({closeWin, setMessage, setShowToast}) {
 
     const [subject, setSubject] = useState("");
     const [category, setCategory] = useState("");
-    const [projectID, setProjectID] = useState(null);
+    const [projectID, setProjectID] = useState("");
     const [description, setDescription] = useState("");
 
     const [showProjectField, setShowProjectField] = useState(false);
