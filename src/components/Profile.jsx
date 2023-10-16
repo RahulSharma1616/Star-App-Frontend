@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { TfiPencil } from "react-icons/tfi";
 import { Link } from "react-router-dom";
+import Toast from 'react-bootstrap/Toast';
+import { MdInfoOutline } from "react-icons/md";
 
 export default function Profile({ closeWin }) {
 
@@ -14,6 +16,16 @@ export default function Profile({ closeWin }) {
     const [imageEdit, setImageEdit] = useState(false);
 
     const [selectedImage, setSelectedImage] = useState(null);
+
+        
+    let [message, setMessage] = useState(""); // State variable for managing a message
+
+    // This state variable manages the visibility of the toast. 
+    const [showToast, setShowToast] = useState(false);
+
+    // This function is responsible for toggling the state of the showToast variable.
+    const toggleShowToast = () => setShowToast(!showToast);
+
 
     useEffect(() => {
         axios({
@@ -144,6 +156,12 @@ export default function Profile({ closeWin }) {
                     </div>
                 </form>
             }
+            <Toast show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+                <Toast.Body className="bg-success text-white">
+                    <strong><MdInfoOutline size={25} /> {message}</strong>
+                    <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
+                </Toast.Body>
+            </Toast>
         </div>
     );
 }
