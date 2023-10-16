@@ -75,12 +75,7 @@ export default function SideNav() {
 
             
 
-            <Link to="/projects" className="text-decoration-none text-white">
-              {" "}
-              <li className="my-3 text-center">
-                <BsFillFilePptFill size={24} /> <div>Projects</div>{" "}
-              </li>
-            </Link>
+            
 
             <Link to="/tickets" className="text-decoration-none text-white">
               <li className="my-3 text-center">
@@ -132,14 +127,7 @@ export default function SideNav() {
                   </li>
                 </Link>
 
-                <Link
-                  to="/manager-dashboard"
-                  className="text-decoration-none text-white"
-                >
-                  <li className="my-6 text-center">
-                    <BsFillHousesFill size={24} /> <div>Manager's Desk</div>{" "}
-                  </li>
-                </Link>
+               
               </div>
             )}
 
