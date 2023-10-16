@@ -42,7 +42,7 @@ export default function Navbar() {
   return (
     <>
       <div className="navbar-container justify-content-between py-2">
-        <div className="container">
+        <div className="mx-5">
           <div className="justify-content-between d-flex">
             <div>
               {/* <img className="logo" src="https://www.incedoinc.com/wp-content/uploads/incedo-logo.png" alt="logo" /> */}

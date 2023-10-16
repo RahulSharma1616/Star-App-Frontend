@@ -67,6 +67,7 @@ export default function SideNav() {
               </Link>
             )}
 
+
             <Link to="/tickets" className="text-decoration-none text-white">
               <li className="my-3 text-center">
                 <FaTicketSimple size={24} /> <div>Tickets</div>{" "}
@@ -116,6 +117,7 @@ export default function SideNav() {
                     <div>Analytics</div>{" "}
                   </li>
                 </Link>
+
               </div>
             )}
 
