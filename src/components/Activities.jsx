@@ -6,11 +6,13 @@ import SideNav from "./SideNav";
 import Navbar from "./Navbar";
 import axios from "axios";
 import moment from 'moment';
-
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import Card from 'react-bootstrap/Card';
+import Toast from 'react-bootstrap/Toast';
+import { MdInfoOutline } from "react-icons/md";
 
 export default function Activities() {
 
@@ -22,6 +24,15 @@ export default function Activities() {
         : ['Manager Approval', 'Approved'];
 
     const [show, setShow] = useState(false);
+    const [remarks, setRemarks] = useState("");
+
+    const [message, setMessage] = useState(""); // State variable for managing a message
+
+    // This state variable manages the visibility of the toast. 
+    const [showToast, setShowToast] = useState(false);
+
+    // This function is responsible for toggling the state of the showToast variable.
+    const toggleShowToast = () => setShowToast(!showToast);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -30,7 +41,7 @@ export default function Activities() {
     const handleRowClick = (timesheet) => {
         setSelectedTimesheet(timesheet);
 
-        if (timesheet.status == "Accepted") {
+        if (timesheet.status == "Accepted" || timesheet.status == "Auto-Approved") {
             setLevel(3);
         }
 
@@ -41,6 +52,10 @@ export default function Activities() {
         //setSubmissionDate(moment(timesheet.submissionDate).format('MMM D, YYYY'));
         handleShow(); // Open the modal
     };
+
+    function handleRemarks(event) {
+        setRemarks(event.target.value);
+    }
 
     let [isLoading, setIsLoading] = useState(true);
     let [render, setRender] = useState(0)
@@ -66,6 +81,46 @@ export default function Activities() {
         })
     }, [render])
 
+    function handleAccept(timesheetID) {
+        axios({
+            method: "post",
+            url: "http://localhost:4000/timesheet/status",
+            data: {
+                ID: timesheetID,
+                remarks: remarks,
+                status: "Accepted"
+            },
+            headers: {
+                'Authorization': `Bearer ${cookies.token}`,
+            }
+        }).then((response) => {
+            setMessage(response.data.message);
+            setShowToast(true);
+            setShow(false);
+            setRender(render + 1);
+        })
+    }
+
+    function handleReject(timesheetID) {
+        axios({
+            method: "post",
+            url: "http://localhost:4000/timesheet/status",
+            data: {
+                ID: timesheetID,
+                remarks: remarks,
+                status: "Rejected"
+            },
+            headers: {
+                'Authorization': `Bearer ${cookies.token}`,
+            }
+        }).then((response) => {
+            setMessage(response.data.message);
+            setShowToast(true);
+            setShow(false);
+            setRender(render + 1);
+        })
+    }
+
     return (
         <>
 
@@ -88,6 +143,7 @@ export default function Activities() {
                     <table className="table table-striped">
                         <thead>
                             <tr>
+                                <th scope="col" style={{ textAlign: "center" }}>Day</th>
                                 <th scope="col" style={{ textAlign: "center" }}>Date</th>
                                 <th scope="col" style={{ textAlign: "center" }}>Hours</th>
                             </tr>
@@ -95,6 +151,7 @@ export default function Activities() {
                         <tbody>
                             {selectedTimesheet && selectedTimesheet.totalHours.map((item, index) => (
                                 <tr key={index}>
+                                    <td style={{ textAlign: "center" }}>{moment(selectedTimesheet.startDate).clone().add(index, 'days').format('dddd')}</td>
                                     <td style={{ textAlign: "center" }}>{moment(selectedTimesheet.startDate).clone().add(index, 'days').format('MMM DD, YYYY')}</td>
                                     <td style={{ textAlign: "center" }}>{item}</td>
                                 </tr>
@@ -103,16 +160,72 @@ export default function Activities() {
                     </table>
                 </Modal.Footer>
                 {selectedTimesheet && <div className="d-flex justify-content-around m-2 p-2">
-                        <span>
-                            <strong>Total Hours:</strong> {selectedTimesheet.totalHours.reduce((accumulator, currentValue) => {
-                                return accumulator + currentValue;
-                            }, 0)}
-                        </span>
-                        <br/>
-                        <span>
-                            <strong>Expected Hours:</strong> {selectedTimesheet.expectedHours}
-                        </span>
-                    </div>}
+                    <span>
+                        <strong>Total Hours:</strong> {selectedTimesheet.totalHours.reduce((accumulator, currentValue) => {
+                            return accumulator + currentValue;
+                        }, 0)}
+                    </span>
+                    <br />
+                    <span>
+                        <strong>Expected Hours:</strong> {selectedTimesheet.expectedHours}
+                    </span>
+                </div>}
+                <div>
+                    <Card
+                        style={{ "backgroundColor": "#043365", width: '18rem' }}
+                        text={'white'}
+                        className="mx-4 mb-3"
+                    >
+                        <Card.Header>Comment:</Card.Header>
+                        <Card.Body className="p-3">
+                            <Card.Text>
+                                {selectedTimesheet && selectedTimesheet.comment && (selectedTimesheet.comment)}
+                                {selectedTimesheet && !selectedTimesheet.comment && "NA"}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </div>
+                <div className="d-flex justify-content-end">
+                    <Card
+                        text={'white'}
+                        style={{ "backgroundColor": "#e06e02", width: '18rem' }}
+                        className="mx-4 mb-3"
+                    >
+                        <Card.Header>Remark:</Card.Header>
+                        <Card.Body className="p-3">
+                            <Card.Text>
+                                {
+                                    selectedTimesheet && selectedTimesheet.status !== "Auto-Approved" && selectedTimesheet.remarks && (
+                                        <div>{selectedTimesheet.remarks}</div>
+                                    )
+                                }
+                                {selectedTimesheet && selectedTimesheet.status !== "Auto-Approved" && !selectedTimesheet.remarks && "NA"}
+                                {selectedTimesheet && selectedTimesheet.status == "Auto-Approved" && (
+                                    <input type="text" onChange={(e) => handleRemarks(e)} placeholder="Add Remarks Here" className="form-control" />
+
+                                )}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </div>
+                {
+                    selectedTimesheet && selectedTimesheet.status == "Auto-Approved" && (
+                        <div className="d-flex justify-content-center mb-4">
+                            <button
+                                className="btn btn-outline-success mx-1"
+                                onClick={() => handleAccept(selectedTimesheet._id)}
+                            >
+                                Accept
+                            </button>
+                            <button
+                                className="btn btn-outline-danger mx-1"
+                                onClick={() => handleReject(selectedTimesheet._id)}
+                            >
+                                Reject
+                            </button>
+                        </div>
+                    )
+                }
             </Modal>
             {isLoading && (
                 <div className="loader-overlay">
@@ -126,60 +239,66 @@ export default function Activities() {
             <Navbar />
             <div className="row">
                 <div className="col-lg-1 mt-6">
-                <SideNav />
+                    <SideNav />
                 </div>
                 <div className="col-lg-11 mt-6">
-                <div className="table-container">
-                    <div className="timesheet-header d-flex justify-content-between">
-                        <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Activities</h3>
+                    <div className="table-container">
+                        <div className="timesheet-header d-flex justify-content-between">
+                            <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Activities</h3>
+                        </div>
+                        <table className="table">
+                            <thead>
+                                <tr style={{ fontWeight: "600" }}>
+                                    <th scope="col" style={{ textAlign: "center" }}></th>
+                                    <th scope="col" style={{ textAlign: "center" }}>Time Period</th>
+                                    <th scope="col" style={{ textAlign: "center" }}>Project</th>
+                                    <th scope="col" style={{ textAlign: "center" }}>Member</th>
+                                    <th scope="col" style={{ textAlign: "center" }}>Total Hours</th>
+                                    <th scope="col" style={{ textAlign: "center" }}>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    nonPendingTimesheets.map((timesheet) => {
+
+                                        let statusClass = "primary"
+
+                                        if (timesheet.status == "Pending") {
+                                            statusClass = "warning"
+                                        } else if (timesheet.status == "Rejected") {
+                                            statusClass = "danger"
+                                        } else if (timesheet.status == "Accepted") {
+                                            statusClass = "success"
+                                        } else {
+                                            statusClass = "primary"
+                                        }
+
+                                        const hours = timesheet.totalHours.reduce((accumulator, currentValue) => {
+                                            return accumulator + currentValue;
+                                        }, 0);
+
+                                        return (
+                                            <tr style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
+                                                <td className="clickable-cell" onClick={() => handleRowClick(timesheet)} style={{ textAlign: "center" }}><span><FcInfo size={24} /></span></td>
+                                                <td scope=" d-flex" style={{ textAlign: "center" }}>{moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
+                                                <td style={{ textAlign: "center" }}>{timesheet.projectName}</td>
+                                                <td style={{ textAlign: "center" }}>{timesheet.name}</td>
+                                                <td style={{ textAlign: "center" }}>{hours}</td>
+                                                <td style={{ textAlign: "center" }}><span className={`badge bg-${statusClass} text-light`}>{timesheet.status}</span></td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
                     </div>
-                    <table className="table">
-                        <thead>
-                            <tr style={{ fontWeight: "600" }}>
-                                <th scope="col" style={{ textAlign: "center" }}></th>
-                                <th scope="col" style={{ textAlign: "center" }}>Time Period</th>
-                                <th scope="col" style={{ textAlign: "center" }}>Project</th>
-                                <th scope="col" style={{ textAlign: "center" }}>Member</th>
-                                <th scope="col" style={{ textAlign: "center" }}>Total Hours</th>
-                                <th scope="col" style={{ textAlign: "center" }}>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                nonPendingTimesheets.map((timesheet) => {
-
-                                    let statusClass = "primary"
-
-                                    if (timesheet.status == "Pending") {
-                                        statusClass = "primary"
-                                    } else if (timesheet.status == "Rejected") {
-                                        statusClass = "danger"
-                                    } else if (timesheet.status == "Accepted") {
-                                        statusClass = "success"
-                                    } else {
-                                        statusClass = "secondary"
-                                    }
-
-                                    const hours = timesheet.totalHours.reduce((accumulator, currentValue) => {
-                                        return accumulator + currentValue;
-                                    }, 0);
-
-                                    return (
-                                        <tr style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
-                                            <td className="clickable-cell" onClick={() => handleRowClick(timesheet)} style={{ textAlign: "center" }}><span><FcInfo size={24} /></span></td>
-                                            <td scope=" d-flex" style={{ textAlign: "center" }}>{moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
-                                            <td style={{ textAlign: "center" }}>{timesheet.projectName}</td>
-                                            <td style={{ textAlign: "center" }}>{timesheet.name}</td>
-                                            <td style={{ textAlign: "center" }}>{hours}</td>
-                                            <td style={{ textAlign: "center" }}><span className={`badge bg-${statusClass} text-light`}>{timesheet.status}</span></td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
                 </div>
-                </div>
+                <Toast className="p-0" delay={5000} autohide show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+                    <Toast.Body className="bg-success text-white">
+                        <strong><MdInfoOutline size={25} /> {message}</strong>
+                        <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
+                    </Toast.Body>
+                </Toast>
             </div>
         </>
     )
