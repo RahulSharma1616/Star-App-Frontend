@@ -17,7 +17,7 @@ export default function Profile({ closeWin }) {
 
     const [selectedImage, setSelectedImage] = useState(null);
 
-        
+
     let [message, setMessage] = useState(""); // State variable for managing a message
 
     // This state variable manages the visibility of the toast. 
@@ -64,33 +64,37 @@ export default function Profile({ closeWin }) {
                 'Authorization': `Bearer ${cookies.token}`,
             }
         }).then((response) => {
+            setMessage(response.data.message);
+            setShowToast(true);
             setIsEditingPassword(false)
         })
     }
 
     const handleFileChange = (e) => {
         setSelectedImage(e.target.files[0]);
-      };
-    
-      const handleFormSubmit = async (e) => {
+    };
+
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
-    
+
         const formData = new FormData();
         formData.append('photo', selectedImage);
-    
-        try {
-          const response = await axios.post('http://localhost:4000/user/image', formData, {
-            headers: {
-              'Authorization': `Bearer ${cookies.token}`,
-              'Content-Type': 'multipart/form-data', // Important for file upload
-            },
-          });
 
-        setImageEdit(false);
+        try {
+            const response = await axios.post('http://localhost:4000/user/image', formData, {
+                headers: {
+                    'Authorization': `Bearer ${cookies.token}`,
+                    'Content-Type': 'multipart/form-data', // Important for file upload
+                },
+            });
+
+            setMessage(response.data.message);
+            setShowToast(true);
+            setImageEdit(false);
         } catch (error) {
-          console.error('Image upload failed:', error);
+            console.error('Image upload failed:', error);
         }
-      };
+    };
 
     return (
         <div className="profile-modal">
@@ -156,7 +160,7 @@ export default function Profile({ closeWin }) {
                     </div>
                 </form>
             }
-            <Toast show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+            <Toast show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
                 <Toast.Body className="bg-success text-white">
                     <strong><MdInfoOutline size={25} /> {message}</strong>
                     <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>

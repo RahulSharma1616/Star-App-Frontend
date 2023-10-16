@@ -149,7 +149,7 @@ export default function TicketsReceived() {
                         </div>
                     </div>
                 </div>
-                <Toast show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+                <Toast delay={5000} autohide show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
                     <Toast.Body className="bg-success text-white">
                         <strong><MdInfoOutline size={25} /> {message}</strong>
                         <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
