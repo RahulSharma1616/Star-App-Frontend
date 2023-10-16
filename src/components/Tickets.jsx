@@ -27,8 +27,11 @@ export default function Tickets() {
     return (
         <>
             <Navbar />
-            <div className="d-flex">
+            <div className="row">
+                <div className="col-lg-1 mt-6">
                 <SideNav />
+                </div>
+                <div className="col-lg-11 mt-6">
                 <div className="ticketsContainer ">
                     <Header />
                     <div className="d-flex p-3">
@@ -44,6 +47,7 @@ export default function Tickets() {
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </>
