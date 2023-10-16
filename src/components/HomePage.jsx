@@ -144,10 +144,10 @@ export default function HomePage() {
 
       <Navbar />
       <div className="row homePage">
-        <div className="col-lg-1 mt-6">
+        <div className="col-lg-2 mt-6">
         <SideNav />
         </div>
-        <div className="col-lg-11 mt-6">
+        <div className="col-lg-10 mt-6">
         <div className="table-container">
           <div className="timesheet-header d-flex justify-content-between">
             <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>My Timesheets</h3>
