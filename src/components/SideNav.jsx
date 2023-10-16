@@ -90,7 +90,7 @@ export default function SideNav() {
 
             {manager && (
               <div>
-                <hr style={{ margin: "10px" }} />
+                <hr style={{ margin: "11px" }} />
                 <Link
                   to="/manager-dashboard"
                   className="text-decoration-none text-white"
