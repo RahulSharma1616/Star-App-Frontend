@@ -59,16 +59,14 @@ input:focus-visible {
 }
 
 .button-primary {
-  min-width: 129px;
-  height: 49px;
+  min-width: 50%;
   border: none;
-  border-radius: 10px;
+  border-radius: 9%;
   padding: 5px 20px;
   color: white;
   font-size: 22px;
   font-weight: 600;
   background-color: #E37815;
-
 }
 
 .button-small-primary {
@@ -99,10 +97,6 @@ input:focus-visible {
 
 .navbar-container {
   background-color: whitesmoke;
-  width: 100%;
-
-  z-index: 1000;
-  position: fixed;
 }
 
 .logo {
@@ -119,13 +113,9 @@ li {
 .side-nav {
   background-color: #043365;
   color: white;
-  width: 107px;
+  width: 100px;
   min-height: 600px;
   text-align: left;
-  /* margin-top: 53px; */
-  position: fixed;
-  /* z-index: 1000 */
-  ;
   /* position: fixed; */
 }
 
@@ -139,8 +129,6 @@ li {
   background-color: rgb(216 216 232);
   padding: 8px 5px;
   text-align: left;
-  /* position: fixed; */
-  width: 100%;
 }
 
 .table-container {
@@ -148,15 +136,14 @@ li {
 }
 
 .project-card1 {
-  border: 2px solid #043365;
+  border: 2px solid #0052ab;
   border-radius: 12px;
   padding: 12px;
-  background: rgb(4, 51, 101);
-  background: linear-gradient(90deg, rgba(4, 51, 101, 1) 0%, rgba(65, 129, 197, 1) 35%, rgba(154, 172, 192, 1) 100%);
+  background: #ffffff;
 }
 
 .projectHeading {
-  color: white;
+  color: rgb(32, 32, 147);
   font-weight: 700;
   font-size: 28px;
 }
@@ -164,7 +151,7 @@ li {
 .projectSubheading {
   font-weight: 500;
   font-size: 22px;
-  color: white;
+  color: rgb(106, 106, 106);
 }
 
 .timesheet-input {
@@ -261,8 +248,6 @@ li {
 
 .ticketsContainer {
   width: -webkit-fill-available;
-  margin-top: 54px;
-  margin-left: 100px;
 }
 
 .ticketcard {
@@ -331,16 +316,5 @@ li {
 
 .clickable-cell {
   cursor: pointer; /* Show hand cursor on hover */
-}
-
-.react-icon:hover{
-  transform: scale(1.1);
-  color: rgb(216 216 232);
-}
-.rr{
-  color: #E37815;
-}
-.mt-6{
-  margin-top: 54px !important;
 }
 
