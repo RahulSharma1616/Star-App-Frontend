@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Select from 'react-select'
 
-export default function TicketForm({closeWin}) {
+export default function TicketForm({closeWin, setMessage, setShowToast}) {
 
     const [cookies, setCookie] = useCookies(['token']);
 
@@ -80,10 +80,11 @@ export default function TicketForm({closeWin}) {
                 'Authorization': `Bearer ${cookies.token}`,
             }
         }).then(function (response) {
-            closeWin()
-
+            setMessage(response.data.message);
+            setShowToast(true);
+            closeWin();
         }, function (error) {
-            console.log("error: ", error)
+            console.log("error: ", error);
         })
     }
 

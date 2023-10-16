@@ -6,6 +6,7 @@ import SideNav from "./SideNav";
 import CreateProject from "./CreateProject";
 import CreateAccount from "./CreateAccount";
 import Navbar from "./Navbar";
+import { Link } from "react-router-dom";
 
 export default function AdminDashboard() {
 
@@ -128,6 +129,15 @@ export default function AdminDashboard() {
                                                         </div>
                                                         <CreateProject closeWin={closeProjectModal} />
                                                     </Modal>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-sm-6 mb-3 mb-sm-0">
+                                            <div className="card">
+                                                <div className="card-body">
+                                                    <h5 className="card-title">Add Resources</h5>
+                                                    <p className="card-text">Effective resource allocation is the cornerstone of project success.  Add or remove resources from the projects.</p>
+                                                    <Link to="/projects"><a className="btn btn-outline-primary">Add Resources</a></Link>
                                                 </div>
                                             </div>
                                         </div>

@@ -5,11 +5,9 @@ import { Link } from "react-router-dom";
 import SideNav from "./SideNav";
 import axios from "axios";
 import moment from 'moment';
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Projects from "./Projects";
-import Timesheet from "./Timesheet";
-import Header from "./Header";
+
+import Toast from 'react-bootstrap/Toast';
 
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
@@ -20,6 +18,7 @@ import Navbar from "./Navbar";
 export default function HomePage() {
 
   const [selectedTimesheet, setSelectedTimesheet] = useState(null);
+  const [message, setMessage] = useState("");
   const [level, setLevel] = useState(1);
 
   const steps = selectedTimesheet
@@ -27,6 +26,9 @@ export default function HomePage() {
     : ['Manager Approval', 'Approved'];
 
   const [show, setShow] = useState(false);
+
+  const [showToast, setShowToast] = useState(false);
+  const toggleShowToast = () => setShowToast(!showToast);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -78,6 +80,8 @@ export default function HomePage() {
         'Authorization': `Bearer ${cookies.token}`,
       }
     }).then((response) => {
+      setMessage(response.data.message);
+      setShowToast(true);
       setIsDeleted(isDeleted + 1);
       setIsLoading(false)
     })
@@ -139,20 +143,15 @@ export default function HomePage() {
       )}
 
       <Navbar />
-      <div className="homePage">
-        <div className="row">
-        <div className="col-lg-1 mt-6">
+      <div className="d-flex homePage">
         <SideNav />
-        </div>
-        <div className="col-lg-11 mt-6">
         <div className="table-container">
-          {/* <div className="timesheet-header d-flex justify-content-between">
+          <div className="timesheet-header d-flex justify-content-between">
             <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>My Timesheets</h3>
             <Link to="/create-timesheet">
               <button className="btn btn-outline-dark m-2">Create Timesheet</button>
             </Link>
-          </div> */}
-          <Header/>
+          </div>
           <table className="table">
             <thead>
               <tr style={{ fontWeight: "600" }}>
@@ -230,8 +229,21 @@ export default function HomePage() {
               }
             </tbody>
           </table>
-        </div>
-        </div>
+          <div
+            style={{
+              position: 'fixed',
+              bottom: 0,
+              end: 0,
+              padding: '1rem',
+            }}
+          >
+            <Toast show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+              <Toast.Body className="bg-success text-white">
+                <strong>{message}</strong>
+                <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
+              </Toast.Body>
+            </Toast>
+          </div>
         </div>
       </div>
     </>

@@ -9,6 +9,7 @@ import Navbar from "./Navbar";
 
 export default function Tickets() {
 
+    const [isLoading, setIsLoading] = useState(true);
     const [cookies, setCookie] = useCookies(['token']);
     const [ticketsData, setTicketsData] = useState([]);
 
@@ -21,12 +22,22 @@ export default function Tickets() {
             }
         }).then((response) => {
             setTicketsData(response.data.tickets);
+            setIsLoading(false);
         })
-    }, [])
+    })
 
     return (
         <>
             <Navbar />
+            {isLoading && (
+                <div className="loader-overlay">
+                    <div className="bouncing-loader">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            )}
             <div className="d-flex">
                 <SideNav />
                 <div className="ticketsContainer ">
