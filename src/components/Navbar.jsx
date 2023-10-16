@@ -5,11 +5,14 @@ import { useCookies } from "react-cookie";
 import Modal from 'react-modal';
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
+import { BsFileEarmarkBarGraphFill } from "react-icons/bs";
+import { MdAdminPanelSettings } from "react-icons/md";
 
 export default function Navbar() {
 
   const [image, setImage] = useState({});
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
     if (cookies.token) {
@@ -25,14 +28,26 @@ export default function Navbar() {
     }
   }, [])
 
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:4000/user/isAdmin",
+      headers: {
+        Authorization: `Bearer ${cookies.token}`,
+      },
+    }).then((response) => {
+      setAdmin(response.data.isAdmin);
+    });
+  }, []);
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const openModal = () => {
-      setModalIsOpen(true);
+    setModalIsOpen(true);
   };
 
   const closeModal = () => {
-      setModalIsOpen(false);
+    setModalIsOpen(false);
   };
 
   function handleLogout() {
@@ -42,14 +57,21 @@ export default function Navbar() {
   return (
     <>
       <div className="navbar-container justify-content-between py-2">
-        <div className="mx-5">
-          <div className="justify-content-between d-flex">
-            <div>
-              {/* <img className="logo" src="https://www.incedoinc.com/wp-content/uploads/incedo-logo.png" alt="logo" /> */}
-              <img className="logo p-0" src={logo} />
-            </div>
-            {cookies.token && <div>
-              <div className="dropdown">
+        <div className="mx-5 d-flex align-items-center">
+          <div>
+            <img className="logo p-0" src={logo} />
+          </div>
+          <div className="ms-auto d-flex align-items-center">
+            {             
+              admin && (
+                <div>
+                  <Link to="/admin-dashboard" className="text-decoration-none"><button className="btn btn-outline-primary me-3"><MdAdminPanelSettings className="mb-1" size={20} /> Admin's Desk</button></Link>
+                  <Link to="/analytics" className="text-decoration-none"><button className="btn btn-outline-primary me-3"><BsFileEarmarkBarGraphFill className="mb-1" size={16} /> Analytics</button></Link>
+                </div>
+              )
+            }
+            {cookies.token && (
+              <div className="dropdown ms-3">
                 <img
                   src={image.url}
                   className="dropdown-toggle rounded-circle"
@@ -83,7 +105,7 @@ export default function Navbar() {
                           width: '40%', // Width of the modal
                           height: '83%',
                           left: '30%', // Position from the left
-                          top: '6%'
+                          top: '13%'
                         },
                       }}
                     >
@@ -97,23 +119,23 @@ export default function Navbar() {
                   <li><hr className="dropdown-divider" /></li>
                   <li>
                     <Link to="/">
-                    <button
-                      className="btn btn-outline-primary btn-sm"
-                      onClick={handleLogout}
-                      style={{
-                        width: "200px",
-                        marginLeft: "10px",
-                        marginRight: "10px",
-                        marginBottom: "-10px",
-                      }}
-                    >
-                      Logout
-                    </button>
+                      <button
+                        className="btn btn-outline-primary btn-sm"
+                        onClick={handleLogout}
+                        style={{
+                          width: "200px",
+                          marginLeft: "10px",
+                          marginRight: "10px",
+                          marginBottom: "-10px",
+                        }}
+                      >
+                        Logout
+                      </button>
                     </Link>
                   </li>
                 </ul>
               </div>
-            </div>}
+            )}
           </div>
         </div>
       </div>

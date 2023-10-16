@@ -3,8 +3,7 @@ import { BsFillFilePptFill } from "react-icons/bs";
 import { AiFillHome } from "react-icons/ai";
 import { FaTicketSimple } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { BsFillHousesFill, BsFileEarmarkBarGraphFill } from "react-icons/bs";
-import { MdAdminPanelSettings } from "react-icons/md";
+import { BsFillHousesFill } from "react-icons/bs";
 import { LuMailPlus } from "react-icons/lu";
 
 import { useEffect, useState } from "react";
@@ -15,7 +14,6 @@ import { useCookies } from "react-cookie";
 
 export default function SideNav() {
   const [cookies, setCookie] = useCookies(["token"]);
-  const [admin, setAdmin] = useState(false);
   const [manager, setManager] = useState(false);
 
   useEffect(() => {
@@ -32,18 +30,6 @@ export default function SideNav() {
     });
   }, []);
 
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://localhost:4000/user/isAdmin",
-      headers: {
-        Authorization: `Bearer ${cookies.token}`,
-      },
-    }).then((response) => {
-      setAdmin(response.data.isAdmin);
-    });
-  }, []);
-
   return (
     <>
       <div className="side-nav">
@@ -54,19 +40,17 @@ export default function SideNav() {
                 <AiFillHome size={24} /> <div className="">Home</div>
               </li>
             </Link>
-            {!admin && (
-              <Link
-                to="/create-timesheet"
-                className="text-decoration-none text-white"
-              >
-                {" "}
-                <li className="my-3 text-center">
-                  <BsFillCalendarCheckFill size={24} />{" "}
-                  <div className="">Create Timesheet</div>{" "}
-                </li>
-              </Link>
-            )}
 
+            <Link
+              to="/create-timesheet"
+              className="text-decoration-none text-white"
+            >
+              {" "}
+              <li className="my-3 text-center">
+                <BsFillCalendarCheckFill size={24} />{" "}
+                <div className="">Create Timesheet</div>{" "}
+              </li>
+            </Link>
 
             <Link to="/tickets" className="text-decoration-none text-white">
               <li className="my-3 text-center">
@@ -97,33 +81,6 @@ export default function SideNav() {
                 </Link>
               </div>
             )}
-            {admin && (
-              <div>
-                <hr style={{ margin: "10px" }} />
-                <Link
-                  to="/admin-dashboard"
-                  className="text-decoration-none text-white"
-                >
-                  <li className="my-6 text-center mb-4">
-                    <MdAdminPanelSettings size={24} /> <div>Admin's Desk</div>{" "}
-                  </li>
-                </Link>
-                <Link
-                  to="/analytics"
-                  className="text-decoration-none text-white"
-                >
-                  <li className="my-6 text-center">
-                    <BsFileEarmarkBarGraphFill size={24} />{" "}
-                    <div>Analytics</div>{" "}
-                  </li>
-                </Link>
-
-              </div>
-            )}
-
-            {/* <li className="my-3"><BsFillCalendarCheckFill/></li>
-
-                        <li className="my-3"><BsFillCalendarCheckFill/></li> */}
           </ul>
         </div>
       </div>
