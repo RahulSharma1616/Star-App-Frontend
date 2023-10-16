@@ -50,8 +50,10 @@ export default function AdminDashboard() {
             )}
             <Navbar />
             <div className="d-flex">
-                
+                <div className="row">
+                    <div className="col-lg-1 mt-6">
                 <SideNav />
+                </div>
                 <div className="table-container">
                     <div className="timesheet-header d-flex justify-content-between">
                         <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Admin's Desk</h3>
@@ -135,6 +137,7 @@ export default function AdminDashboard() {
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </>
     )
