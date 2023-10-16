@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logo from "../images/LOGO.png"
+import logo from "../images/LOGO.png";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Modal from 'react-modal';

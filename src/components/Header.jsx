@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import TicketForm from './TicketForm';
+import Toast from 'react-bootstrap/Toast';
+import { MdInfoOutline } from "react-icons/md";
 
-export default function Header() {
+export default function Header({isManager}) {
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    
+    let [message, setMessage] = useState(""); // State variable for managing a message
+
+    // This state variable manages the visibility of the toast. 
+    const [showToast, setShowToast] = useState(false);
+
+    // This function is responsible for toggling the state of the showToast variable.
+    const toggleShowToast = () => setShowToast(!showToast);
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -14,11 +24,10 @@ export default function Header() {
         setModalIsOpen(false);
     };
 
-
     return (
         <>
             <div className="header d-flex w-full justify-content-between">
-                <h2 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Tickets</h2>
+                <h2 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>{isManager ? "Tickets Received" : "Tickets"}</h2>
                 <div>
                     <button onClick={openModal} className="btn btn-outline-dark m-2">Raise a ticket</button>
                     <Modal
@@ -38,9 +47,15 @@ export default function Header() {
                             <span className='h2 mb-2' style={{ fontWeight: "350", verticalAlign: 'middle' }}>Raise a ticket</span>
                             <button type="button" className="btn-close" aria-label="Close" onClick={closeModal}></button>
                         </div>
-                        <TicketForm closeWin={closeModal} />
+                        <TicketForm setMessage={setMessage} setShowToast={setShowToast} closeWin={closeModal} />
                     </Modal>
                 </div>
+                <Toast show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+                    <Toast.Body className="bg-success text-white">
+                        <strong><MdInfoOutline size={25} /> {message}</strong>
+                        <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
+                    </Toast.Body>
+                </Toast>
             </div>
         </>
     );
