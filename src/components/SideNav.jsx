@@ -56,7 +56,7 @@ export default function SideNav() {
           <ul className="px-3">
             <Link className="text-decoration-none text-white" to="/">
               <li className="my-4 text-center">
-                <AiFillHome size={24} /> <span className="">Home</span>
+                <AiFillHome size={24} /> <div className="">Home</div>
               </li>
             </Link>
             {!admin && (
@@ -67,7 +67,7 @@ export default function SideNav() {
                 {" "}
                 <li className="my-3 text-center">
                   <BsFillCalendarCheckFill size={24} />{" "}
-                  <span className="">Create Timesheet</span>{" "}
+                  <div className="">Create Timesheet</div>{" "}
                 </li>
               </Link>
             )}
@@ -77,14 +77,14 @@ export default function SideNav() {
 
             <Link to="/projects" className="text-decoration-none text-white">
               {" "}
-              <li className="my-5 text-center">
-                <BsFillFilePptFill size={24} /> <span>Projects</span>{" "}
+              <li className="my-3 text-center">
+                <BsFillFilePptFill size={24} /> <div>Projects</div>{" "}
               </li>
             </Link>
 
             <Link to="/tickets" className="text-decoration-none text-white">
-              <li className="my-5 text-center">
-                <FaTicketSimple size={24} /> <span>Tickets</span>{" "}
+              <li className="my-3 text-center">
+                <FaTicketSimple size={24} /> <div>Tickets</div>{" "}
               </li>
             </Link>
 
@@ -98,7 +98,7 @@ export default function SideNav() {
                   className="text-decoration-none text-white"
                 >
                   <li className="my-6 text-center mb-4">
-                    <BsFillHousesFill size={24} /> <span>Manager's Desk</span>{" "}
+                    <BsFillHousesFill size={24} /> <div>Manager's Desk</div>{" "}
                   </li>
                 </Link>
                 <Link
@@ -106,7 +106,7 @@ export default function SideNav() {
                   className="text-decoration-none text-white"
                 >
                   <li className="my-6 text-center">
-                    <LuMailPlus size={24} /> <span>Tickets Received</span>{" "}
+                    <LuMailPlus size={24} /> <div>Tickets Received</div>{" "}
                   </li>
                 </Link>
               </div>
@@ -119,7 +119,7 @@ export default function SideNav() {
                   className="text-decoration-none text-white"
                 >
                   <li className="my-6 text-center mb-4">
-                    <MdAdminPanelSettings size={29} /> <span>Admin's Desk</span>{" "}
+                    <MdAdminPanelSettings size={24} /> <div>Admin's Desk</div>{" "}
                   </li>
                 </Link>
                 <Link
@@ -128,7 +128,7 @@ export default function SideNav() {
                 >
                   <li className="my-6 text-center">
                     <BsFileEarmarkBarGraphFill size={24} />{" "}
-                    <span>Analytics</span>{" "}
+                    <div>Analytics</div>{" "}
                   </li>
                 </Link>
 
@@ -137,7 +137,7 @@ export default function SideNav() {
                   className="text-decoration-none text-white"
                 >
                   <li className="my-6 text-center">
-                    <BsFillHousesFill size={24} /> <span>Manager's Desk</span>{" "}
+                    <BsFillHousesFill size={24} /> <div>Manager's Desk</div>{" "}
                   </li>
                 </Link>
               </div>

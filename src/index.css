@@ -97,6 +97,9 @@ input:focus-visible {
 
 .navbar-container {
   background-color: whitesmoke;
+  position: fixed;
+  z-index: 10000;
+  width: 100%;
 }
 
 .logo {
@@ -113,10 +116,14 @@ li {
 .side-nav {
   background-color: #043365;
   color: white;
-  width: 100px;
+  width: 107px;
   min-height: 600px;
   text-align: left;
-  /* position: fixed; */
+  position: fixed;
+}
+
+.mt-6{
+  margin-top: 54px !important;
 }
 
 .timesheet-header {
