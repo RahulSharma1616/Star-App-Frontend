@@ -5,13 +5,10 @@ import { BsFilesAlt } from "react-icons/bs";
 
 import { GrHomeRounded } from "react-icons/gr";
 
-import { AiFillHome } from "react-icons/ai";
 
-import { FaTicketSimple } from "react-icons/fa6";
 
-import { Link } from "react-router-dom";
 
-import { BsFillFilePptFill, BsFillHousesFill } from "react-icons/bs";
+import { BsFillFilePptFill } from "react-icons/bs";
 
 
 import { AiFillHome } from "react-icons/ai"
@@ -53,7 +50,8 @@ export default function SideNav() {
           <ul className="px-3">
             <Link className="text-decoration-none text-white" to="/">
               <li className="my-5 text-center">
-                <AiFillHome size={24} /> <div className="">Home</div>
+                <AiFillHome size={28} /> <div className="">Home</div>    
+                {/* kkk */}
               </li>
             </Link>
 
