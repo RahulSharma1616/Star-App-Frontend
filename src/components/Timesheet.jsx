@@ -327,6 +327,12 @@ export default function Timesheet() {
                     </div>
                   </div>
                 </div>
+                <Toast show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+                    <Toast.Body className="bg-success text-white">
+                        <strong><MdInfoOutline size={25}/> {message}</strong>
+                        <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
+                    </Toast.Body>
+                </Toast>
               )}
 
               <button onClick={prevWeek} className="btn btn-outline-dark m-1">
@@ -364,6 +370,7 @@ export default function Timesheet() {
                   aria-label="Close"
                 ></button>
               </div>
+
             </div>
           )}
           <table className="table">

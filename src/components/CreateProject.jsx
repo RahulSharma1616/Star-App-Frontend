@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 
-export default function CreateProject({ closeWin }) {
+export default function CreateProject({ closeWin, setMessage, setShowToast }) {
     const [cookies] = useCookies(["token"]);
     const [project, setProject] = useState({
         projectName: "",
@@ -30,6 +30,8 @@ export default function CreateProject({ closeWin }) {
             },
         })
             .then((response) => {
+                setMessage(response.data.message);
+                setShowToast(true);
                 closeWin();
             })
             .catch((error) => {

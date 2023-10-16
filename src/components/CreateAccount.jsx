@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-export default function CreateAccount({ closeWin }) {
+export default function CreateAccount({ closeWin, setMessage, setShowToast }) {
     const [isLoading, setIsLoading] = useState(false);
     const [userData, setUserData] = useState({
         name: '',
@@ -25,6 +25,8 @@ export default function CreateAccount({ closeWin }) {
             data: userData,
         })
             .then((response) => {
+                setMessage(response.data.message);
+                setShowToast(true);
                 closeWin()
                 setIsLoading(false);
             })

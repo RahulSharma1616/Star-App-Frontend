@@ -143,8 +143,11 @@ export default function HomePage() {
       )}
 
       <Navbar />
-      <div className="d-flex homePage">
+      <div className="row homePage">
+        <div className="col-lg-2 mt-6">
         <SideNav />
+        </div>
+        <div className="col-lg-10 mt-6">
         <div className="table-container">
           <div className="timesheet-header d-flex justify-content-between">
             <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>My Timesheets</h3>
@@ -237,13 +240,14 @@ export default function HomePage() {
               padding: '1rem',
             }}
           >
-            <Toast show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+            <Toast show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
               <Toast.Body className="bg-success text-white">
                 <strong>{message}</strong>
                 <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
               </Toast.Body>
             </Toast>
           </div>
+        </div>
         </div>
       </div>
     </>

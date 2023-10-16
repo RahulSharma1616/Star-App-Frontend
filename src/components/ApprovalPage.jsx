@@ -12,6 +12,9 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { Link } from "react-router-dom";
+import Toast from 'react-bootstrap/Toast';
+import { MdInfoOutline } from "react-icons/md";
+
 
 export default function ApprovalPage() {
 
@@ -26,6 +29,14 @@ export default function ApprovalPage() {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    let [message, setMessage] = useState(""); // State variable for managing a message
+
+    // This state variable manages the visibility of the toast. 
+    const [showToast, setShowToast] = useState(false);
+
+    // This function is responsible for toggling the state of the showToast variable.
+    const toggleShowToast = () => setShowToast(!showToast);
 
     // Function to handle row click and set submission date
     const handleRowClick = (timesheet) => {
@@ -150,6 +161,12 @@ export default function ApprovalPage() {
                         <strong>Expected Hours:</strong> {selectedTimesheet.expectedHours}
                     </span>
                 </div>}
+                <Toast show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+                    <Toast.Body className="bg-success text-white">
+                        <strong><MdInfoOutline size={25} /> {message}</strong>
+                        <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
+                    </Toast.Body>
+                </Toast>
             </Modal>
             {isLoading && (
                 <div className="loader-overlay">
@@ -197,6 +214,7 @@ export default function ApprovalPage() {
                                             <td style={{ textAlign: "center" }}>{timesheet.name}</td>
                                             <td style={{ textAlign: "center" }}>{hours}</td>
                                             <td style={{ textAlign: "center" }}>
+                                                <button className="btn btn-outline-dark">Take Action</button>
                                                 {!secondaryLoading && (
                                                     <button
                                                         className="btn btn-outline-success mx-1"
@@ -232,8 +250,6 @@ export default function ApprovalPage() {
                                                     </button>
                                                 )}
                                             </td>
-
-
                                         </tr>
                                     )
                                 })
