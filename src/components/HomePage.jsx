@@ -186,7 +186,7 @@ export default function HomePage() {
 
                   return (
 
-                    <tr style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
+                    <tr className="timesheetTable" style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
 
 
                       <td scope=" d-flex" style={{ textAlign: "center" }}>{moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
