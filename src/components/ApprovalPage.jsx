@@ -178,8 +178,11 @@ export default function ApprovalPage() {
                 </div>
             )}
             <Navbar />
-            <div className="d-flex">
+            <div className="row">
+                <div className="col-lg-1 mt-6">
                 <SideNav />
+                </div>
+                <div className="col-lg-11 mt-6">
                 <div className="table-container">
                     <div className="timesheet-header d-flex justify-content-between">
                         <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Manager's Desk</h3>
@@ -256,6 +259,7 @@ export default function ApprovalPage() {
                             }
                         </tbody>
                     </table>
+                </div>
                 </div>
             </div>
         </>

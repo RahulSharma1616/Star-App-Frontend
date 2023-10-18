@@ -12,6 +12,7 @@ import Activities from './components/Activities';
 import AdminDashboard from './components/AdminDashboard';
 import TicketsReceived from './components/TicketsReceived';
 import Analytics from './components/Analytics';
+import Chatbot from './components/ChatBot';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/tickets-received" element={<TicketsReceived />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/analytics" element={<Analytics />} />
+        <Route path="/chatbot" element={<Chatbot />} />
       </Routes>
     </BrowserRouter>
   );

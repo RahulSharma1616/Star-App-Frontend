@@ -85,8 +85,11 @@ export default function TicketsReceived() {
                     </div>
                 </div>
             )}
-            <div className="d-flex">
+            <div className="row">
+                <div className="col-lg-1 mt-6">
                 <SideNav />
+                </div>
+                <div className="col-lg-11 mt-6">
                 <div className="ticketsContainer ">
                     <Header isManager={true} />
                     <div className="d-flex p-3">
@@ -148,6 +151,7 @@ export default function TicketsReceived() {
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
                 <Toast delay={5000} autohide show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
                     <Toast.Body className="bg-success text-white">

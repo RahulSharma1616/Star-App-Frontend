@@ -1,9 +1,4 @@
 import { BsFillCalendarCheckFill } from "react-icons/bs";
-
-import { BsFilesAlt } from "react-icons/bs";
-
-import { GrHomeRounded } from "react-icons/gr";
-
 import { BsFillFilePptFill } from "react-icons/bs";
 import { AiFillHome } from "react-icons/ai";
 import { FaTicketSimple } from "react-icons/fa6";
@@ -71,16 +66,7 @@ export default function SideNav() {
                 </li>
               </Link>
             )}
-          
 
-            
-
-            <Link to="/projects" className="text-decoration-none text-white">
-              {" "}
-              <li className="my-3 text-center">
-                <BsFillFilePptFill size={24} /> <div>Projects</div>{" "}
-              </li>
-            </Link>
 
             <Link to="/tickets" className="text-decoration-none text-white">
               <li className="my-3 text-center">
@@ -132,14 +118,6 @@ export default function SideNav() {
                   </li>
                 </Link>
 
-                <Link
-                  to="/manager-dashboard"
-                  className="text-decoration-none text-white"
-                >
-                  <li className="my-6 text-center">
-                    <BsFillHousesFill size={24} /> <div>Manager's Desk</div>{" "}
-                  </li>
-                </Link>
               </div>
             )}
 
