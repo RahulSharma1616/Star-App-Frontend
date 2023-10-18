@@ -39,7 +39,9 @@ export default function Header({isManager}) {
                             },
                             content: {
                                 width: '50%', // Width of the modal
-                                left: '25%' // Position from the left
+                                left: '25%', // Position from the left
+                                top: '15%',
+                                bottom: '5%'
                             },
                         }}
                     >

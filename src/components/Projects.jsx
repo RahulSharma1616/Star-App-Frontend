@@ -21,8 +21,9 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState({});
   const [resources, setResources] = useState([]);
   const [render, setRender] = useState(0)
-  var email = "";
-
+  /* let [email, setEmail] = useState(""); */
+  let email = ""
+  let hours;
       
   let [message, setMessage] = useState(""); // State variable for managing a message
 
@@ -74,7 +75,8 @@ export default function Projects() {
               <h5 className="my-2 px-1">
                 Add Resource
               </h5>
-              <input onChange={(e) => email = e.target.value} type="email" className="form-control mb-2 px-2" placeholder="Enter email address" />
+              <input onChange={(e) => email = e.target.value} type="email" className="form-control mb-2 px-2" placeholder="Enter Email Address" required/>
+              <input type="number" onChange={(e) => hours = e.target.value} className="form-control mb-2 px-2" placeholder="Enter Expected Hours" required/>
               <div className="d-flex justify-content-end px-1"><button onClick={onAdd} className="btn btn-outline-primary">Add</button></div>
             </Row>
           </Container>
@@ -149,7 +151,8 @@ export default function Projects() {
       method: "post",
       url: `http://localhost:4000/project/add/${email}`,
       data: {
-        projectID: selectedProject._id
+        projectID: selectedProject._id,
+        expectedHours: hours
       },
       headers: {
         Authorization: `Bearer ${cookies.token}`,
