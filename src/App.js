@@ -25,14 +25,15 @@ function App() {
       <Routes>
         <Route path="/" exact element={cookies.token ? <HomePage /> : <LoginPage />} />
         {/* <Route path="/home" element={<HomePage/>}/> */}
-        <Route path="/create-timesheet" element={<Timesheet />} />
-        <Route path="/projects" element={<Projects/>}/>
-        <Route path="/tickets" element={<Tickets />} />
-        <Route path="/manager-dashboard" element={<ApprovalPage />} />
-        <Route path="/manager-activities" element={<Activities />} />
-        <Route path="/tickets-received" element={<TicketsReceived />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/analytics" element={<Analytics />} />
+        <Route path="/create-timesheet" exact element={cookies.token ? <Timesheet /> : <LoginPage />} />
+        <Route path="/projects" exact element={cookies.token ? <Projects /> : <LoginPage />} />
+        <Route path="/tickets" exact element={cookies.token ? <Tickets /> : <LoginPage />} />
+        <Route path="/manager-dashboard" exact element={cookies.token ? <ApprovalPage /> : <LoginPage />} />
+        <Route path="/manager-activities" exact element={cookies.token ? <Activities /> : <LoginPage />} />
+        <Route path="/tickets-received" exact element={cookies.token ? <TicketsReceived /> : <LoginPage />} />
+        <Route path="/admin-dashboard" exact element={cookies.token ? <AdminDashboard /> : <LoginPage />} />
+        <Route path="/analytics" exact element={cookies.token ? <Analytics /> : <LoginPage />} />
+
         <Route path="/chatbot" element={<Chatbot />} />
       </Routes>
     </BrowserRouter>
