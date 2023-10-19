@@ -122,7 +122,7 @@ li {
   position: fixed;
 }
 
-.mt-6{
+.mt-6 {
   margin-top: 54px !important;
 }
 
@@ -261,42 +261,15 @@ li {
   border-radius: 12px;
 }
 
-.loginbanner {
-  height: 400px;
-  width: 400px;
-}
-
 .modal-icon {
   height: 60px;
   width: 60px;
 }
 
-  .loginbanner{
-    height: 553px;
-    width: 702px;
-  }
-  .modal-icon{
-    height: 60px;
-    width: 60px;
-  }
-
-  .teamMember{
-    overflow-x: hidden;
-    overflow-y: auto;
-    height: 160px;
-    background-color: whitesmoke;
-    padding: 10px;
-  }
-  .timesheetTable{
-    overflow-y: auto;
-    position: relative;
-    background-color: whitesmoke;
-    padding: 10px;
-    height: 400px;
-  }
-  .timesheet-container{
-    width: -webkit-fill-available;
-  }
+.loginbanner {
+  height: 553px;
+  width: 702px;
+}
 
 .teamMember {
   overflow-x: hidden;
@@ -306,12 +279,15 @@ li {
   padding: 10px;
 }
 
+.timesheet-container {
+  width: -webkit-fill-available;
+}
+
 .timesheetTable {
   overflow-y: auto;
   position: relative;
   background-color: whitesmoke;
   padding: 10px;
-  height: 400px;
 }
 
 .no-spinners::-webkit-outer-spin-button,
@@ -322,11 +298,10 @@ li {
 }
 
 .clickable-cell {
-  cursor: pointer; /* Show hand cursor on hover */
-}
-.modal{
-  margin: 40px auto;
-  /* max-height: 800px; */
-  /* overflow-y: hidden !important; */
+  cursor: pointer;
+  /* Show hand cursor on hover */
 }
 
+.modal {
+  margin: 40px auto;
+}

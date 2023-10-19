@@ -29,15 +29,17 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://localhost:4000/user/isAdmin",
-      headers: {
-        Authorization: `Bearer ${cookies.token}`,
-      },
-    }).then((response) => {
-      setAdmin(response.data.isAdmin);
-    });
+    if (cookies.token) {
+      axios({
+        method: "get",
+        url: "http://localhost:4000/user/isAdmin",
+        headers: {
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      }).then((response) => {
+        setAdmin(response.data.isAdmin);
+      })
+    }
   }, []);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -51,94 +53,101 @@ export default function Navbar() {
   };
 
   function handleLogout() {
+    console.log("in logout")
+    console.log(cookies.token)
     removeCookie('token');
   }
 
   return (
-    <>
-      <div className="navbar-container justify-content-between py-2">
-        <div className="mx-5 d-flex align-items-center">
-          <div>
+    <div className="navbar-container justify-content-between py-2">
+      <div className="mx-5 d-flex align-items-center">
+        <div>
+          <Link to="/">
             <img className="logo p-0" src={logo} />
-          </div>
-          <div className="ms-auto d-flex align-items-center">
-            {             
-              admin && (
-                <div>
-                  <Link to="/admin-dashboard" className="text-decoration-none"><button className="btn btn-outline-primary me-3"><MdAdminPanelSettings className="mb-1" size={20} /> Admin's Desk</button></Link>
-                  <Link to="/analytics" className="text-decoration-none"><button className="btn btn-outline-primary me-3"><BsFileEarmarkBarGraphFill className="mb-1" size={16} /> Analytics</button></Link>
-                </div>
-              )
-            }
-            {cookies.token && (
-              <div className="dropdown ms-3">
-                <img
-                  src={image.url}
-                  className="dropdown-toggle rounded-circle"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  style={{ width: "30px", height: "30px" }}
-                ></img>
-                <ul
-                  className="dropdown-menu shadow"
-                  style={{
-                    width: "270px",
-                    textAlign: "center",
-                    paddingBottom: "20px",
-                    border: "none",
-                    marginRight: "-40px !important",
-                  }}
-                >
-                  <li>
-                    <a onClick={openModal} className="dropdown-item" href="#">
-                      My Profile
-                    </a>
-                    <Modal
-                      isOpen={modalIsOpen}
-                      onRequestClose={closeModal}
+          </Link>
+        </div>
+        <div className="ms-auto d-flex align-items-center">
+          {
+            cookies.token && admin && (
+              <div>
+                <Link to="/admin-dashboard" className="text-decoration-none"><button className="btn btn-outline-primary me-3"><MdAdminPanelSettings className="mb-1" size={20} /> Admin's Desk</button></Link>
+                <Link to="/analytics" className="text-decoration-none"><button className="btn btn-outline-primary me-3"><BsFileEarmarkBarGraphFill className="mb-1" size={16} /> Analytics</button></Link>
+              </div>
+            )
+          }
+          {cookies.token && (
+            <div className="dropdown ms-3">
+              <img
+                src={image.url}
+                className="dropdown-toggle rounded-circle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style={{ width: "30px", height: "30px" }}
+              ></img>
+              <ul
+                className="dropdown-menu shadow"
+                style={{
+                  width: "270px",
+                  textAlign: "center",
+                  paddingBottom: "20px",
+                  border: "none",
+                  marginRight: "-40px !important",
+                }}
+              >
+                <li>
+                  <a onClick={openModal} className="dropdown-item" href="#">
+                    My Profile
+                  </a>
+                  <Modal
+                    isOpen={modalIsOpen}
+                    onRequestClose={closeModal}
+                    style={{
+                      overlay: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Background overlay color
+                      },
+                      content: {
+                        width: '40%', // Width of the modal
+                        height: '83%',
+                        left: '30%', // Position from the left
+                        top: '13%'
+                      },
+                    }}
+                  >
+                    <div className='d-flex justify-content-between'>
+                      <span className='h2 mb-2' style={{ fontWeight: "350", verticalAlign: 'middle' }}>My Profile</span>
+                      <button type="button" className="btn-close" aria-label="Close" onClick={closeModal}></button>
+                    </div>
+                    <Profile closeWin={closeModal} />
+                  </Modal>
+                </li>
+                <li><hr className="dropdown-divider" /></li>
+                <li>
+                  <Link to="/">
+                    <button
+                      className="btn btn-outline-primary btn-sm"
+                      onClick={handleLogout}
                       style={{
-                        overlay: {
-                          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Background overlay color
-                        },
-                        content: {
-                          width: '40%', // Width of the modal
-                          height: '83%',
-                          left: '30%', // Position from the left
-                          top: '13%'
-                        },
+                        width: "200px",
+                        marginLeft: "10px",
+                        marginRight: "10px",
+                        marginBottom: "-10px",
                       }}
                     >
-                      <div className='d-flex justify-content-between'>
-                        <span className='h2 mb-2' style={{ fontWeight: "350", verticalAlign: 'middle' }}>My Profile</span>
-                        <button type="button" className="btn-close" aria-label="Close" onClick={closeModal}></button>
-                      </div>
-                      <Profile closeWin={closeModal} />
-                    </Modal>
-                  </li>
-                  <li><hr className="dropdown-divider" /></li>
-                  <li>
-                    <Link to="/">
-                      <button
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={handleLogout}
-                        style={{
-                          width: "200px",
-                          marginLeft: "10px",
-                          marginRight: "10px",
-                          marginBottom: "-10px",
-                        }}
-                      >
-                        Logout
-                      </button>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
+                      Logout
+                    </button>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          )}
+          {
+            !cookies.token && (
+              <img src="https://res.cloudinary.com/djtkzefmk/image/upload/v1697607555/incedo_Logo_laggat.jpg" style={{ height: "25px", width: "100px" }} />
+            )
+          }
         </div>
       </div>
-    </>
+    </div>
   );
 }

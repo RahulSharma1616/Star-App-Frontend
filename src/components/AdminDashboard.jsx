@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Modal from 'react-modal';
-import axios from "axios";
 import SideNav from "./SideNav";
 import CreateProject from "./CreateProject";
 import CreateAccount from "./CreateAccount";

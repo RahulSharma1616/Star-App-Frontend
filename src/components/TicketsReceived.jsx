@@ -10,7 +10,7 @@ import { MdInfoOutline } from "react-icons/md";
 export default function TicketsReceived() {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [cookies, setCookie] = useCookies(['token']);
+    const [cookies] = useCookies(['token']);
     const [tickets, setTickets] = useState([]);
 
     let [message, setMessage] = useState(""); // State variable for managing a message
@@ -97,7 +97,7 @@ export default function TicketsReceived() {
                             <div>
                                 {tickets.map((ticket) => {
 
-                                    let statusClass = "primary";
+                                    let statusClass;
 
                                     if (ticket.status == "Pending") {
                                         statusClass = "primary"
@@ -153,7 +153,7 @@ export default function TicketsReceived() {
                     </div>
                 </div>
                 </div>
-                <Toast delay={5000} autohide show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+                <Toast className="p-0" delay={5000} autohide show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
                     <Toast.Body className="bg-success text-white">
                         <strong><MdInfoOutline size={25} /> {message}</strong>
                         <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>

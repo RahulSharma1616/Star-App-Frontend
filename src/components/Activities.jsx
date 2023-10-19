@@ -49,7 +49,6 @@ export default function Activities() {
             setLevel(1);
         }
 
-        //setSubmissionDate(moment(timesheet.submissionDate).format('MMM D, YYYY'));
         handleShow(); // Open the modal
     };
 
@@ -59,7 +58,7 @@ export default function Activities() {
 
     let [isLoading, setIsLoading] = useState(true);
     let [render, setRender] = useState(0)
-    const [cookies, setCookie] = useCookies(['token']);
+    const [cookies] = useCookies(['token']);
     const [timesheets, setTimesheets] = useState([]);
 
     const nonPendingTimesheets = timesheets.filter((timesheet) => {
@@ -123,7 +122,6 @@ export default function Activities() {
 
     return (
         <>
-
             <Modal show={show} onHide={handleClose} animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Activity</Modal.Title>
@@ -150,7 +148,7 @@ export default function Activities() {
                         </thead>
                         <tbody>
                             {selectedTimesheet && selectedTimesheet.totalHours.map((item, index) => (
-                                <tr key={index}>
+                                <tr key={selectedTimesheet._id}>
                                     <td style={{ textAlign: "center" }}>{moment(selectedTimesheet.startDate).clone().add(index, 'days').format('dddd')}</td>
                                     <td style={{ textAlign: "center" }}>{moment(selectedTimesheet.startDate).clone().add(index, 'days').format('MMM DD, YYYY')}</td>
                                     <td style={{ textAlign: "center" }}>{item}</td>
@@ -172,11 +170,10 @@ export default function Activities() {
                 </div>}
                 <div>
                     <Card
-                        style={{ "backgroundColor": "#043365", width: '18rem' }}
-                        text={'white'}
+                        style={{ borderColor: "#043365", width: '18rem', borderWidth: '3px' }}
                         className="mx-4 mb-3"
                     >
-                        <Card.Header>Comment:</Card.Header>
+                        <Card.Header>Resource's Comment:</Card.Header>
                         <Card.Body className="p-3">
                             <Card.Text>
                                 {selectedTimesheet && selectedTimesheet.comment && (selectedTimesheet.comment)}
@@ -187,11 +184,10 @@ export default function Activities() {
                 </div>
                 <div className="d-flex justify-content-end">
                     <Card
-                        text={'white'}
-                        style={{ "backgroundColor": "#e06e02", width: '18rem' }}
+                        style={{ borderColor: "#e06e02", width: '18rem', borderWidth: '3px' }}
                         className="mx-4 mb-3"
                     >
-                        <Card.Header>Remark:</Card.Header>
+                        <Card.Header>Manager's Remark:</Card.Header>
                         <Card.Body className="p-3">
                             <Card.Text>
                                 {
@@ -269,8 +265,6 @@ export default function Activities() {
                                             statusClass = "danger"
                                         } else if (timesheet.status == "Accepted") {
                                             statusClass = "success"
-                                        } else {
-                                            statusClass = "primary"
                                         }
 
                                         const hours = timesheet.totalHours.reduce((accumulator, currentValue) => {

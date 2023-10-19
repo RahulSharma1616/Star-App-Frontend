@@ -1,4 +1,3 @@
-import { RiArrowDropDownLine } from "react-icons/ri"
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
@@ -6,9 +5,7 @@ import SideNav from "./SideNav";
 import axios from "axios";
 import moment from 'moment';
 import Modal from 'react-bootstrap/Modal';
-
 import Toast from 'react-bootstrap/Toast';
-
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -45,13 +42,12 @@ export default function HomePage() {
       setLevel(1);
     }
 
-    //setSubmissionDate(moment(timesheet.submissionDate).format('MMM D, YYYY'));
     handleShow(); // Open the modal
   };
 
   let [isLoading, setIsLoading] = useState(true);
   let [isDeleted, setIsDeleted] = useState(0);
-  const [cookies, setCookie] = useCookies(['token']);
+  const [cookies] = useCookies(['token']);
   const [timesheets, setTimesheets] = useState([]);
 
   useEffect(() => {
@@ -89,7 +85,6 @@ export default function HomePage() {
 
   return (
     <>
-
       <Modal className="modal" show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Activity</Modal.Title>
@@ -116,7 +111,7 @@ export default function HomePage() {
             </thead>
             <tbody>
               {selectedTimesheet && selectedTimesheet.totalHours.map((item, index) => (
-                <tr key={index}>
+                <tr key={selectedTimesheet._id}>
                   <td style={{ textAlign: "center" }}>{moment(selectedTimesheet.startDate).clone().add(index, 'days').format('dddd')}</td>
                   <td style={{ textAlign: "center" }}>{moment(selectedTimesheet.startDate).clone().add(index, 'days').format('MMM DD, YYYY')}</td>
                   <td style={{ textAlign: "center" }}>{item}</td>
@@ -178,8 +173,6 @@ export default function HomePage() {
                       statusClass = "danger"
                     } else if (timesheet.status == "Accepted") {
                       statusClass = "success"
-                    } else {
-                      statusClass = "primary"
                     }
 
                     const hours = timesheet.totalHours.reduce((accumulator, currentValue) => {
@@ -196,7 +189,6 @@ export default function HomePage() {
                         <td style={{ textAlign: "center" }}>{hours}</td>
                         <td style={{ textAlign: "center" }}><span className={`badge bg-${statusClass} text-light`}>{timesheet.status}</span></td>
                         <td>
-                          {/* Add the dropdown menu */}
                           <div className="dropdown">
                             <button
                               className="btn"

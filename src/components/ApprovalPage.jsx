@@ -1,4 +1,3 @@
-import { FcInfo } from "react-icons/fc";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Modal from 'react-bootstrap/Modal';
@@ -15,7 +14,6 @@ import Toast from 'react-bootstrap/Toast';
 import { MdInfoOutline } from "react-icons/md";
 import Card from 'react-bootstrap/Card';
 
-
 export default function ApprovalPage() {
 
     const [selectedTimesheet, setSelectedTimesheet] = useState(null);
@@ -23,7 +21,7 @@ export default function ApprovalPage() {
 
     let [isLoading, setIsLoading] = useState(true);
     let [render, setRender] = useState(0)
-    const [cookies, setCookie] = useCookies(['token']);
+    const [cookies] = useCookies(['token']);
     const [timesheets, setTimesheets] = useState([]);
 
     const steps = selectedTimesheet
@@ -56,7 +54,6 @@ export default function ApprovalPage() {
             setLevel(1);
         }
 
-        //setSubmissionDate(moment(timesheet.submissionDate).format('MMM D, YYYY'));
         handleShow(); // Open the modal
     };
 
@@ -150,7 +147,7 @@ export default function ApprovalPage() {
                         </thead>
                         <tbody>
                             {selectedTimesheet && selectedTimesheet.totalHours.map((item, index) => (
-                                <tr key={index}>
+                                <tr key={selectedTimesheet._id}>
                                     <td style={{ textAlign: "center" }}>{moment(selectedTimesheet.startDate).clone().add(index, 'days').format('dddd')}</td>
                                     <td style={{ textAlign: "center" }}>{moment(selectedTimesheet.startDate).clone().add(index, 'days').format('MMM DD, YYYY')}</td>
                                     <td style={{ textAlign: "center" }}>{item}</td>
@@ -172,11 +169,10 @@ export default function ApprovalPage() {
                 </div>}
                 <div>
                     <Card
-                        style={{ "backgroundColor": "#043365", width: '18rem' }}
-                        text={'white'}
+                        style={{ borderColor: "#043365", width: '18rem', borderWidth: '3px' }}
                         className="mx-4 mb-3"
                     >
-                        <Card.Header>Comment:</Card.Header>
+                        <Card.Header>Resource's Comment:</Card.Header>
                         <Card.Body className="p-3">
                             <Card.Text>
                                 {selectedTimesheet && selectedTimesheet.comment && (selectedTimesheet.comment)}
@@ -187,11 +183,10 @@ export default function ApprovalPage() {
                 </div>
                 <div className="d-flex justify-content-end">
                     <Card
-                        text={'white'}
-                        style={{ "backgroundColor": "#e06e02", width: '18rem' }}
+                        style={{ borderColor: "#e06e02", width: '18rem', borderWidth: '3px' }}
                         className="mx-4 mb-3"
                     >
-                        <Card.Header>Remark:</Card.Header>
+                        <Card.Header>Manager's Remark:</Card.Header>
                         <Card.Body className="p-3">
                             <Card.Text>
                                 {
@@ -270,7 +265,7 @@ export default function ApprovalPage() {
                                                 <td style={{ textAlign: "center" }}>{timesheet.name}</td>
                                                 <td style={{ textAlign: "center" }}>{hours}</td>
                                                 <td style={{ textAlign: "center" }}>
-                                                    <button onClick={() => handleRowClick(timesheet)} className="btn btn-outline-primary">React</button>
+                                                    <button onClick={() => handleRowClick(timesheet)} className="btn btn-outline-primary">Take Action</button>
                                                 </td>
                                             </tr>
                                         )
