@@ -1,7 +1,6 @@
 import banner from "../images/STAR (1).gif";
-import loginicon from "../images/OIP 1.png";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Navbar from "./Navbar";
@@ -9,8 +8,8 @@ import Toast from 'react-bootstrap/Toast';
 import { MdInfoOutline } from "react-icons/md";
 
 export default function LoginPage() {
-  var [isLoading, setLoading] = useState(false);
-  var [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [cookies, setCookie] = useCookies(["token"]);
   const navigation = useNavigate();
   const [user, setUser] = useState({ email: '', password: '' });

@@ -3,12 +3,9 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Select from 'react-select'
 
-export default function TicketForm({closeWin, setMessage, setShowToast}) {
+export default function TicketForm({closeWin, setMessage, setShowToast, setError, render, setRender}) {
 
-    const [cookies, setCookie] = useCookies(['token']);
-
-    const [projects, setProjects] = useState("");
-
+    const [cookies] = useCookies(['token']);
     const [subject, setSubject] = useState("");
     const [category, setCategory] = useState("");
     const [projectID, setProjectID] = useState("");
@@ -27,9 +24,6 @@ export default function TicketForm({closeWin, setMessage, setShowToast}) {
                 'Authorization': `Bearer ${cookies.token}`,
             }
         }).then(function (response) {
-            
-            setProjects(response.data)
-
             setProjectOptions(response.data.map((item) => {
                 return ({
                     value: item._id,
@@ -65,6 +59,7 @@ export default function TicketForm({closeWin, setMessage, setShowToast}) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError(false);
         setFormSubmitted(true);
 
         axios({
@@ -82,8 +77,18 @@ export default function TicketForm({closeWin, setMessage, setShowToast}) {
         }).then(function (response) {
             setMessage(response.data.message);
             setShowToast(true);
+
+            if(setRender) {
+                setRender(render + 1);
+            }
+
+            if(response.data.error) {
+                setError(true);
+            }
+
             closeWin();
         }, function (error) {
+            setError(true);
             console.log("error: ", error);
         })
     }

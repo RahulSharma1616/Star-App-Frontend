@@ -1,35 +1,24 @@
 import { useEffect, useState } from "react";
-
 import moment from "moment";
-
 import axios from "axios";
-
 import { useCookies } from "react-cookie";
-
 import Calendar from "react-calendar";
-
 import "react-calendar/dist/Calendar.css";
-
 import Navbar from "./Navbar";
-
 import SideNav from "./SideNav";
-
 import Toast from "react-bootstrap/Toast";
-
 import { MdInfoOutline } from "react-icons/md";
 
 export default function Timesheet() {
+
   const [isLoading, setIsLoading] = useState(true); // State variable for managing loading state
-
-  const [cookies, setCookie] = useCookies(["token"]); // State variable for managing cookies, specifically the 'token' cookie
-
+  const [cookies] = useCookies(["token"]); // State variable for managing cookies, specifically the 'token' cookie
   const [date, setDate] = useState(new Date()); //Variable to keep the selected date
-
   const [isCalendarOpen, setIsCalendarOpen] = useState(false); // State variable for controlling the visibility of the calendar component
-
   const dateContainer = []; // Array for storing current week's date-related data
 
   let [message, setMessage] = useState(""); // State variable for managing a message
+  let [error, setError] = useState(false); // State variable for managing an error
 
   let [enableButton, setEB] = useState(false); // State variable for enabling/disabling the save and submit button
 
@@ -40,7 +29,6 @@ export default function Timesheet() {
   ); // State variable for storing the start date of the current week
 
   let [dateChange, setDateChange] = useState(0); // State variable for tracking date changes
-
   let [hours, setHours] = useState([]); // State variable for managing daily working hours
 
   const [projectInputValues, setProjectInputValues] = useState({}); // State variable for storing input values related to projects
@@ -48,15 +36,12 @@ export default function Timesheet() {
   let [comment, setComment] = useState(""); // State variable for managing comments
 
   // This state variable manages the visibility of the toast.
-
   const [showToast, setShowToast] = useState(false);
 
   // This function is responsible for toggling the state of the showToast variable.
-
   const toggleShowToast = () => setShowToast(!showToast);
 
   // Update the moment.js locale to start the week on Monday
-
   moment.updateLocale(moment.locale(), {
     week: {
       dow: 1, // 1 = Monday
@@ -64,7 +49,6 @@ export default function Timesheet() {
   });
 
   // Function to open the calendar
-
   const openCalendar = (e) => {
     e.stopPropagation(); // Prevent click event from propagating to document
 
@@ -72,116 +56,84 @@ export default function Timesheet() {
   };
 
   // Function to close the calendar
-
   const closeCalendar = () => {
     setIsCalendarOpen(false);
   };
 
   // Function to handle clicks within the calendar
-
   const handleCalendarClick = (e) => {
     e.stopPropagation(); // Prevent click event from propagating to document
-
     setDateChange(dateChange + 1);
-
     setProjectInputValues({});
   };
 
   // Function to handle date changes
-
   const handleDateChange = (newDate) => {
-    // Handle date change logic here
 
     setDate(newDate);
-
     setCurrentWeekStartDate(moment(newDate).startOf("week"));
-
     closeCalendar();
-
-    //console.log(moment(moment(newDate).format("DD-MM-YYYY")))
   };
 
   // Fetch projects data from the server on component mount
-
   useEffect(() => {
     setIsLoading(true);
-
     axios({
       method: "get",
-
       url: "http://localhost:4000/project/resource",
-
       headers: {
         Authorization: `Bearer ${cookies.token}`,
       },
     }).then(
       function (response) {
         setProjects(response.data);
-
         setIsLoading(false);
       },
       function (error) {
         console.log("error: ", error);
-
         setIsLoading(false);
       }
     );
   }, []);
 
   // Function to navigate to the previous week
-
   function prevWeek() {
     setCurrentWeekStartDate(currentWeekStartDate.clone().subtract(1, "week"));
-
     setDateChange(dateChange + 1);
-
     setProjectInputValues({});
   }
 
   // Function to navigate to the next week
-
   function nextWeek() {
     setCurrentWeekStartDate(currentWeekStartDate.clone().add(1, "week"));
-
     setDateChange(dateChange + 1);
-
     setProjectInputValues({});
   }
 
   // useEffect to fetch attendance data when 'dateChange' changes
-
   useEffect(() => {
     setIsLoading(true);
-
     axios({
       method: "post",
-
       url: "http://localhost:4000/timesheet/getAttendance",
-
       data: {
         date: dateContainer[0],
       },
-
       headers: {
         Authorization: `Bearer ${cookies.token}`,
       },
     }).then(
       (response) => {
         setIsLoading(false);
-
         // Check if there's data, and enable the button if it's not empty
-
         if (response.data.length != 0) {
           setEB(true);
         }
-
         // Map response data to 'hours' state
-
         setHours(
           response.data.map((item) => {
             return {
               projectID: item.projectID,
-
               hours: item.hours,
             };
           })
@@ -189,17 +141,14 @@ export default function Timesheet() {
       },
       (error) => {
         setIsLoading(false);
-
         console.log("error: ", error);
       }
     );
   }, [dateChange]);
 
   // useEffect to merge 'hours' data into 'projectInputValues'
-
   useEffect(() => {
     // Convert 'hours' data into an object with project IDs as keys
-
     let temp = hours.map((item) => {
       return {
         [item.projectID]: item.hours,
@@ -215,48 +164,37 @@ export default function Timesheet() {
     });
 
     // Update 'projectInputValues' with the merged values
-
     setProjectInputValues(mergedValues);
   }, [hours]);
 
   // Function to update input values for a specific project
-
   function handleInputChange(projectID, dayIndex, value) {
     setEB(true);
 
     // Copy the current input values
-
     const updatedInputValues = { ...projectInputValues };
 
     // Get or create the project's input values object
-
     if (!updatedInputValues[projectID]) {
       updatedInputValues[projectID] = Array(7).fill(0);
     }
 
     // Update the input value for the specific day
-
     updatedInputValues[projectID][dayIndex] = value;
 
     // Update the state
-
     setProjectInputValues(updatedInputValues);
   }
 
   // Function to render week dates for the calendar
-
   const renderWeekDates = () => {
     const dates = [];
-
     const startOfWeek = currentWeekStartDate.clone().startOf("week");
-
     const endOfWeek = currentWeekStartDate.clone().endOf("week");
-
+    
     while (startOfWeek.isSameOrBefore(endOfWeek)) {
       dates.push(startOfWeek.format("dddd DD-MMM-YY"));
-
       dateContainer.push(startOfWeek.format("YYYY-MM-DD"));
-
       startOfWeek.add(1, "day");
     }
 
@@ -274,24 +212,20 @@ export default function Timesheet() {
   };
 
   // Function to handle comment input change
-
   function handleComment(event) {
     setComment(event.target.value);
   }
 
   // Function to save attendance data
-
   function handleSave() {
     setIsLoading(true);
+    setError(false);
 
     axios({
       method: "post",
-
       url: "http://localhost:4000/timesheet/saveAttendance",
-
       data: {
         weekStartDate: dateContainer[0],
-
         hours: projectInputValues,
       },
 
@@ -301,59 +235,48 @@ export default function Timesheet() {
     }).then(
       (response) => {
         setIsLoading(false);
-
         setMessage(response.data.message);
-
         setShowToast(true);
       },
       (error) => {
         setIsLoading(false);
-
         setMessage(error.message);
-
         setShowToast(true);
-
         console.log("error: ", error);
       }
     );
   }
 
   // Function to submit timesheet data
-
   function handleSubmit() {
     setIsLoading(true);
+    setError(false);
 
     axios({
       method: "post",
-
       url: "http://localhost:4000/timesheet/submitTimesheet",
-
       data: {
         weekStartDate: dateContainer[0],
-
         hours: projectInputValues,
-
         comment: comment,
       },
-
       headers: {
         Authorization: `Bearer ${cookies.token}`,
       },
     }).then(
       (response) => {
         setIsLoading(false);
-
         setMessage(response.data.message);
-
+        if(response.data.error) {
+          setError(true);
+        }
         setShowToast(true);
       },
       (error) => {
         setIsLoading(false);
-
         setMessage(error.message);
-
+        setError(true);
         setShowToast(true);
-
         console.log("error: ", error);
       }
     );
@@ -362,14 +285,11 @@ export default function Timesheet() {
   return (
     <>
       <Navbar />
-
       {isLoading && (
         <div className="loader-overlay">
           <div className="bouncing-loader">
             <div></div>
-
             <div></div>
-
             <div></div>
           </div>
         </div>
@@ -492,6 +412,7 @@ export default function Timesheet() {
                                 value={pHour}
                                 onChange={(e) => {
                                   if (e.target.value > 24 || e.target.value < 0) {
+                                    setError(true);
                                     setMessage("Enter a valid value!");
 
                                     setShowToast(true);
@@ -562,6 +483,7 @@ export default function Timesheet() {
       </div>
       <Toast
         show={showToast}
+        delay={5000} autohide
         onClose={toggleShowToast}
         style={{
           position: "fixed",
@@ -571,7 +493,7 @@ export default function Timesheet() {
           width: "400px", // Adjust the width as per your requirement
         }}
       >
-        <Toast.Body className="bg-success text-white">
+        <Toast.Body className={error ? "bg-danger text-white" : "bg-success text-white"}>
           <strong>
             <MdInfoOutline size={25} /> {message}
           </strong>

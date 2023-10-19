@@ -1,19 +1,15 @@
 import { BsFillCalendarCheckFill } from "react-icons/bs";
-import { BsFillFilePptFill } from "react-icons/bs";
 import { AiFillHome } from "react-icons/ai";
 import { FaTicketSimple } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { BsFillHousesFill } from "react-icons/bs";
 import { LuMailPlus } from "react-icons/lu";
-
 import { useEffect, useState } from "react";
-
 import axios from "axios";
-
 import { useCookies } from "react-cookie";
 
 export default function SideNav() {
-  const [cookies, setCookie] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
   const [manager, setManager] = useState(false);
 
   useEffect(() => {
@@ -31,7 +27,6 @@ export default function SideNav() {
   }, []);
 
   return (
-    <>
       <div className="side-nav">
         <div className="">
           <ul className="px-3">
@@ -84,6 +79,5 @@ export default function SideNav() {
           </ul>
         </div>
       </div>
-    </>
   );
 }
