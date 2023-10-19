@@ -301,6 +301,21 @@ li {
   cursor: pointer;
   /* Show hand cursor on hover */
 }
+.timesheetTable{
+  height: 40px;
+}
+
+  /* Css for small screen  */
+@media only screen and (max-width: 500px) {
+.mt-6 {
+    margin-top: 22px !important;
+    padding-right: 0px !important;
+    
+  }
+  .side-nav{
+    display: none;
+  }
+}
 
 .modal {
   margin: 40px auto;
