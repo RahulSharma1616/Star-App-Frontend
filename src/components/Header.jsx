@@ -4,11 +4,12 @@ import TicketForm from './TicketForm';
 import Toast from 'react-bootstrap/Toast';
 import { MdInfoOutline } from "react-icons/md";
 
-export default function Header({isManager}) {
+export default function Header({isManager, render, setRender}) {
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     
     let [message, setMessage] = useState(""); // State variable for managing a message
+    let [error, setError] = useState(false); // State variable for managing an error
 
     // This state variable manages the visibility of the toast. 
     const [showToast, setShowToast] = useState(false);
@@ -49,11 +50,11 @@ export default function Header({isManager}) {
                             <span className='h2 mb-2' style={{ fontWeight: "350", verticalAlign: 'middle' }}>Raise a ticket</span>
                             <button type="button" className="btn-close" aria-label="Close" onClick={closeModal}></button>
                         </div>
-                        <TicketForm setMessage={setMessage} setShowToast={setShowToast} closeWin={closeModal} />
+                        <TicketForm setMessage={setMessage} setShowToast={setShowToast} closeWin={closeModal} setError={setError} render={render} setRender={setRender} />
                     </Modal>
                 </div>
                 <Toast show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
-                    <Toast.Body className="bg-success text-white">
+                    <Toast.Body className={error ? "bg-danger text-white" : "bg-success text-white"}>
                         <strong><MdInfoOutline size={25} /> {message}</strong>
                         <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
                     </Toast.Body>

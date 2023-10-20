@@ -2,13 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { TfiPencil } from "react-icons/tfi";
-import { Link } from "react-router-dom";
 import Toast from 'react-bootstrap/Toast';
 import { MdInfoOutline } from "react-icons/md";
 
 export default function Profile({ closeWin }) {
 
-    const [cookies, setCookie] = useCookies(['token']);
+    const [cookies] = useCookies(['token']);
     const [user, setUser] = useState(null);
     const [isEditingPassword, setIsEditingPassword] = useState(false);
     const [newPassword, setNewPassword] = useState("");
@@ -137,19 +136,18 @@ export default function Profile({ closeWin }) {
                         </button>
                     </div>}
                     {isEditingPassword && <div>
-                        <div class="row d-flex justify-content-start">
-                            <label for="inputPassword2" class="form-label col-5"><strong>New Password:</strong></label>
-                            <input onChange={handlePasswordChange} type="password" class="form-control col" id="inputPassword2" placeholder="Password" />
+                        <div className="row d-flex justify-content-start">
+                            <label htmlFor="inputPassword2" className="form-label col-5"><strong>New Password:</strong></label>
+                            <input onChange={handlePasswordChange} type="password" className="form-control col" id="inputPassword2" placeholder="Password" />
                         </div>
-                        <div class="col-auto m-3 text-end">
-                            <button type="button" onClick={handlePasswordSubmit} class="btn btn-outline-primary btn-sm mb-3">Change Password</button>
+                        <div className="col-auto m-3 text-end">
+                            <button type="button" onClick={handlePasswordSubmit} className="btn btn-outline-primary btn-sm mb-3">Change Password</button>
                         </div>
                     </div>
                     }
                 </div>
             )}
             {imageEdit &&
-
                 <form action="http://localhost:4000/user/image" method="POST" encType="multipart/form-data" onSubmit={handleFormSubmit}>
                     <div className="mb-3">
                         <label htmlFor="formFile" className="form-label"><strong>Select Profile Picture:</strong></label>

@@ -10,8 +10,9 @@ import Navbar from "./Navbar";
 export default function Tickets() {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [cookies, setCookie] = useCookies(['token']);
+    const [cookies] = useCookies(['token']);
     const [ticketsData, setTicketsData] = useState([]);
+    const [render, setRender] = useState(0);
 
     useEffect(() => {
         axios({
@@ -35,7 +36,7 @@ export default function Tickets() {
                 </div>
                 <div className="col-lg-11 mt-6">
                 <div className="ticketsContainer ">
-                    <Header />
+                    <Header render={render} setRender={setRender} />
                     <div className="d-flex p-3">
                         <div className="recentTickets">
                             <div>
