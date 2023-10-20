@@ -29,4 +29,4 @@ jobs:
         local-dir: ./build/
         timeout: 120000
         dry-run: true
-        server-dir: ./
+        server-dir: /
