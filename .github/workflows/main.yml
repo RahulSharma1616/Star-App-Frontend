@@ -20,15 +20,15 @@ jobs:
 
     - name: Build React App
       run: CI=false npm run build
-      
-    - name: Deploy to Windows VM
-      uses: sand4rt/ftp-deployer@v1.7
-      with:
+    - name: FTP Transfer
+      uses: joutvhu/ftp-transfer@v1.0.0
+      with: 
         host: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local_folder: ./build/
-        passive: true 
+        commands: |
+          put ./build ./
+          
 
     
     
