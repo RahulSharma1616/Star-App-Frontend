@@ -41,11 +41,9 @@ export default function Activities() {
     const handleRowClick = (timesheet) => {
         setSelectedTimesheet(timesheet);
 
-        if (timesheet.status == "Accepted" || timesheet.status == "Auto-Approved") {
+        if (timesheet.status == "Accepted" || timesheet.status == "Auto-Approved" || timesheet.status == "Rejected") {
             setLevel(3);
-        }
-
-        else if (timesheet.status == "Rejected") {
+        } else {
             setLevel(1);
         }
 
@@ -86,6 +84,7 @@ export default function Activities() {
             url: "http://localhost:4000/timesheet/status",
             data: {
                 ID: timesheetID,
+                sheet: selectedTimesheet,
                 remarks: remarks,
                 status: "Accepted"
             },
@@ -106,6 +105,7 @@ export default function Activities() {
             url: "http://localhost:4000/timesheet/status",
             data: {
                 ID: timesheetID,
+                sheet: selectedTimesheet,
                 remarks: remarks,
                 status: "Rejected"
             },
@@ -129,11 +129,46 @@ export default function Activities() {
                 <Modal.Body>
                     <Box sx={{ width: '100%' }}>
                         <Stepper activeStep={level} alternativeLabel>
-                            {steps.map((label) => (
-                                <Step key={label}>
-                                    <StepLabel>{label}</StepLabel>
-                                </Step>
-                            ))}
+                            {steps.map((label, index) => {
+                                if (selectedTimesheet && (selectedTimesheet.status == "Accepted" || selectedTimesheet.status == "Auto-Approved") && (index == 1 || index == 2)) {
+                                    if (selectedTimesheet.status == "Auto-Approved" && index == 2) {
+                                        label = "Auto-Approved"
+                                    }
+                                    else if (selectedTimesheet.status == "Accepted" && index == 2) {
+                                        label = "Accepted on\n" + moment(selectedTimesheet.approvalDate).format("MMM DD, YYYY");
+                                    }
+                                    return (
+                                        <Step key={label}>
+                                            <StepLabel StepIconProps={{
+                                                style: {
+                                                    color: "green", // Change the color based on the active step
+                                                }
+                                            }}>{label}</StepLabel>
+                                        </Step>
+                                    )
+                                } else if (selectedTimesheet && selectedTimesheet.status == "Rejected" && (index == 1 || index == 2)) {
+                                    if (index == 2) {
+                                        label = "Rejected on\n" + moment(selectedTimesheet.approvalDate).format("MMM DD, YYYY");
+                                    }
+                                    return (
+                                        <Step key={label}>
+                                            <StepLabel
+                                                error="true"
+                                                StepIconProps={{
+                                                    style: {
+                                                        color: "red", // Change the color based on the active step
+                                                    }
+                                                }}>{label}</StepLabel>
+                                        </Step>
+                                    )
+                                } else {
+                                    return (
+                                        <Step key={label}>
+                                            <StepLabel>{label}</StepLabel>
+                                        </Step>
+                                    )
+                                }
+                            })}
                         </Stepper>
                     </Box>
                 </Modal.Body>
@@ -285,6 +320,11 @@ export default function Activities() {
                                 }
                             </tbody>
                         </table>
+                        {
+                            nonPendingTimesheets.length == 0 && (
+                                <div className="fs-5 d-flex justify-content-center" style={{color: "grey"}}>Looks like there are no timesheets to show right now!</div>
+                            )
+                        }
                     </div>
                 </div>
                 <Toast className="p-0" delay={5000} autohide show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>

@@ -5,8 +5,8 @@ import SideNav from "./SideNav";
 import Navbar from "./Navbar";
 import Toast from "react-bootstrap/Toast";
 import { MdInfoOutline } from "react-icons/md";
-import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
+import TimesheetsFilled from "./graphs/TimesheetsFilled";
 
 const labels = ["January", "February", "March", "April", "May", "June"];
 
@@ -35,7 +35,7 @@ export default function Analytics({ closeWin }) {
   const toggleShowToast = () => setShowToast(!showToast);
 
   useEffect(() => {
-    setIsLoading(false); //change it later
+    setIsLoading(false);
     axios({
       method: "get",
       url: "http://localhost:4000/project/all",
@@ -43,7 +43,7 @@ export default function Analytics({ closeWin }) {
         Authorization: `Bearer ${cookies.token}`,
       },
     }).then(
-      function (response) {},
+      function (response) { },
       function (error) {
         console.log("error: ", error);
       }
@@ -76,14 +76,42 @@ export default function Analytics({ closeWin }) {
                 Analytics
               </h3>
             </div>
-            <div>
-              <Line data={data} />
+            <div className="card m-3">
+              <div className="card-body">
+                <div className="pb-4" style={{ textAlign: "center" }}>
+                  <h5 className="card-title">Overall Insights</h5>
+                </div>
+                <div className="row">
+                  <div className="col-sm-6 mb-3 mb-sm-0">
+                    <div className="card">
+                      <div className="card-body">
+                        <h5 className="card-title"></h5>
+                        <div>
+                          <Line data={data} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-sm-6 mb-3 mb-sm-0">
+                    <div className="card">
+                      <div className="card-body">
+                        <h5 className="card-title"></h5>
+                        <div>
+                          <TimesheetsFilled />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+            {/* */}
           </div>
         </div>
 
         <Toast
           show={showToast}
+          delay={5000} autohide
           onClose={toggleShowToast}
           style={{
             position: "fixed",

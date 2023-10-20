@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Modal from 'react-modal';
+import axios from "axios";
 import SideNav from "./SideNav";
 import CreateProject from "./CreateProject";
 import CreateAccount from "./CreateAccount";
@@ -158,11 +159,29 @@ export default function AdminDashboard() {
                                             </div>
                                         </div>
                                     </div>
+                                    <div className="card mb-3">
+                                        <div className="card-body">
+                                            <div className="pb-4" style={{ textAlign: "center" }}>
+                                                <h5 className="card-title">Ticket Management</h5>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-sm-6 mb-3 mb-sm-0">
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <h5 className="card-title">Ticket Center</h5>
+                                                            <p className="card-text">Review tickets to ensure timely resolutions and effective user support.</p>
+                                                            <Link to="/ticket-center"><button className="btn btn-outline-primary">Visit Ticket Center</button></Link>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <Toast show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+                    <Toast className="p-0" show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
                         <Toast.Body className="bg-success text-white">
                             <strong><MdInfoOutline size={25} /> {message}</strong>
                             <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>

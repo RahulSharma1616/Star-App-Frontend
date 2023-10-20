@@ -67,6 +67,11 @@ export default function Projects() {
                   )
                 })
               }
+              {
+                resources.length == 0 && (
+                  <div className="d-flex justify-content-center">No Resources Added</div>
+                )
+              }
             </div>
             <Row>
               <h5 className="my-2 px-1">
