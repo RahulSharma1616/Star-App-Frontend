@@ -26,10 +26,8 @@ jobs:
       with:
         host: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}    
-        remote_folder: /FE/
+        password: ${{ secrets.FTP_PASSWORD }}
         local_folder: ./build/
-        cleanup: true
         passive: true 
 
     
