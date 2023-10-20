@@ -77,7 +77,7 @@ export default function Navbar() {
                     <Modal
                       isOpen={modalIsOpen}
                       onRequestClose={closeModal}
-                      style={{
+                      style={{ 
                         overlay: {
                           backgroundColor: 'rgba(0, 0, 0, 0.5)', // Background overlay color
                         },
@@ -85,7 +85,7 @@ export default function Navbar() {
                           width: '40%', // Width of the modal
                           height: '83%',
                           left: '30%', // Position from the left
-                          top: '6%'
+                          top: '12%'
                         },
                       }}
                     >
