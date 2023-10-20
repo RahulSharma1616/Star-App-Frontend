@@ -118,34 +118,42 @@ export default function Navbar() {
                     <li>
                       <hr className="dropdown-divider" />
                     </li>
+
+                    
                     <li>
                       <Link className="text-decoration-none" to="/">
-                        <div className="dropdown-item " >Home</div>
+                        <a className="dropdown-item smallDropdown text-dark" >Home</a>
+
                       </Link>
                     </li>
                     <li>
                       <Link to="/tickets">
-                        <a className="" href="">Tickets</a>
+
+                        <a className="dropdown-item smallDropdown text-dark" href="">Tickets</a>
+
                       </Link>
                     </li>
                     <li>
                       <Link to="/projects">
-                        <a className="" href="">Projects</a>
+                        <a className="dropdown-item smallDropdown text-dark" href="">Projects</a>
+
                       </Link>
                     </li>
                     <li>
                       <Link to="/create-timesheet">
-                        <a className="" href="">Timesheet</a>
+                        <a className="dropdown-item smallDropdown text-dark" href="">Timesheet</a>
+
                       </Link>
                     </li>
                     <li>
                       <Link to="/manager-dashboard">
-                        <a className="" href="">Manager's desk</a>
+                        <a className="dropdown-item smallDropdown text-dark" href="">Manager's desk</a>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/">
-                        <a className="" href="">Home</a>
+                      <Link to="/tickets-received">
+                        <a className="dropdown-item smallDropdown text-dark" href="">Tickets Received</a>
+
                       </Link>
                     </li>
                     <li>

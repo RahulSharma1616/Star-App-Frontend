@@ -259,6 +259,10 @@ li {
 
 .ticketcard {
   border-radius: 12px;
+  border: 1px solid #043365;
+}
+.text-bg-primary{
+  color: #043365 !important;
 }
 
 .modal-icon {
@@ -308,6 +312,17 @@ li {
 .vishalmodal{
   width: 100%;
 }
+.hamburger{
+  display: none;
+}
+a{
+  text-decoration: none !important;
+  
+}
+.smallDropdown{
+  text-align: left !important;
+}
+
 
   /* Css for small screen  */
 @media only screen and (max-width: 500px) {
@@ -318,6 +333,12 @@ li {
   }
   .side-nav{
     display: none;
+  }
+  .navbarIcon{
+    display: none;
+  }
+  .hamburger{
+    display: flex;
   }
 }
 
