@@ -8,20 +8,6 @@ import { MdInfoOutline } from "react-icons/md";
 import { Line } from "react-chartjs-2";
 import TimesheetsFilled from "./graphs/TimesheetsFilled";
 
-const labels = ["January", "February", "March", "April", "May", "June"];
-
-const data = {
-  labels: labels,
-  datasets: [
-    {
-      label: "My First dataset",
-      backgroundColor: "rgb(255, 99, 132)",
-      borderColor: "rgb(255, 99, 132)",
-      data: [0, 10, 5, 2, 20, 30, 45],
-    },
-  ],
-};
-
 export default function Analytics({ closeWin }) {
   const [isLoading, setIsLoading] = useState(true);
   const [cookies, setCookie] = useCookies(["token"]);
@@ -87,7 +73,7 @@ export default function Analytics({ closeWin }) {
                       <div className="card-body">
                         <h5 className="card-title"></h5>
                         <div>
-                          <Line data={data} />
+                         
                         </div>
                       </div>
                     </div>
@@ -97,7 +83,7 @@ export default function Analytics({ closeWin }) {
                       <div className="card-body">
                         <h5 className="card-title"></h5>
                         <div>
-                          <TimesheetsFilled />
+                          {/* <TimesheetsFilled /> */}
                         </div>
                       </div>
                     </div>

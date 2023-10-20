@@ -3,7 +3,7 @@ import { Bar } from 'react-chartjs-2';
 
 export default function TimesheetsFilled() {
 
-    const labels = ["January", "February", "March", "April", "May", "June"];
+    const labels = ["January", "February", "March", "April", "May"];
     const data = {
         labels: labels,
         datasets: [
@@ -11,7 +11,7 @@ export default function TimesheetsFilled() {
                 label: "My First dataset",
                 backgroundColor: "rgb(255, 99, 132)",
                 borderColor: "rgb(255, 99, 132)",
-                data: [0, 10, 5, 2, 20, 30, 45],
+                data: [0, 10, 5, 2, 20, 30],
             },
         ],
     };
