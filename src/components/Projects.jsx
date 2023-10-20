@@ -182,7 +182,7 @@ export default function Projects() {
           <div className="timesheet-header d-flex justify-content-between">
             <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Projects</h3>
           </div>
-          <div className="row p-5">
+          <div className="row m-4">
             {projects.map((project) => {
               return (
                 <div key={project._id} onClick={() => {
