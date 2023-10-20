@@ -333,6 +333,10 @@ li {
   height: 40px;
 }
 
+.vishalmodal{
+  width: 100%;
+}
+
   /* Css for small screen  */
 @media only screen and (max-width: 500px) {
 .mt-6 {
