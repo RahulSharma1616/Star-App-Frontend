@@ -30,7 +30,6 @@ function App() {
         <Route path="/tickets-received" element={<TicketsReceived />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/analytics" element={<Analytics />} />
-        <Route path="/chatbot" element={<ChatBot />} />
         <Route path="/ticket-center" element={<TicketCenter />} />
       </Routes> 
     </BrowserRouter>

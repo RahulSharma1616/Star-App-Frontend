@@ -5,8 +5,10 @@ import SideNav from "./SideNav";
 import Navbar from "./Navbar";
 import Toast from "react-bootstrap/Toast";
 import { MdInfoOutline } from "react-icons/md";
-import { Line } from "react-chartjs-2";
+import Chart from 'chart.js/auto';
 import TimesheetsFilled from "./graphs/TimesheetsFilled";
+import TicketsStat from "./graphs/TicketsStat";
+import VerticalWorkTime from "./graphs/VerticalWorkTime";
 
 export default function Analytics({ closeWin }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -67,23 +69,35 @@ export default function Analytics({ closeWin }) {
                 <div className="pb-4" style={{ textAlign: "center" }}>
                   <h5 className="card-title">Overall Insights</h5>
                 </div>
-                <div className="row">
+                <div className="row mb-4">
                   <div className="col-sm-6 mb-3 mb-sm-0">
                     <div className="card">
                       <div className="card-body">
-                        <h5 className="card-title"></h5>
+                        <h6 className="card-title d-flex justify-content-center">Timesheets Filled On-Time vs Not On-Time</h6>
                         <div>
-                         
+                          <TimesheetsFilled />
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="col-sm-6 mb-3 mb-sm-0">
                     <div className="card">
+                      <div className="card-body d-flex flex-column align-items-center">
+                        <h6 className="card-title text-center">Tickets Status Overview</h6>
+                        <div style={{ width: '250px', height: '250px' }}>
+                          <TicketsStat />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row mb-4">
+                  <div className="col-sm-6 mb-3 mb-sm-0">
+                    <div className="card">
                       <div className="card-body">
-                        <h5 className="card-title"></h5>
+                        <h6 className="card-title d-flex justify-content-center">Overtime vs. Undertime by Verticals</h6>
                         <div>
-                          {/* <TimesheetsFilled /> */}
+                          <VerticalWorkTime />
                         </div>
                       </div>
                     </div>
@@ -91,7 +105,6 @@ export default function Analytics({ closeWin }) {
                 </div>
               </div>
             </div>
-            {/* */}
           </div>
         </div>
 
