@@ -10,6 +10,7 @@ export default function CreateProject({ closeWin, setMessage, setShowToast }) {
         vertical: "",
         horizontal: "",
         subHorizontal: "",
+        managerID: "",
         customerName: "",
         customerID: "",
     });
@@ -69,7 +70,6 @@ export default function CreateProject({ closeWin, setMessage, setShowToast }) {
                         name="description"
                         value={project.description}
                         onChange={handleChange}
-                        required
                     />
                 </div>
                 <div className="mb-3">
@@ -79,6 +79,7 @@ export default function CreateProject({ closeWin, setMessage, setShowToast }) {
                         name="vertical"
                         value={project.vertical}
                         onChange={handleChange}
+                        required
                     />
                 </div>
                 <div className="mb-3">
@@ -88,6 +89,7 @@ export default function CreateProject({ closeWin, setMessage, setShowToast }) {
                         name="horizontal"
                         value={project.horizontal}
                         onChange={handleChange}
+                        required
                     />
                 </div>
                 <div className="mb-3">
@@ -97,6 +99,16 @@ export default function CreateProject({ closeWin, setMessage, setShowToast }) {
                         name="subHorizontal"
                         value={project.subHorizontal}
                         onChange={handleChange}
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Manager's Email</label>
+                    <input
+                        className="form-control"
+                        name="managerID"
+                        value={project.managerID}
+                        onChange={handleChange}
+                        required
                     />
                 </div>
                 <div className="mb-3">

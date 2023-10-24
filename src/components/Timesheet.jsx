@@ -236,6 +236,11 @@ export default function Timesheet() {
       (response) => {
         setIsLoading(false);
         setMessage(response.data.message);
+
+        if(response.data.error) {
+          setError(true);
+        }
+
         setShowToast(true);
       },
       (error) => {
@@ -406,10 +411,11 @@ export default function Timesheet() {
                       {projectHours &&
                         projectHours.map((pHour, dayIndex) => {
                           return (
-                            <td key={dayIndex} className={`col-xs-2 ${(dayIndex == 5 || dayIndex == 6) ? "table-warning" : ""}`}>
+                            <td key={dayIndex} className={`col-xs-2}`}>
                               <input
                                 type="number"
                                 value={pHour}
+                                style={{ backgroundColor: dayIndex === 5 || dayIndex === 6 ? "#e0dede" : "initial" }}
                                 onChange={(e) => {
                                   if (e.target.value > 24 || e.target.value < 0) {
                                     setError(true);
