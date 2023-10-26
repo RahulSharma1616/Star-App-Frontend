@@ -31,6 +31,7 @@ function App() {
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/ticket-center" element={<TicketCenter />} />
+        <Route path="/chatbot" element={<ChatBot />} />
       </Routes> 
     </BrowserRouter>
   );
