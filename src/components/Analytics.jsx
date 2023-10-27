@@ -5,10 +5,17 @@ import SideNav from "./SideNav";
 import Navbar from "./Navbar";
 import Toast from "react-bootstrap/Toast";
 import { MdInfoOutline } from "react-icons/md";
-import Chart from 'chart.js/auto';
+import Chart from "chart.js/auto";
 import TimesheetsFilled from "./graphs/TimesheetsFilled";
 import TicketsStat from "./graphs/TicketsStat";
 import VerticalWorkTime from "./graphs/VerticalWorkTime";
+import BillableChart from "./graphs/BillableChart";
+import ProjectsChart from "./graphs/ProjectsChart";
+import VerticalsChart from "./graphs/VerticalsChart";
+import ManagersChart from "./graphs/ManagersChart";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import "./analytics.css";
 
 export default function Analytics({ closeWin }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +38,7 @@ export default function Analytics({ closeWin }) {
         Authorization: `Bearer ${cookies.token}`,
       },
     }).then(
-      function (response) { },
+      function (response) {},
       function (error) {
         console.log("error: ", error);
       }
@@ -50,67 +57,125 @@ export default function Analytics({ closeWin }) {
           </div>
         </div>
       )}
+      <div className="timesheet-header d-flex justify-content
+          style={{
+            paddingLeft: "150px",
+            paddingTop: "50px",
+            fontWeight: "350",
+            verticalAlign: "middle",
+          }}
+        >
+          Analytics
+        </h3>
+      </div>
       <div className="row">
-        <div className="col-lg-1 mt-6">
+        <div className="col-2 " style={{ marginTop: "-70px" }}>
           <SideNav />
         </div>
-        <div className="col-lg-11 mt-6">
-          <div className="table-container">
-            <div className="timesheet-header d-flex justify-content-between">
-              <h3
-                className="h2 m-2"
-                style={{ fontWeight: "350", verticalAlign: "middle" }}
-              >
-                Analytics
-              </h3>
-            </div>
-            <div className="card m-3">
-              <div className="card-body">
-                <div className="pb-4" style={{ textAlign: "center" }}>
-                  <h5 className="card-title">Overall Insights</h5>
-                </div>
-                <div className="row mb-4">
-                  <div className="col-sm-6 mb-3 mb-sm-0">
-                    <div className="card">
-                      <div className="card-body">
-                        <h6 className="card-title d-flex justify-content-center">Timesheets Filled On-Time vs Not On-Time</h6>
-                        <div>
-                          <TimesheetsFilled />
+        <div className="col-10">
+          <div className="col-11 mt-3">
+            <Tabs>
+              <TabList>
+                <Tab>Activities Analytics</Tab>
+                <Tab>Buisness Analytics</Tab>
+              </TabList>
+
+              <TabPanel>
+                <div className="table-container">
+                  <div
+                    className="card m-3"
+                  >
+                    <div className="card-body">
+                      <div className="pb-4" style={{ textAlign: "center" }}>
+                        <h5 className="card-title">Activities Insights</h5>
+                      </div>
+                      <div className="row mb-4">
+                        <div className="col-md-6 mb-3 mb-sm-0">
+                          <div className="card" style={{ height: "312px" }}>
+                            <div className="card-body">
+                              <h6 className="card-title d-flex justify-content-center">
+                                Timesheets Filled On-Time vs Not On-Time
+                              </h6>
+                              <div>
+                                <TimesheetsFilled />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6 mb-3 mb-sm-0">
+                          <div className="card">
+                            <div className="card-body d-flex flex-column align-items-center">
+                              <h6 className="card-title text-center">
+                                Tickets Status Overview
+                              </h6>
+                              <div style={{ width: "250px", height: "250px" }}>
+                                <TicketsStat />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row mb-4">
+                        <div className="col-md-6 mb-3 mb-sm-0">
+                          <div className="card">
+                            <div className="card-body">
+                              <h6 className="card-title d-flex justify-content-center">
+                                Overtime vs. Undertime by Verticals
+                              </h6>
+                              <div>
+                                <VerticalWorkTime />
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="col-sm-6 mb-3 mb-sm-0">
-                    <div className="card">
-                      <div className="card-body d-flex flex-column align-items-center">
-                        <h6 className="card-title text-center">Tickets Status Overview</h6>
-                        <div style={{ width: '250px', height: '250px' }}>
-                          <TicketsStat />
+                </div>
+              </TabPanel>
+              <TabPanel>
+                <div className="container">
+                  <h3
+                    style={{
+                      marginTop: "20px",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    Data Insights
+                  </h3>
+                  <div className="row">
+                    <div className="col-12 py-3">
+                      <div className="row my-1">
+                        <ProjectsChart />
+                      </div>
+                      <hr style={{ marginRight: "-40px" }} />
+                      <div className="row my-3 pt-5">
+                        <div className="col-lg-7">
+                          <ManagersChart />
+                        </div>
+                        <div className="col-lg-5">
+                          <BillableChart />
+                        </div>
+                      </div>
+                      <hr style={{ marginRight: "-40px" }} />
+                      <div className="row my-3 pt-5">
+                        <div className="col-12">
+                          <VerticalsChart />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="row mb-4">
-                  <div className="col-sm-6 mb-3 mb-sm-0">
-                    <div className="card">
-                      <div className="card-body">
-                        <h6 className="card-title d-flex justify-content-center">Overtime vs. Undertime by Verticals</h6>
-                        <div>
-                          <VerticalWorkTime />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              </TabPanel>
+            </Tabs>
           </div>
         </div>
-
         <Toast
           show={showToast}
-          delay={5000} autohide
+          delay={5000}
+          autohide
           onClose={toggleShowToast}
           style={{
             position: "fixed",
