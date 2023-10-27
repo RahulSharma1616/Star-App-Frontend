@@ -5,6 +5,7 @@ import ReactApexChart from "react-apexcharts";
 function BillableChart() {
   const [data, setData] = useState({});
 
+  // api call to get data
   useEffect(() => {
     axios
       .get("http://localhost:4000/analytics/getDataforPlotting")
@@ -25,6 +26,7 @@ function BillableChart() {
   );
   const totalHours = billableHours + nonBillableHours;
 
+  // set percentaget to be upto 2 decimal places
   const billablePercentage = ((billableHours / totalHours) * 100).toFixed(2);
   const nonBillablePercentage = ((nonBillableHours / totalHours) * 100).toFixed(
     2
@@ -33,6 +35,7 @@ function BillableChart() {
   const series = [billablePercentage, nonBillablePercentage, totalHours];
 
   const options = {
+    // styling the lables and titles
     noData: {
       text: "Loading...",
       align: "center",
@@ -82,6 +85,7 @@ function BillableChart() {
       markers: {
         size: 0,
       },
+      // show hours if total hours else show % symbol
       formatter: function (seriesName, opts) {
         if (seriesName === "Total Hours")
           return (
@@ -101,7 +105,7 @@ function BillableChart() {
   };
 
   return (
-    <div>
+    <div style={{paddingLeft:"50px"}}>
       <ReactApexChart
         options={options}
         series={series}
@@ -109,6 +113,15 @@ function BillableChart() {
         height={300}
         width={390}
       />
+      {/* title of the chart */}
+      <div style={{ paddingLeft: "130px" }}>
+        <h6 style={{
+          fontSize: "20px",
+          fontWeight: 500,
+          fontFamily:
+            'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+        }}>Billable Hours</h6>
+      </div>
     </div>
   );
 }

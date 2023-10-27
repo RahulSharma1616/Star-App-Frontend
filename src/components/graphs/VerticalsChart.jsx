@@ -5,6 +5,7 @@ import ReactApexChart from "react-apexcharts";
 function VerticalHoursChart() {
   const [data, setData] = useState({});
 
+  // api call to get data
   useEffect(() => {
     axios
       .get("http://localhost:4000/analytics/getDataforPlotting")
@@ -17,6 +18,7 @@ function VerticalHoursChart() {
   }, []);
 
   const getChartData = () => {
+    // logic to format the fetched data to render on the screen
     const categories = Object.keys(data);
     const billedHours = [];
     const nonBilledHours = [];
@@ -45,6 +47,7 @@ function VerticalHoursChart() {
   const chartData = getChartData();
 
   const options = {
+    // format rendered chart styles
     noData: {
       text: "Loading...",
       align: "center",
@@ -88,18 +91,25 @@ function VerticalHoursChart() {
         text: "Verticals",
         style: {
           fontSize: "20px",
+          fontWeight: 500,
+          fontFamily:
+            'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
         },
       },
     },
 
-    colors: ["#0ce8c3", "#0ce84e", "#65cdf0"],
+    colors: ["#1ad6a1", "#0cad9b","#3c7bcf"],
     yaxis: {
       title: {
         text: "Hours",
         style: {
           fontSize: "20px",
+          fontWeight: 500,
+          fontFamily:
+            'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
         },
       },
+      // if val > 1000 render with K
       labels: {
         formatter: (val) => {
           if (val < 1000) return val;

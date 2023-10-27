@@ -12,7 +12,7 @@ const HolidayEditModal = ({
   onDelete,
   holidays,
 }) => {
-  // console.log("holidayData", holidayData);
+  // various states to edit holiday
   const [name, setName] = useState(holidayData ? holidayData.name : "");
   const [date, setDate] = useState(
     holidayData ? new Date(holidayData.date) : new Date()
@@ -20,6 +20,7 @@ const HolidayEditModal = ({
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isModified, setIsModified] = useState(false);
 
+  // functions to handle events
   const handleNameChange = (e) => {
     setName(e.target.value);
     setIsModified(true);

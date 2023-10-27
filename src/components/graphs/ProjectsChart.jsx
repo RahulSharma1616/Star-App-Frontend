@@ -5,6 +5,7 @@ import ReactApexChart from "react-apexcharts";
 function ProjectChart() {
   const [data, setData] = useState([]);
   const [options, setOptions] = useState({
+    // style the chart labels and titles
     noData: {
       text: "Loading...",
       align: "center",
@@ -28,6 +29,9 @@ function ProjectChart() {
         text: "Projects",
         style: {
           fontSize: "20px",
+          fontWeight: 500,
+          fontFamily:
+            'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
         },
       },
     },
@@ -36,6 +40,9 @@ function ProjectChart() {
         text: "Hours",
         style: {
           fontSize: "20px",
+          fontWeight: 500,
+          fontFamily:
+            'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
         },
       },
       labels: {
@@ -45,13 +52,13 @@ function ProjectChart() {
         },
       },
     },
-    colors: ["#40c0f7", "#0cad9b"],
+    colors: ["#3c7bcf", "#0cad9b"],
   });
 
   useEffect(() => {
     // Make an Axios call to get project data
     axios
-      .get("http://localhost:4000/analytics/getDataOfProjects") // Replace with your actual API endpoint
+      .get("http://localhost:4000/analytics/getDataOfProjects") 
       .then((response) => {
         const projectArray = response.data.projectArray;
         const projectNames = [];
