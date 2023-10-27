@@ -77,11 +77,11 @@ export default function Analytics({ closeWin }) {
             {/* divide the activities and business analytics */}
             <Tabs>
               <TabList>
-                 <Tab>Overall Analytics</Tab>
+                <Tab>Overall Analytics</Tab>
                 <Tab>Business Analytics</Tab>
               </TabList>
               <TabPanel>
-              {/* Activities Analytics Component */}
+                {/* Activities Analytics Component */}
                 <div className="table-container">
                   <div className="card m-3">
                     <div className="card-body">
@@ -133,7 +133,7 @@ export default function Analytics({ closeWin }) {
                 </div>
               </TabPanel>
               <TabPanel>
-              {/* Buisness Analytics component */}
+                {/* Buisness Analytics component */}
                 <div className="container">
                   <h3
                     style={{
