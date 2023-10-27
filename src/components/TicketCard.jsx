@@ -52,6 +52,9 @@ export default function TicketCard({ticket}) {
                             }
                             </div>
                             <p>{ticket.description}</p>
+                            {ticket.remarks !== "" && (
+                                <p className="my-2"><strong>Remarks:</strong> {ticket.remarks}</p>
+                            )}
                         </div>
                     </li>
                 </ul>
