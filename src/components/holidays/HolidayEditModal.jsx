@@ -171,7 +171,7 @@ const HolidayEditModal = ({
         )}
       </div>
       <div
-        className="modal-footer"
+        className="modal-footer2"
         style={{ padding: "1% 2% 1%", background: "#f0f0f0" }}
       >
         <button
