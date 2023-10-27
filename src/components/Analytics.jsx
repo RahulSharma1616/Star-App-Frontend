@@ -77,8 +77,7 @@ export default function Analytics({ closeWin }) {
             {/* divide the activities and business analytics */}
             <Tabs>
               <TabList>
-                <Tab>Activities Analytics</Tab>
-//                 <Tab>Overall Analytics</Tab>
+                 <Tab>Overall Analytics</Tab>
                 <Tab>Business Analytics</Tab>
               </TabList>
               <TabPanel>
