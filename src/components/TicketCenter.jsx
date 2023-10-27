@@ -18,6 +18,8 @@ export default function TicketCenter() {
     // This state variable manages the visibility of the toast.
     const [showToast, setShowToast] = useState(false);
 
+    const [remarks, setRemarks] = useState("");
+
     // This function is responsible for toggling the state of the showToast variable.
     const toggleShowToast = () => setShowToast(!showToast);
 
@@ -49,7 +51,8 @@ export default function TicketCenter() {
             url: "http://localhost:4000/ticket/status",
             data: {
                 ticketID: ticketID,
-                status: "Closed"
+                status: "Closed",
+                remarks: remarks
             },
             headers: {
                 'Authorization': `Bearer ${cookies.token}`,
@@ -112,7 +115,16 @@ export default function TicketCenter() {
                                                                 }
                                                             </div>
                                                             <p>{ticket.description}</p>
-                                                            <div>
+                                                            {ticket.status == "Elevated" && <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                                <input
+                                                                    type="text"
+                                                                    onChange={(e) => {setRemarks(e.target.value)}}
+                                                                    className="form-control mb-4"
+                                                                    style={{ width: '50%', margin: 'auto' }}
+                                                                    placeholder="Write Your Remarks!"
+                                                                />
+                                                            </div>}
+                                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
                                                                 <button onClick={() => { handleTicket(ticket._id) }} className="btn btn-outline-info mx-1">
                                                                     Close Ticket
                                                                 </button>

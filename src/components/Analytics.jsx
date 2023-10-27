@@ -78,6 +78,7 @@ export default function Analytics({ closeWin }) {
             <Tabs>
               <TabList>
                 <Tab>Activities Analytics</Tab>
+//                 <Tab>Overall Analytics</Tab>
                 <Tab>Business Analytics</Tab>
               </TabList>
               <TabPanel>
@@ -86,7 +87,7 @@ export default function Analytics({ closeWin }) {
                   <div className="card m-3">
                     <div className="card-body">
                       <div className="pb-4" style={{ textAlign: "center" }}>
-                        <h5 className="card-title">Activities Insights</h5>
+                        <h5 className="card-title">Overall Insights</h5>
                       </div>
                       <div className="row mb-4">
                         <div className="col-md-6 mb-3 mb-sm-0">
