@@ -67,7 +67,7 @@ function App() {
         {admin && <Route path="/projects" element={<Projects/>}/>}
         {admin && <Route path="/analytics" element={<Analytics />} />}
         {admin && <Route path="/ticket-center" element={<TicketCenter />} />}
-        <Route path="/holidays" element={<Holidays />} />
+        {admin && <Route path="/holidays" element={<Holidays />} />}
         <Route path="/chatbot" element={<ChatBot />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes> 

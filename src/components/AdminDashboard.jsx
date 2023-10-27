@@ -116,7 +116,7 @@ export default function AdminDashboard() {
                                             <div className="pb-4" style={{ textAlign: "center" }}>
                                                 <h5 className="card-title">Project Management</h5>
                                             </div>
-                                            <div className="row">
+                                            <div className="row mb-3">
                                                 <div className="col-sm-6 mb-3 mb-sm-0">
                                                     <div className="card">
                                                         <div className="card-body">
@@ -153,6 +153,17 @@ export default function AdminDashboard() {
                                                             <h5 className="card-title">Add Resources</h5>
                                                             <p className="card-text">Effective resource allocation is the cornerstone of project success.  Add or remove resources from the projects.</p>
                                                             <Link to="/projects"><a className="btn btn-outline-primary">Add Resources</a></Link>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-sm-6 mb-3 mb-sm-0">
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <h5 className="card-title">Manage Holidays</h5>
+                                                            <p className="card-text">Effortlessly manage company holidays with the admin's option to add or remove specific dates from the system's holiday calendar.</p>
+                                                            <Link to="/holidays"><a className="btn btn-outline-primary">Manage Holidays</a></Link>
                                                         </div>
                                                     </div>
                                                 </div>
