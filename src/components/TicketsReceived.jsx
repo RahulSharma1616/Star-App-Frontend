@@ -18,6 +18,8 @@ export default function TicketsReceived() {
     // This state variable manages the visibility of the toast. 
     const [showToast, setShowToast] = useState(false);
 
+    const [remarks, setRemarks] = useState("");
+
     // This function is responsible for toggling the state of the showToast variable.
     const toggleShowToast = () => setShowToast(!showToast);
 
@@ -61,7 +63,8 @@ export default function TicketsReceived() {
             url: "http://localhost:4000/ticket/elevate",
             data: {
                 ticketID: id,
-                elevate: false
+                elevate: false,
+                remarks: remarks
             },
             headers: {
                 'Authorization': `Bearer ${cookies.token}`,
@@ -128,7 +131,16 @@ export default function TicketsReceived() {
                                                                 }
                                                             </div>
                                                             <p>{ticket.description}</p>
-                                                            {ticket.status == "Pending" && <div>
+                                                            {ticket.status == "Pending" && <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                                <input
+                                                                    type="text"
+                                                                    onChange={(e) => {setRemarks(e.target.value)}}
+                                                                    className="form-control mb-4"
+                                                                    style={{ width: '50%', margin: 'auto' }}
+                                                                    placeholder="Write Your Remarks!"
+                                                                />
+                                                            </div>}
+                                                            {ticket.status == "Pending" && <div style={{ display: 'flex', justifyContent: 'center' }}>
                                                                 <button onClick={() => { handleElevate(ticket._id) }} className="btn btn-outline-success mx-1">
                                                                     Elevate
                                                                 </button>

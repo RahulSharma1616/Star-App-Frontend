@@ -10,6 +10,8 @@ import { GiHamburgerMenu } from "react-icons/gi";
 export default function Navbar() {
   const [image, setImage] = useState({});
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [manager, setManager] = useState(false);
+  const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
     if (cookies.token) {
@@ -22,6 +24,36 @@ export default function Navbar() {
       }).then((response) => {
         setImage(response.data.image);
       });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cookies.token) {
+      axios({
+        method: "get",
+
+        url: "http://localhost:4000/user/isManager",
+
+        headers: {
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      }).then((response) => {
+        setManager(response.data.manager);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cookies.token) {
+      axios({
+        method: "get",
+        url: "http://localhost:4000/user/isAdmin",
+        headers: {
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      }).then((response) => {
+        setAdmin(response.data.isAdmin);
+      })
     }
   }, []);
 
@@ -118,12 +150,15 @@ export default function Navbar() {
                     <li>
                       <hr className="dropdown-divider" />
                     </li>
-
-                    
                     <li>
                       <Link className="text-decoration-none" to="/">
                         <a className="dropdown-item smallDropdown text-dark" >Home</a>
 
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/create-timesheet">
+                        <a className="dropdown-item smallDropdown text-dark" href="">Create Timesheet</a>
                       </Link>
                     </li>
                     <li>
@@ -133,28 +168,44 @@ export default function Navbar() {
 
                       </Link>
                     </li>
-                    <li>
-                      <Link to="/projects">
-                        <a className="dropdown-item smallDropdown text-dark" href="">Projects</a>
+                    {
+                      admin && (
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                      )
+                    }
+                    {admin && (<li>
+                      <Link to="/admin-dashboard">
+                        <a className="dropdown-item smallDropdown text-dark" href="">Admin's Desk</a>
 
                       </Link>
-                    </li>
-                    <li>
-                      <Link to="/create-timesheet">
-                        <a className="dropdown-item smallDropdown text-dark" href="">Timesheet</a>
+                    </li>)}
+                    {admin && (<li>
+                      <Link to="/analytics">
+                        <a className="dropdown-item smallDropdown text-dark" href="">Analytics</a>
 
                       </Link>
-                    </li>
-                    <li>
+                    </li>)}
+                    {
+                      manager && (
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                      )
+                    }
+                    {manager && <li>
                       <Link to="/manager-dashboard">
                         <a className="dropdown-item smallDropdown text-dark" href="">Manager's desk</a>
                       </Link>
-                    </li>
-                    <li>
+                    </li>}
+                    {manager && <li>
                       <Link to="/tickets-received">
                         <a className="dropdown-item smallDropdown text-dark" href="">Tickets Received</a>
-
                       </Link>
+                    </li>}
+                    <li>
+                      <hr className="dropdown-divider" />
                     </li>
                     <li>
                       <Link to="/">
