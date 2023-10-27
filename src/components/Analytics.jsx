@@ -57,9 +57,10 @@ export default function Analytics({ closeWin }) {
           </div>
         </div>
       )}
-      <div className="timesheet-header d-flex justify-content
+      <div className="timesheet-header d-flex justify-content-between">
+        <h3
+          className="h3 m-2"
           style={{
-            paddingLeft: "150px",
             paddingTop: "50px",
             fontWeight: "350",
             verticalAlign: "middle",
