@@ -2,7 +2,7 @@
   background-color: rgb(225, 225, 225);
   color: rgb(114, 114, 114);
 }
-
+/* styling weekends */
 .input-weekend {
   background-color: rgb(208, 242, 248);
   color: rgb(90, 88, 88);
@@ -10,9 +10,8 @@
 
 .holiday-tile {
   background-color: rgb(248, 226, 59);
-  /* color: red; */
 }
-
+/* styling holidays timesheet input boxes */
 .holiday-input {
   background-color: rgb(255, 255, 174);
 }

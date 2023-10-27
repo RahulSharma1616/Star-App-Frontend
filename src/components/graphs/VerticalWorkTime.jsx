@@ -63,6 +63,6 @@ export default function VerticalWorkTime() {
     }
 
     return (
-        <Bar data={data} options={options} />
+        <Bar data={data} options={options}/>
     );
 };

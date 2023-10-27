@@ -5,7 +5,6 @@ import SideNav from "./SideNav";
 import Navbar from "./Navbar";
 import Toast from "react-bootstrap/Toast";
 import { MdInfoOutline } from "react-icons/md";
-import Chart from "chart.js/auto";
 import TimesheetsFilled from "./graphs/TimesheetsFilled";
 import TicketsStat from "./graphs/TicketsStat";
 import VerticalWorkTime from "./graphs/VerticalWorkTime";
@@ -70,22 +69,22 @@ export default function Analytics({ closeWin }) {
         </h3>
       </div>
       <div className="row">
-        <div className="col-2 " style={{ marginTop: "-70px" }}>
+        <div className="col-2 pt-0" style={{ marginTop: "-70px" }}>
           <SideNav />
         </div>
         <div className="col-10">
           <div className="col-11 mt-3">
+            {/* divide the activities and business analytics */}
             <Tabs>
               <TabList>
-                <Tab>Overall Analytics</Tab>
+                <Tab>Activities Analytics</Tab>
+//                 <Tab>Overall Analytics</Tab>
                 <Tab>Business Analytics</Tab>
               </TabList>
-
               <TabPanel>
+              {/* Activities Analytics Component */}
                 <div className="table-container">
-                  <div
-                    className="card m-3"
-                  >
+                  <div className="card m-3">
                     <div className="card-body">
                       <div className="pb-4" style={{ textAlign: "center" }}>
                         <h5 className="card-title">Overall Insights</h5>
@@ -135,6 +134,7 @@ export default function Analytics({ closeWin }) {
                 </div>
               </TabPanel>
               <TabPanel>
+              {/* Buisness Analytics component */}
                 <div className="container">
                   <h3
                     style={{
