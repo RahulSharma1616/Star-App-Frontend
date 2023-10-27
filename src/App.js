@@ -16,6 +16,7 @@ import TicketCenter from './components/TicketCenter';
 import PageNotFound from './components/PageNotFound';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Holidays from "./components/holidays/Holidays"
 
 function App() {
 
@@ -66,6 +67,7 @@ function App() {
         {admin && <Route path="/projects" element={<Projects/>}/>}
         {admin && <Route path="/analytics" element={<Analytics />} />}
         {admin && <Route path="/ticket-center" element={<TicketCenter />} />}
+        <Route path="/holidays" element={<Holidays />} />
         <Route path="/chatbot" element={<ChatBot />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes> 
