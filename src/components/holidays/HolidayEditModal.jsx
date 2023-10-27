@@ -79,15 +79,17 @@ const HolidayEditModal = ({
           maxHeight: "521px",
           margin: "auto",
           overflow: "hidden",
+          top: "120px",
+          bottom: "80px"
         },
         overlay: {
           backgroundColor: "rgba(0, 0, 0, 0.3)",
         },
       }}
     >
-      <h2>Edit Holiday</h2>
+      <h2 className="mb-5" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Edit Holiday</h2>
       <div className="form-group row" style={{ transform: "scale(0.9)" }}>
-        <label className="col-2 col-form-label">Name:</label>
+        <label className="col-2 col-form-label">Occasion:</label>
         <div className="col-8">
           <input
             type="text"
@@ -179,11 +181,11 @@ const HolidayEditModal = ({
         >
           Update
         </button>
-        <button className="btn btn-danger btn-sm" onClick={handleDelete}>
+        <button className="btn btn-outline-danger btn-sm" onClick={handleDelete}>
           Delete
         </button>
         <button
-          className="btn btn-secondary btn-sm"
+          className="btn btn-outline-dark btn-sm"
           onClick={onRequestClose}
           style={{ marginLeft: "1%" }}
         >
