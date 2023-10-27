@@ -57,7 +57,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" exact element={cookies.token ? <HomePage /> : <LoginPage />} />
+        <Route
+          path="/"
+          exact
+          element={cookies.token ? <HomePage /> : <LoginPage />}
+        />
         <Route path="/create-timesheet" element={<Timesheet />} />
         <Route path="/tickets" element={<Tickets />} />
         {manager && <Route path="/manager-dashboard" element={<ApprovalPage />} />}

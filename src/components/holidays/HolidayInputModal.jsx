@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import Calendar from "react-calendar";
-import Modal from "react-modal"
+import Modal from "react-modal";
 
 // Add Modal
 function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
+  // various states required to save holiday
   const [name, setName] = useState("");
   const [date, setDate] = useState(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
+  // functions to handle events
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
@@ -27,7 +29,7 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
       name: name,
       date: date.toISOString(),
     };
-
+    // empty name not allowed
     if (newHoliday.name === "") {
       alert("Please provide name for the holiday");
       return;
@@ -51,7 +53,7 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
     setName("");
     onRequestClose();
   };
-
+  // Styling the calendar
   const tileClassName = ({ date }) => {
     return holidays.some((holiday) => moment(holiday.date).isSame(date, "day"))
       ? "holiday-tile"
@@ -87,18 +89,16 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
             maxHeight: "521px",
             margin: "auto",
             overflow: "hidden",
-            top: "120px",
-            bottom: "80px"
           },
           overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.3)",
           },
         }}
       >
-        <h2 className="mb-5" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Add Holiday</h2>
+        <h2>Add Holiday</h2>
 
         <div className="form-group row" style={{ transform: "scale(0.9)" }}>
-          <label className="col-2 col-form-label">Occasion:</label>
+          <label className="col-2 col-form-label">Name:</label>
           <div className="col-8">
             <input
               type="text"
@@ -144,6 +144,7 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
             </button>
           </div>
         </div>
+        {/* render calendar on clicking calendar icon */}
         {isCalendarOpen && (
           <div
             className="calendar-container"
@@ -170,13 +171,13 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
           }}
         >
           <button
-            className="btn btn-primary"
+            className="btn btn-sm btn-primary"
             onClick={handleSubmit}
             style={{ marginRight: "1%" }}
           >
             Submit
           </button>
-          <button className="btn btn-outline-dark" onClick={handleClose}>
+          <button className="btn btn-sm btn-secondary" onClick={handleClose}>
             Cancel
           </button>
         </div>

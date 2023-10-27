@@ -80,7 +80,7 @@ function Holidays() {
   function handleSubmit(newHoliday) {
     let isDuplicateName = false;
     let isDuplicateDate = false;
-
+    // checking the holiday name or date does not already exists
     holidays.forEach((holiday) => {
       if (holiday.date === newHoliday.date) {
         return (isDuplicateDate = true);
@@ -102,7 +102,7 @@ function Holidays() {
       alert("Holiday with same name already exists");
       return;
     }
-
+    // make api call to save holiday
     axios
       .post("http://localhost:4000/holidays/save", newHoliday)
       .then(() => {
@@ -123,7 +123,7 @@ function Holidays() {
     setActionOccurred(true);
     setIsModalOpen(false);
   }
-
+  // handle delete action
   function handleDelete(id) {
     axios
       .delete(`http://localhost:4000/holidays/remove/${id}`)
@@ -140,7 +140,7 @@ function Holidays() {
         console.error("Error deleting holiday: ", error);
       });
   }
-
+  // handle edit action
   function handleEditHoliday(editedHoliday) {
     axios
       .put(
@@ -167,7 +167,7 @@ function Holidays() {
     <>
       <Navbar />
       <br />
-      <div className="pt-3">
+      <div className="pt-3 mt-1">
         <SideNav />
       </div>
 
@@ -175,7 +175,7 @@ function Holidays() {
         <div className="row">
           <div className="col-sm-2 col-md-1"></div>
           <div className="col-sm-10 col-md-11">
-            <h1 className="mb-4" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Manage Holidays </h1>
+          <h1 className="mb-4" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Manage Holidays </h1>
 
             <table className="table">
               <thead>
@@ -192,6 +192,7 @@ function Holidays() {
                 </tr>
               </thead>
               <tbody>
+                {/* Render holidays in table */}
                 {currentHolidays.map((holiday) => (
                   <tr key={holiday._id}>
                     <td>{holiday.name}</td>
@@ -207,7 +208,7 @@ function Holidays() {
                     </td>
                   </tr>
                 ))}
-
+                {/* Render empty rows if rows are less then 6 */}
                 {currentHolidays.length < holidaysPerPage &&
                   Array(holidaysPerPage - currentHolidays.length)
                     .fill()
@@ -220,6 +221,7 @@ function Holidays() {
                     ))}
               </tbody>
             </table>
+            {/* Hide add button and pagination buttons when modals are open */}
             {!isModalOpen && !isEditModalOpen && (
               <div className="d-flex justify-content-between">
                 <div>
@@ -230,6 +232,7 @@ function Holidays() {
                     Add Holiday
                   </button>
                 </div>
+                {/* Pagination logic */}
                 <nav>
                   <ul
                     className="pagination"
@@ -260,13 +263,14 @@ function Holidays() {
                 </nav>
               </div>
             )}
-
+            {/* Add holiday modal */}
             <HolidayInputModal
               isOpen={isModalOpen}
               onRequestClose={closeModal}
               onSubmit={handleSubmit}
               holidays={holidays}
             />
+            {/* Edit Holiday modal */}
             <HolidayEditModal
               isOpen={isEditModalOpen}
               onRequestClose={closeEditModal}
@@ -275,6 +279,7 @@ function Holidays() {
               onDelete={handleDelete}
               holidays={holidays}
             />
+            {/* Toast styling */}
             <ToastContainer
               style={{
                 height: "auto",

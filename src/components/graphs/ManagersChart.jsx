@@ -4,6 +4,7 @@ import ReactApexChart from "react-apexcharts";
 
 function ManagersChart() {
   const [options, setOptions] = useState({
+    // render loading... text
     noData: {
       text: "Loading...",
       align: "center",
@@ -24,19 +25,28 @@ function ManagersChart() {
         horizontal: true,
       },
     },
+    colors: ["#3c7bcf","#0cad9b"],
+    // styling x-axis labels
     xaxis: {
       title: {
         text: "Hours",
         style: {
           fontSize: "20px",
+          fontWeight: 500,
+          fontFamily:
+            'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
         },
       },
     },
+    // styling y-axis labels
     yaxis: {
       title: {
         text: "Managers",
         style: {
           fontSize: "20px",
+          fontWeight: 500,
+          fontFamily:
+            'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
         },
       },
       categories: [], // Initialize with an empty array
@@ -54,9 +64,10 @@ function ManagersChart() {
     },
   ]);
 
+  // render data from api
   useEffect(() => {
     axios
-      .get("http://localhost:4000/analytics/getDataOfManagers") // Replace with your actual API endpoint
+      .get("http://localhost:4000/analytics/getDataOfManagers") 
       .then((response) => {
         const managersData = response.data.managersData;
 
@@ -99,6 +110,7 @@ function ManagersChart() {
 
   return (
     <div className="horizontal-bar-chart">
+    {/* display the chart */}
       <ReactApexChart
         options={options}
         series={data}
