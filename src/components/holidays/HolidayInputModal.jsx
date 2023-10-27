@@ -163,7 +163,7 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
         )}
 
         <div
-          className="modal-footer"
+          className="modal-footer2"
           style={{
             padding: "1% 2% 1%",
             background: "#f0f0f0",
