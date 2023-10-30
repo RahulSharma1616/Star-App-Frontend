@@ -53,7 +53,7 @@ export default function Navbar() {
         },
       }).then((response) => {
         setAdmin(response.data.isAdmin);
-      })
+      });
     }
   }, []);
 
@@ -81,10 +81,14 @@ export default function Navbar() {
             backgroundColor: "rgba(0, 0, 0, 0.5)", // Background overlay color
           },
           content: {
+            minWidth: "330px",
+            minHeight: "430px",
+            maxHeight: "450px",
             width: "40%", // Width of the modal
             height: "83%",
-            left: "30%", // Position from the left
+            left: "50%", // Position from the left
             top: "12%",
+            transform:"translate(-50%)"
           },
         }}
       >
@@ -152,58 +156,101 @@ export default function Navbar() {
                     </li>
                     <li>
                       <Link className="text-decoration-none" to="/">
-                        <a className="dropdown-item smallDropdown text-dark" >Home</a>
-
+                        <a className="dropdown-item smallDropdown text-dark">
+                          Home
+                        </a>
                       </Link>
                     </li>
                     <li>
                       <Link to="/create-timesheet">
-                        <a className="dropdown-item smallDropdown text-dark" href="">Create Timesheet</a>
+                        <a
+                          className="dropdown-item smallDropdown text-dark"
+                          href=""
+                        >
+                          Create Timesheet
+                        </a>
                       </Link>
                     </li>
                     <li>
                       <Link to="/tickets">
-
-                        <a className="dropdown-item smallDropdown text-dark" href="">Tickets</a>
-
+                        <a
+                          className="dropdown-item smallDropdown text-dark"
+                          href=""
+                        >
+                          Tickets
+                        </a>
                       </Link>
                     </li>
-                    {
-                      admin && (
-                        <li>
-                          <hr className="dropdown-divider" />
-                        </li>
-                      )
-                    }
-                    {admin && (<li>
-                      <Link to="/admin-dashboard">
-                        <a className="dropdown-item smallDropdown text-dark" href="">Admin's Desk</a>
-
-                      </Link>
-                    </li>)}
-                    {admin && (<li>
-                      <Link to="/analytics">
-                        <a className="dropdown-item smallDropdown text-dark" href="">Analytics</a>
-
-                      </Link>
-                    </li>)}
-                    {
-                      manager && (
-                        <li>
-                          <hr className="dropdown-divider" />
-                        </li>
-                      )
-                    }
-                    {manager && <li>
-                      <Link to="/manager-dashboard">
-                        <a className="dropdown-item smallDropdown text-dark" href="">Manager's desk</a>
-                      </Link>
-                    </li>}
-                    {manager && <li>
-                      <Link to="/tickets-received">
-                        <a className="dropdown-item smallDropdown text-dark" href="">Tickets Received</a>
-                      </Link>
-                    </li>}
+                    {admin && (
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                    )}
+                    {admin && (
+                      <li>
+                        <Link to="/admin-dashboard">
+                          <a
+                            className="dropdown-item smallDropdown text-dark"
+                            href=""
+                          >
+                            Admin's Desk
+                          </a>
+                        </Link>
+                      </li>
+                    )}
+                    {admin && (
+                      <li>
+                        <Link to="/analytics">
+                          <a
+                            className="dropdown-item smallDropdown text-dark"
+                            href=""
+                          >
+                            Analytics
+                          </a>
+                        </Link>
+                      </li>
+                    )}
+                    {admin && (
+                      <li>
+                        <Link to="/holidays">
+                          <a
+                            className="dropdown-item smallDropdown text-dark"
+                            href=""
+                          >
+                            Holidays
+                          </a>
+                        </Link>
+                      </li>
+                    )}
+                    {manager && (
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                    )}
+                    {manager && (
+                      <li>
+                        <Link to="/manager-dashboard">
+                          <a
+                            className="dropdown-item smallDropdown text-dark"
+                            href=""
+                          >
+                            Manager's desk
+                          </a>
+                        </Link>
+                      </li>
+                    )}
+                    {manager && (
+                      <li>
+                        <Link to="/tickets-received">
+                          <a
+                            className="dropdown-item smallDropdown text-dark"
+                            href=""
+                          >
+                            Tickets Received
+                          </a>
+                        </Link>
+                      </li>
+                    )}
                     <li>
                       <hr className="dropdown-divider" />
                     </li>
