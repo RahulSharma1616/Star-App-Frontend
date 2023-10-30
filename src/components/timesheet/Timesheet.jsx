@@ -222,9 +222,11 @@ export default function Timesheet() {
 
       return (
         <td key={date}>
-          <span style={{ fontWeight: "600" }}>{day[0]}</span>
-          <br />
-          <span style={{ fontWeight: "400" }}>{day[1]}</span>
+          <div style={{ minWidth: "80px" }}>
+            <span style={{ fontWeight: "600" }}>{day[0]}</span>
+            <br />
+            <span style={{ fontWeight: "400" }}>{day[1]}</span>
+          </div>
         </td>
       );
     });
@@ -442,7 +444,12 @@ export default function Timesheet() {
                       />
                       <div className="calendar-footer">
                         <div className="yellow-box"></div>
-                        <div style={{fontWeight: "450"}} className="holiday-label m-1">Holidays</div>
+                        <div
+                          style={{ fontWeight: "450" }}
+                          className="holiday-label m-1"
+                        >
+                          Holidays
+                        </div>
                       </div>
                       <div className="d-flex justify-content-center">
                         <button
