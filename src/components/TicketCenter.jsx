@@ -147,7 +147,7 @@ export default function TicketCenter() {
                 </div>
                 <Toast
                     show={showToast}
-                    delay={5000} autohide
+                    delay={2000} autohide
                     className="px-0"
                     onClose={toggleShowToast}
                     style={{
