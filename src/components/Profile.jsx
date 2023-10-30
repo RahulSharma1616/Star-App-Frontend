@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -7,25 +8,40 @@ import { MdInfoOutline } from "react-icons/md";
 
 export default function Profile({ closeWin }) {
 
+    // Extracting the 'token' cookie using the useCookies hook
     const [cookies] = useCookies(['token']);
+
+    // State variable to manage user data, initially set to null
     const [user, setUser] = useState(null);
+
+    // State variable to manage whether the password is being edited, initially set to false
     const [isEditingPassword, setIsEditingPassword] = useState(false);
+
+    // State variable to manage the new password
     const [newPassword, setNewPassword] = useState("");
+
+    // State variable to manage the hovering state, initially set to false
     const [isHovered, setIsHovered] = useState(false);
+
+    // State variable to manage the image edit state, initially set to false
     const [imageEdit, setImageEdit] = useState(false);
 
+    // State variable to manage the selected image, initially set to null
     const [selectedImage, setSelectedImage] = useState(null);
 
+    // State variable for managing a message
+    let [message, setMessage] = useState("");
 
-    let [message, setMessage] = useState(""); // State variable for managing a message
+    // State variable for managing an error
+    let [error, setError] = useState(false);
 
-    // This state variable manages the visibility of the toast. 
+    // State variable to manage the visibility of the toast
     const [showToast, setShowToast] = useState(false);
 
-    // This function is responsible for toggling the state of the showToast variable.
+    // Function to toggle the state of the showToast variable
     const toggleShowToast = () => setShowToast(!showToast);
 
-
+    // useEffect hook to fetch the user's profile data from the server
     useEffect(() => {
         axios({
             method: "get",
@@ -43,57 +59,75 @@ export default function Profile({ closeWin }) {
             });
     }, [cookies.token, imageEdit]); // Add cookies.token as a dependency to re-fetch data when the token changes
 
-
+    // Function to handle the password editing process
     function handlePasswordEdit() {
-        setIsEditingPassword(true)
+        setIsEditingPassword(true);
     }
 
+    // Function to handle changes in the password input field
     function handlePasswordChange(e) {
-        setNewPassword(e.target.value)
+        setNewPassword(e.target.value);
     }
 
+    // Function to handle the password submission
     function handlePasswordSubmit() {
-        axios({
-            method: "post",
-            url: "http://localhost:4000/user/password",
-            data: {
-                password: newPassword
-            },
-            headers: {
-                'Authorization': `Bearer ${cookies.token}`,
-            }
-        }).then((response) => {
-            setMessage(response.data.message);
+        if (newPassword === "") {
             setShowToast(true);
-            setIsEditingPassword(false)
-        })
+            setMessage("Enter a Value!");
+            setError(true);
+        } else {
+            axios({
+                method: "post",
+                url: "http://localhost:4000/user/password",
+                data: {
+                    password: newPassword
+                },
+                headers: {
+                    'Authorization': `Bearer ${cookies.token}`,
+                }
+            }).then((response) => {
+                setError(false);
+                setMessage(response.data.message);
+                setShowToast(true);
+                setIsEditingPassword(false);
+            });
+        }
     }
 
+    // Function to handle changes in the selected file
     const handleFileChange = (e) => {
         setSelectedImage(e.target.files[0]);
     };
 
+    // Function to handle the form submission for updating the image
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.append('photo', selectedImage);
-
-        try {
-            const response = await axios.post('http://localhost:4000/user/image', formData, {
-                headers: {
-                    'Authorization': `Bearer ${cookies.token}`,
-                    'Content-Type': 'multipart/form-data', // Important for file upload
-                },
-            });
-
-            setMessage(response.data.message);
+        if (selectedImage === null) {
             setShowToast(true);
-            setImageEdit(false);
-        } catch (error) {
-            console.error('Image upload failed:', error);
+            setMessage("Select an Image!");
+            setError(true);
+        } else {
+            const formData = new FormData();
+            formData.append('photo', selectedImage);
+
+            try {
+                const response = await axios.post('http://localhost:4000/user/image', formData, {
+                    headers: {
+                        'Authorization': `Bearer ${cookies.token}`,
+                        'Content-Type': 'multipart/form-data', // Important for file upload
+                    },
+                });
+
+                setMessage(response.data.message);
+                setShowToast(true);
+                setImageEdit(false);
+            } catch (error) {
+                console.error('Image upload failed:', error);
+            }
         }
     };
+
 
     return (
         <div className="profile-modal">
@@ -158,10 +192,30 @@ export default function Profile({ closeWin }) {
                     </div>
                 </form>
             }
-            <Toast show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
-                <Toast.Body className="bg-success text-white">
-                    <strong><MdInfoOutline size={25} /> {message}</strong>
-                    <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
+            <Toast
+                show={showToast}
+                delay={5000}
+                autohide
+                onClose={toggleShowToast}
+                style={{
+                    position: "fixed",
+                    bottom: "20px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "400px", // Adjust the width as per your requirement
+                }}
+            >
+                <Toast.Body
+                    className={error ? "bg-danger text-white" : "bg-success text-white"}
+                >
+                    <strong>
+                        <MdInfoOutline size={25} /> {message}
+                    </strong>
+                    <button
+                        type="button"
+                        className="btn-close btn-close-white float-end"
+                        onClick={toggleShowToast}
+                    ></button>
                 </Toast.Body>
             </Toast>
         </div>

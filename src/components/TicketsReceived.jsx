@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import SideNav from "./SideNav";
@@ -9,72 +10,76 @@ import { MdInfoOutline } from "react-icons/md";
 
 export default function TicketsReceived() {
 
-    const [isLoading, setIsLoading] = useState(true);
-    const [cookies] = useCookies(['token']);
-    const [tickets, setTickets] = useState([]);
-
+    const [isLoading, setIsLoading] = useState(true); // State variable for managing loading state
+    const [cookies] = useCookies(['token']); // Using cookies to get the token
+    const [tickets, setTickets] = useState([]); // State variable for managing ticket data
+    
     let [message, setMessage] = useState(""); // State variable for managing a message
-
+    
     // This state variable manages the visibility of the toast. 
     const [showToast, setShowToast] = useState(false);
-
-    const [remarks, setRemarks] = useState("");
-
+    
+    const [remarks, setRemarks] = useState(""); // State variable for managing remarks
+    
     // This function is responsible for toggling the state of the showToast variable.
     const toggleShowToast = () => setShowToast(!showToast);
-
+    
+    // This useEffect hook fetches the tickets from the server when the message changes.
     useEffect(() => {
-        setIsLoading(true)
+        setIsLoading(true); // Set loading to true before making the API call
         axios({
             method: "get",
             url: "http://localhost:4000/ticket/received",
             headers: {
-                'Authorization': `Bearer ${cookies.token}`,
+                'Authorization': `Bearer ${cookies.token}`, // Setting the Authorization header with the token
             }
         }).then((response) => {
-            setTickets(response.data.tickets)
-            setIsLoading(false)
-        })
-    }, [message])
-
+            setTickets(response.data.tickets); // Set the fetched tickets in the state
+            setIsLoading(false); // Set loading to false after fetching the tickets
+        });
+    }, [message]); // Run this effect when the message changes
+    
+    // This function handles the elevation of a ticket with the provided id.
     function handleElevate(id) {
-        setIsLoading(true)
+        setIsLoading(true); // Set loading to true before making the API call
         axios({
             method: "patch",
             url: "http://localhost:4000/ticket/elevate",
             data: {
                 ticketID: id,
-                elevate: true
+                elevate: true, // Set the elevate parameter to true
             },
             headers: {
-                'Authorization': `Bearer ${cookies.token}`,
+                'Authorization': `Bearer ${cookies.token}`, // Setting the Authorization header with the token
             }
         }).then((response) => {
-            setMessage(response.data.message);
-            setShowToast(true);
-            setIsLoading(false);
-        })
+            setMessage(response.data.message); // Set the message from the response
+            setShowToast(true); // Show the toast
+            setIsLoading(false); // Set loading to false after the API call
+        });
     }
-
+    
+    // This function handles the rejection of a ticket with the provided id.
     function handleReject(id) {
-        setIsLoading(true)
+        setIsLoading(true); // Set loading to true before making the API call
         axios({
             method: "patch",
             url: "http://localhost:4000/ticket/elevate",
             data: {
                 ticketID: id,
-                elevate: false,
-                remarks: remarks
+                elevate: false, // Set the elevate parameter to false
+                remarks: remarks, // Include the remarks in the data to be sent
             },
             headers: {
-                'Authorization': `Bearer ${cookies.token}`,
+                'Authorization': `Bearer ${cookies.token}`, // Setting the Authorization header with the token
             }
         }).then((response) => {
-            setMessage(response.data.message);
-            setShowToast(true);
-            setIsLoading(false);
-        })
+            setMessage(response.data.message); // Set the message from the response
+            setShowToast(true); // Show the toast
+            setIsLoading(false); // Set loading to false after the API call
+        });
     }
+    
 
     return (
         <>

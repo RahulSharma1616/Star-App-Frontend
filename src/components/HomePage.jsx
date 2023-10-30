@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
@@ -11,26 +12,40 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Navbar from "./Navbar";
+import Card from 'react-bootstrap/Card';
 
 export default function HomePage() {
 
+  // State variable to manage the selected timesheet, initially set to null
   const [selectedTimesheet, setSelectedTimesheet] = useState(null);
+
+  // State variable to manage a message, initially set to an empty string
   const [message, setMessage] = useState("");
+
+  // State variable to manage the level, initially set to 1
   const [level, setLevel] = useState(1);
 
+  // Determine steps based on whether a timesheet is selected
   const steps = selectedTimesheet
     ? [`Submitted on ${moment(selectedTimesheet.submissionDate).format('MMM D, YYYY')}`, `Project Manager\n${selectedTimesheet.status}`, 'Approved']
     : ['Manager Approval', 'Approved'];
 
+  // State variable to manage the modal's open/close state, initially set to false
   const [show, setShow] = useState(false);
 
+  // State variable to manage the visibility of the toast, initially set to false
   const [showToast, setShowToast] = useState(false);
+
+  // Function to toggle the state of the showToast variable
   const toggleShowToast = () => setShowToast(!showToast);
 
+  // Function to handle the modal close
   const handleClose = () => setShow(false);
+
+  // Function to handle the modal open
   const handleShow = () => setShow(true);
 
-  // Function to handle row click and set submission date
+  // Function to handle row click and set the submission date
   const handleRowClick = (timesheet) => {
     setSelectedTimesheet(timesheet);
 
@@ -43,13 +58,21 @@ export default function HomePage() {
     handleShow(); // Open the modal
   };
 
+  // State variable to manage whether the page is currently loading, initially set to true
   let [isLoading, setIsLoading] = useState(true);
+
+  // State variable to manage the number of timesheets that have been deleted, initially set to 0
   let [isDeleted, setIsDeleted] = useState(0);
+
+  // Extracting the 'token' cookie using the useCookies hook
   const [cookies] = useCookies(['token']);
+
+  // State variable to manage an array of timesheets, initially set to an empty array
   const [timesheets, setTimesheets] = useState([]);
 
+  // useEffect hook to fetch timesheets from the server
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     axios({
       method: "get",
       url: "http://localhost:4000/timesheet/",
@@ -57,13 +80,14 @@ export default function HomePage() {
         'Authorization': `Bearer ${cookies.token}`,
       }
     }).then((response) => {
-      setTimesheets(response.data.timesheets)
-      setIsLoading(false)
-    })
-  }, [isDeleted])
+      setTimesheets(response.data.timesheets);
+      setIsLoading(false);
+    });
+  }, [isDeleted]);
 
+  // Function to handle the deletion of a timesheet
   function handleDelete(timesheetID) {
-    setIsLoading(true)
+    setIsLoading(true);
     axios({
       method: "delete",
       url: "http://localhost:4000/timesheet/",
@@ -77,8 +101,8 @@ export default function HomePage() {
       setMessage(response.data.message);
       setShowToast(true);
       setIsDeleted(isDeleted + 1);
-      setIsLoading(false)
-    })
+      setIsLoading(false);
+    });
   }
 
   return (
@@ -160,6 +184,39 @@ export default function HomePage() {
             }, 0)}
           </span>
         </div>}
+        {selectedTimesheet && selectedTimesheet.comment && (<div>
+          <Card
+            style={{ borderColor: "#043365", width: '18rem', borderWidth: '3px' }}
+            className="mx-4 mb-3"
+          >
+            <Card.Header>Comment:</Card.Header>
+            <Card.Body className="p-3">
+              <Card.Text>
+                {selectedTimesheet && selectedTimesheet.comment && (selectedTimesheet.comment)}
+                {selectedTimesheet && !selectedTimesheet.comment && "NA"}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </div>)}
+        {selectedTimesheet && selectedTimesheet.remarks && (<div className="d-flex justify-content-end">
+          <Card
+            style={{ borderColor: "#e06e02", width: '18rem', borderWidth: '3px' }}
+            className="mx-4 mb-3"
+          >
+            <Card.Header>Manager's Remark:</Card.Header>
+            <Card.Body className="p-3">
+              <Card.Text>
+                {
+                  selectedTimesheet && selectedTimesheet.status !== "Auto-Approved" && selectedTimesheet.remarks && (
+                    <div>{selectedTimesheet.remarks}</div>
+                  )
+                }
+                {selectedTimesheet && selectedTimesheet.status !== "Auto-Approved" && !selectedTimesheet.remarks && "NA"}
+
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </div>)}
       </Modal>
 
       {isLoading && (
@@ -262,7 +319,7 @@ export default function HomePage() {
             </table>
             {
               timesheets.length == 0 && (
-                <div className="fs-5 d-flex justify-content-center" style={{color: "grey"}}>Looks like there are no timesheets to show right now!</div>
+                <div className="fs-5 d-flex justify-content-center" style={{ color: "grey" }}>Looks like there are no timesheets to show right now!</div>
               )
             }
             <div

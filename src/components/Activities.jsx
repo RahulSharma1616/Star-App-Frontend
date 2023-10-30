@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import { FcInfo } from "react-icons/fc"
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -16,15 +17,34 @@ import { MdInfoOutline } from "react-icons/md";
 
 export default function Activities() {
 
+    // State variable to manage the selected timesheet, initially set to null
     const [selectedTimesheet, setSelectedTimesheet] = useState(null);
+
+    // State variable to manage the level, initially set to 1
     const [level, setLevel] = useState(1);
 
+    // Determine steps based on the selected timesheet
     const steps = selectedTimesheet
         ? [`Submitted on ${moment(selectedTimesheet.submissionDate).format('MMM D, YYYY')}`, `Project Manager\n${selectedTimesheet.status}`, 'Approved']
         : ['Manager Approval', 'Approved'];
 
+    // State variable to manage the modal's open/close state, initially set to false
     const [show, setShow] = useState(false);
+
+    // State variable for managing remarks, initially set to an empty string
     const [remarks, setRemarks] = useState("");
+
+    // State variable to manage whether the page is currently loading, initially set to true
+    let [isLoading, setIsLoading] = useState(true);
+
+    // State variable to manage the number of renders, initially set to 0
+    let [render, setRender] = useState(0);
+
+    // Extracting the 'token' cookie using the useCookies hook
+    const [cookies] = useCookies(['token']);
+
+    // State variable to manage an array of timesheets, initially set to an empty array
+    const [timesheets, setTimesheets] = useState([]);
 
     const [message, setMessage] = useState(""); // State variable for managing a message
 
@@ -53,11 +73,6 @@ export default function Activities() {
     function handleRemarks(event) {
         setRemarks(event.target.value);
     }
-
-    let [isLoading, setIsLoading] = useState(true);
-    let [render, setRender] = useState(0)
-    const [cookies] = useCookies(['token']);
-    const [timesheets, setTimesheets] = useState([]);
 
     const nonPendingTimesheets = timesheets.filter((timesheet) => {
         return timesheet.status !== "Pending";
@@ -208,7 +223,7 @@ export default function Activities() {
                         style={{ borderColor: "#043365", width: '18rem', borderWidth: '3px' }}
                         className="mx-4 mb-3"
                     >
-                        <Card.Header>Resource's Comment:</Card.Header>
+                        <Card.Header>Comment:</Card.Header>
                         <Card.Body className="p-3">
                             <Card.Text>
                                 {selectedTimesheet && selectedTimesheet.comment && (selectedTimesheet.comment)}
@@ -322,7 +337,7 @@ export default function Activities() {
                         </table>
                         {
                             nonPendingTimesheets.length == 0 && (
-                                <div className="fs-5 d-flex justify-content-center" style={{color: "grey"}}>Looks like there are no timesheets to show right now!</div>
+                                <div className="fs-5 d-flex justify-content-center" style={{ color: "grey" }}>Looks like there are no timesheets to show right now!</div>
                             )
                         }
                     </div>

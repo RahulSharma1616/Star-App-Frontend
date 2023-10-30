@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -8,23 +9,31 @@ import { MdInfoOutline } from "react-icons/md";
 
 export default function TicketCenter() {
 
+    // State variable to manage whether the page is currently loading
     const [isLoading, setIsLoading] = useState(true);
+
+    // State variable to manage cookies, specifically the "token" cookie
     const [cookies, setCookie] = useCookies(["token"]);
 
+    // State variable to manage an array of tickets
     const [tickets, setTickets] = useState([]);
 
-    let [message, setMessage] = useState(""); // State variable for managing a message
+    // State variable to manage a message
+    let [message, setMessage] = useState("");
 
-    // This state variable manages the visibility of the toast.
+    // State variable to manage the visibility of the toast
     const [showToast, setShowToast] = useState(false);
 
+    // State variable to manage remarks for a ticket
     const [remarks, setRemarks] = useState("");
 
-    // This function is responsible for toggling the state of the showToast variable.
+    // Function to toggle the state of the showToast variable
     const toggleShowToast = () => setShowToast(!showToast);
 
+    // State variable to manage a render count
     const [render, setRender] = useState(0);
 
+    // useEffect hook to fetch elevated tickets from the server
     useEffect(() => {
         setIsLoading(true);
         axios({
@@ -44,8 +53,9 @@ export default function TicketCenter() {
         );
     }, [render]);
 
+    // Function to handle closing a ticket
     function handleTicket(ticketID) {
-        setIsLoading(true)
+        setIsLoading(true);
         axios({
             method: "patch",
             url: "http://localhost:4000/ticket/status",
@@ -62,7 +72,7 @@ export default function TicketCenter() {
             setShowToast(true);
             setIsLoading(false);
             setRender(render + 1);
-        })
+        });
     }
 
     return (
@@ -118,7 +128,7 @@ export default function TicketCenter() {
                                                             {ticket.status == "Elevated" && <div style={{ display: 'flex', justifyContent: 'center' }}>
                                                                 <input
                                                                     type="text"
-                                                                    onChange={(e) => {setRemarks(e.target.value)}}
+                                                                    onChange={(e) => { setRemarks(e.target.value) }}
                                                                     className="form-control mb-4"
                                                                     style={{ width: '50%', margin: 'auto' }}
                                                                     placeholder="Write Your Remarks!"

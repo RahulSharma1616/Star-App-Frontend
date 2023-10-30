@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReactApexChart from "react-apexcharts";

@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import axios from "axios";
@@ -42,7 +43,6 @@ function Holidays() {
       // }
     })
       .then((response) => {
-        console.log(response.data);
         setHolidays(response.data);
       })
       .catch((error) => {
@@ -80,6 +80,7 @@ function Holidays() {
   function handleSubmit(newHoliday) {
     let isDuplicateName = false;
     let isDuplicateDate = false;
+    
     // checking the holiday name or date does not already exists
     holidays.forEach((holiday) => {
       if (holiday.date === newHoliday.date) {
@@ -102,6 +103,7 @@ function Holidays() {
       alert("Holiday with same name already exists");
       return;
     }
+
     // make api call to save holiday
     axios
       .post("http://localhost:4000/holidays/save", newHoliday)
@@ -123,6 +125,7 @@ function Holidays() {
     setActionOccurred(true);
     setIsModalOpen(false);
   }
+
   // handle delete action
   function handleDelete(id) {
     axios

@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -17,10 +18,15 @@ import "react-tabs/style/react-tabs.css";
 import "./analytics.css";
 
 export default function Analytics({ closeWin }) {
+
+  // State variable to manage whether the page is currently loading, initially set to true
   const [isLoading, setIsLoading] = useState(true);
+
+  // Extracting the 'token' cookie using the useCookies hook
   const [cookies, setCookie] = useCookies(["token"]);
 
-  let [message, setMessage] = useState(""); // State variable for managing a message
+  // State variable for managing a message
+  let [message, setMessage] = useState("");
 
   // This state variable manages the visibility of the toast.
   const [showToast, setShowToast] = useState(false);
@@ -37,7 +43,7 @@ export default function Analytics({ closeWin }) {
         Authorization: `Bearer ${cookies.token}`,
       },
     }).then(
-      function (response) {},
+      function (response) { },
       function (error) {
         console.log("error: ", error);
       }
@@ -77,11 +83,11 @@ export default function Analytics({ closeWin }) {
             {/* divide the activities and business analytics */}
             <Tabs>
               <TabList>
-                 <Tab>Overall Analytics</Tab>
+                <Tab>Overall Analytics</Tab>
                 <Tab>Business Analytics</Tab>
               </TabList>
               <TabPanel>
-              {/* Activities Analytics Component */}
+                {/* Activities Analytics Component */}
                 <div className="table-container">
                   <div className="card m-3">
                     <div className="card-body">
@@ -133,7 +139,7 @@ export default function Analytics({ closeWin }) {
                 </div>
               </TabPanel>
               <TabPanel>
-              {/* Buisness Analytics component */}
+                {/* Buisness Analytics component */}
                 <div className="container">
                   <h3
                     style={{
