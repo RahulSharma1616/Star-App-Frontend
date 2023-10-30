@@ -140,6 +140,7 @@ li {
 
 .table-container {
   width: -webkit-fill-available;
+  padding-left: 10%;
 }
 
 .project-card1 {
@@ -325,7 +326,7 @@ a {
 @media only screen and (max-width: 575px) {
   
   .login-input{
-    min-width: 236px;
+    min-width: 235px;
   }
   .login-container{
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);

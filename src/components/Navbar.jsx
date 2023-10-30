@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import { useEffect, useState } from "react";
 import logo from "../images/LOGO.png";
 import axios from "axios";
@@ -6,14 +7,22 @@ import Modal from "react-modal";
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
-import ChatbotTry from "./ChatbotTry";
+import ChatBot from "./ChatBot";
 
 export default function Navbar() {
+  // State variable to manage the image data
   const [image, setImage] = useState({});
+
+  // Extracting the 'token' cookie and related functions using the useCookies hook
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+
+  // State variable to manage the manager status, initially set to false
   const [manager, setManager] = useState(false);
+
+  // State variable to manage the admin status, initially set to false
   const [admin, setAdmin] = useState(false);
 
+  // useEffect hook to fetch the user's profile image from the server
   useEffect(() => {
     if (cookies.token) {
       axios({
@@ -28,13 +37,12 @@ export default function Navbar() {
     }
   }, []);
 
+  // useEffect hook to determine if the current user is a manager
   useEffect(() => {
     if (cookies.token) {
       axios({
         method: "get",
-
         url: "http://localhost:4000/user/isManager",
-
         headers: {
           Authorization: `Bearer ${cookies.token}`,
         },
@@ -44,6 +52,7 @@ export default function Navbar() {
     }
   }, []);
 
+  // useEffect hook to determine if the current user is an admin
   useEffect(() => {
     if (cookies.token) {
       axios({
@@ -54,20 +63,24 @@ export default function Navbar() {
         },
       }).then((response) => {
         setAdmin(response.data.isAdmin);
-      })
+      });
     }
   }, []);
 
+  // State variable to manage the modal's open/close state, initially set to false
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  // Function to open the modal
   const openModal = () => {
     setModalIsOpen(true);
   };
 
+  // Function to close the modal
   const closeModal = () => {
     setModalIsOpen(false);
   };
 
+  // Function to handle the logout action by removing the 'token' cookie
   function handleLogout() {
     removeCookie("token");
   }
@@ -82,9 +95,9 @@ export default function Navbar() {
             backgroundColor: "rgba(0, 0, 0, 0.5)", // Background overlay color
           },
           content: {
-            width: "71%", // Width of the modal
-            height: "68%",
-            left: "22%", // Position from the left
+            width: "40%", // Width of the modal
+            height: "83%",
+            left: "30%", // Position from the left
             top: "12%",
           },
         }}
@@ -116,7 +129,7 @@ export default function Navbar() {
             </Link>
             {cookies.token && (
               <div className="d-flex">
-                {/* <ChatbotTry/> */}
+                <ChatBot />
                 <div className="dropdown">
                   <img
                     src={image.url}
