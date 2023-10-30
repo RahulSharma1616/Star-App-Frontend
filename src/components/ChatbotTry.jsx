@@ -25,7 +25,7 @@ function ChatbotTry() {
   }
 
   const [chatHistory, setChatHistory] = useState([
-    { role: "assistant", content: "Hi, How can I help you?" },
+    { role: "assistant", content: "Hi,, How can I help you?" },
   ]);
   const [isTyping, setIsTyping] = useState(false);
 
