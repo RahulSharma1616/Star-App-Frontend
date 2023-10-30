@@ -40,8 +40,7 @@ export default function TicketCard({ticket}) {
                         <div className="shadow-lg p-3 ticketcard">
                             <div className="d-flex">
                                 <div><img src={image.url} alt="User" className="user-image mb-3" style={{ width: "70px", height: "70px", borderRadius: "50%" }} /></div>
-                                <div className="p-3"> <span className="h3" style={{ fontWeight: "500"}}>{ticket.subject} </span><span className={`badge text-bg-${statusClass} text-white`}>{ticket.status}</span></div>
-                                                           
+                                <div className="p-3"> <span className="h3 p-0" style={{ fontWeight: "500"}}>{ticket.subject} </span><span className={`badge text-bg-${statusClass} text-white`}>{ticket.status}</span></div>                     
                             </div>
                             <div className="mb-3">
                             <div><strong>Category: </strong>{ticket.category}</div> 
@@ -52,6 +51,9 @@ export default function TicketCard({ticket}) {
                             }
                             </div>
                             <p>{ticket.description}</p>
+                            {ticket.remarks !== "" && (
+                                <p className="my-2"><strong>Remarks:</strong> {ticket.remarks}</p>
+                            )}
                         </div>
                     </li>
                 </ul>

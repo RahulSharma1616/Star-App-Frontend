@@ -1,0 +1,38 @@
+name: FE App to Windows VM
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4.1.1
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3.8.1
+      with:
+        node-version: 18
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build React App
+      run: CI=false npm run build
+  
+    - name: Deploy to Windows VM
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./
+        log-level: verbose
+        timeout: 120000
+        server-dir: /FE/       
+
+          
+
+    
+    

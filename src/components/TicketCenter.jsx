@@ -1,21 +1,21 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import SideNav from "./SideNav";
-import axios from "axios";
 import Navbar from "./Navbar";
-import Header from "./Header";
-import Toast from 'react-bootstrap/Toast';
+import Toast from "react-bootstrap/Toast";
 import { MdInfoOutline } from "react-icons/md";
 
-export default function TicketsReceived() {
+export default function TicketCenter() {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [cookies] = useCookies(['token']);
+    const [cookies, setCookie] = useCookies(["token"]);
+
     const [tickets, setTickets] = useState([]);
 
     let [message, setMessage] = useState(""); // State variable for managing a message
 
-    // This state variable manages the visibility of the toast. 
+    // This state variable manages the visibility of the toast.
     const [showToast, setShowToast] = useState(false);
 
     const [remarks, setRemarks] = useState("");
@@ -23,47 +23,35 @@ export default function TicketsReceived() {
     // This function is responsible for toggling the state of the showToast variable.
     const toggleShowToast = () => setShowToast(!showToast);
 
+    const [render, setRender] = useState(0);
+
     useEffect(() => {
-        setIsLoading(true)
+        setIsLoading(true);
         axios({
             method: "get",
-            url: "http://localhost:4000/ticket/received",
+            url: "http://localhost:4000/ticket/elevated",
             headers: {
-                'Authorization': `Bearer ${cookies.token}`,
-            }
-        }).then((response) => {
-            setTickets(response.data.tickets)
-            setIsLoading(false)
-        })
-    }, [message])
-
-    function handleElevate(id) {
-        setIsLoading(true)
-        axios({
-            method: "patch",
-            url: "http://localhost:4000/ticket/elevate",
-            data: {
-                ticketID: id,
-                elevate: true
+                Authorization: `Bearer ${cookies.token}`,
             },
-            headers: {
-                'Authorization': `Bearer ${cookies.token}`,
+        }).then(
+            function (response) {
+                setTickets(response.data);
+                setIsLoading(false);
+            },
+            function (error) {
+                console.log("error: ", error);
             }
-        }).then((response) => {
-            setMessage(response.data.message);
-            setShowToast(true);
-            setIsLoading(false);
-        })
-    }
+        );
+    }, [render]);
 
-    function handleReject(id) {
+    function handleTicket(ticketID) {
         setIsLoading(true)
         axios({
             method: "patch",
-            url: "http://localhost:4000/ticket/elevate",
+            url: "http://localhost:4000/ticket/status",
             data: {
-                ticketID: id,
-                elevate: false,
+                ticketID: ticketID,
+                status: "Closed",
                 remarks: remarks
             },
             headers: {
@@ -73,6 +61,7 @@ export default function TicketsReceived() {
             setMessage(response.data.message);
             setShowToast(true);
             setIsLoading(false);
+            setRender(render + 1);
         })
     }
 
@@ -93,24 +82,19 @@ export default function TicketsReceived() {
                     <SideNav />
                 </div>
                 <div className="col-lg-11 mt-6">
-                    <div className="ticketsContainer ">
-                        <Header isManager={true} />
+                    <div className="table-container">
+                        <div className="timesheet-header d-flex justify-content-between">
+                            <h3
+                                className="h2 m-2"
+                                style={{ fontWeight: "350", verticalAlign: "middle" }}
+                            >
+                                Ticket Center
+                            </h3>
+                        </div>
                         <div className="d-flex p-3">
                             <div className="recentTickets">
                                 <div>
                                     {tickets.map((ticket) => {
-
-                                        let statusClass;
-
-                                        if (ticket.status == "Pending") {
-                                            statusClass = "primary"
-                                        } else if (ticket.status == "Rejected") {
-                                            statusClass = "danger"
-                                        } else if (ticket.status == "Approved") {
-                                            statusClass = "success"
-                                        } else {
-                                            statusClass = "info"
-                                        }
 
                                         return (
                                             <div key={ticket._id} className="m-6" style={{ width: '83vw' }}>
@@ -119,7 +103,7 @@ export default function TicketsReceived() {
                                                         <div className="shadow-lg p-3 ticketcard">
                                                             <div className="d-flex">
                                                                 <div><img src={ticket.image.url} alt="User" className="user-image mb-3" style={{ width: "70px", height: "70px", borderRadius: "50%" }} /></div>
-                                                                <div className="p-3"> <span className="h3 p-0" style={{ fontWeight: "500" }}>{ticket.name} </span><span className={`badge text-bg-${statusClass} text-white`}>{ticket.status}</span></div>
+                                                                <div className="p-3"> <span className="h3 p-0" style={{ fontWeight: "500" }}>{ticket.name} </span></div>
                                                             </div>
                                                             <div className="mb-3">
                                                                 <div><strong>Subject: </strong>{ticket.subject}</div>
@@ -131,7 +115,7 @@ export default function TicketsReceived() {
                                                                 }
                                                             </div>
                                                             <p>{ticket.description}</p>
-                                                            {ticket.status == "Pending" && <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                            {ticket.status == "Elevated" && <div style={{ display: 'flex', justifyContent: 'center' }}>
                                                                 <input
                                                                     type="text"
                                                                     onChange={(e) => {setRemarks(e.target.value)}}
@@ -140,21 +124,17 @@ export default function TicketsReceived() {
                                                                     placeholder="Write Your Remarks!"
                                                                 />
                                                             </div>}
-                                                            {ticket.status == "Pending" && <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                                <button onClick={() => { handleElevate(ticket._id) }} className="btn btn-outline-success mx-1">
-                                                                    Elevate
+                                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                                <button onClick={() => { handleTicket(ticket._id) }} className="btn btn-outline-info mx-1">
+                                                                    Close Ticket
                                                                 </button>
-                                                                <button onClick={() => { handleReject(ticket._id) }} className="btn btn-outline-danger mx-1">
-                                                                    Reject
-                                                                </button>
-                                                            </div>}
+                                                            </div>
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </div>
                                         )
                                     })}
-
                                 </div>
                             </div>
                         </div>
@@ -165,13 +145,30 @@ export default function TicketsReceived() {
                         )
                     }
                 </div>
-                <Toast className="p-0" delay={5000} autohide show={showToast} onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+                <Toast
+                    show={showToast}
+                    delay={2000} autohide
+                    className="px-0"
+                    onClose={toggleShowToast}
+                    style={{
+                        position: "fixed",
+                        bottom: "20px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                    }}
+                >
                     <Toast.Body className="bg-success text-white">
-                        <strong><MdInfoOutline size={25} /> {message}</strong>
-                        <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>
+                        <strong>
+                            <MdInfoOutline size={25} /> {message}
+                        </strong>
+                        <button
+                            type="button"
+                            className="btn-close btn-close-white float-end"
+                            onClick={toggleShowToast}
+                        ></button>
                     </Toast.Body>
                 </Toast>
             </div>
         </>
-    )
+    );
 }

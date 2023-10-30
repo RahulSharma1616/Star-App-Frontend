@@ -4,13 +4,14 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import Navbar from "./Navbar";
-import SideNav from "./SideNav";
+import Navbar from "../Navbar";
+import SideNav from "../SideNav";
 import Toast from "react-bootstrap/Toast";
 import { MdInfoOutline } from "react-icons/md";
+import "./timesheet.css";
 
 export default function Timesheet() {
-
+  const [holidaysList, setHolidaysList] = useState([]); // Holidays list
   const [isLoading, setIsLoading] = useState(true); // State variable for managing loading state
   const [cookies] = useCookies(["token"]); // State variable for managing cookies, specifically the 'token' cookie
   const [date, setDate] = useState(new Date()); //Variable to keep the selected date
@@ -69,11 +70,29 @@ export default function Timesheet() {
 
   // Function to handle date changes
   const handleDateChange = (newDate) => {
-
     setDate(newDate);
     setCurrentWeekStartDate(moment(newDate).startOf("week"));
     closeCalendar();
   };
+
+  // Get all the holidays from holidays api
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:4000/holidays/all",
+      // headers: {
+      //   Authorization: `Bearer ${cookies.token}`,
+      // },
+    }).then(
+      function (response) {
+        setHolidaysList(response.data);
+      },
+      function (error) {
+        console.log("error fetching holidays ", error);
+        setIsLoading(false);
+      }
+    );
+  }, []);
 
   // Fetch projects data from the server on component mount
   useEffect(() => {
@@ -191,7 +210,7 @@ export default function Timesheet() {
     const dates = [];
     const startOfWeek = currentWeekStartDate.clone().startOf("week");
     const endOfWeek = currentWeekStartDate.clone().endOf("week");
-    
+
     while (startOfWeek.isSameOrBefore(endOfWeek)) {
       dates.push(startOfWeek.format("dddd DD-MMM-YY"));
       dateContainer.push(startOfWeek.format("YYYY-MM-DD"));
@@ -203,9 +222,11 @@ export default function Timesheet() {
 
       return (
         <td key={date}>
-          <span style={{ fontWeight: "600" }}>{day[0]}</span>
-          <br />
-          <span style={{ fontWeight: "400" }}>{day[1]}</span>
+          <div style={{ minWidth: "80px" }}>
+            <span style={{ fontWeight: "600" }}>{day[0]}</span>
+            <br />
+            <span style={{ fontWeight: "400" }}>{day[1]}</span>
+          </div>
         </td>
       );
     });
@@ -236,6 +257,11 @@ export default function Timesheet() {
       (response) => {
         setIsLoading(false);
         setMessage(response.data.message);
+
+        if (response.data.error) {
+          setError(true);
+        }
+
         setShowToast(true);
       },
       (error) => {
@@ -267,7 +293,7 @@ export default function Timesheet() {
       (response) => {
         setIsLoading(false);
         setMessage(response.data.message);
-        if(response.data.error) {
+        if (response.data.error) {
           setError(true);
         }
         setShowToast(true);
@@ -282,9 +308,80 @@ export default function Timesheet() {
     );
   }
 
+  //disable timesheet input
+  const [isTimesheetDisabled, setIsTimesheetDisabled] = useState(false);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
+
+  // disable submit button for future weeks
+  useEffect(() => {
+    const nextWeek = moment().add(1, "week");
+    if (currentWeekStartDate.isSameOrAfter(nextWeek, "week")) {
+      setIsSubmitDisabled(true);
+    } else {
+      setIsSubmitDisabled(false);
+    }
+  }, [currentWeekStartDate]);
+
+  // disable timesheet for future inputs(more than 2 weeks)
+  useEffect(() => {
+    if (currentWeekStartDate.diff(moment(), "weeks") > 1) {
+      setIsTimesheetDisabled(true);
+    } else {
+      setIsTimesheetDisabled(false);
+    }
+  }, [currentWeekStartDate]);
+
+  // Mark holidays in the timesheet
+  const [holidayIndex, setHolidayIndex] = useState([-1]);
+
+  useEffect(() => {
+    let currentDate = currentWeekStartDate.clone();
+    let updatedHolidayIndex = [];
+
+    for (let i = 0; i < 7; i++) {
+      let dateInWeek = currentDate.format("YYYY-MM-DD");
+
+      let isHoliday = holidaysList.some(
+        (holiday) => moment(holiday.date).format("YYYY-MM-DD") === dateInWeek
+      );
+
+      if (isHoliday) {
+        updatedHolidayIndex.push(i);
+      }
+      currentDate.add(1, "day");
+    }
+
+    setHolidayIndex(updatedHolidayIndex);
+  }, [currentWeekStartDate, isLoading]);
+
+  //Mark holidays on Calendar
+  const tileClassName = ({ date }) => {
+    return holidaysList.some((holiday) =>
+      moment(holiday.date).isSame(date, "day")
+    )
+      ? "holiday-tile"
+      : null;
+  };
+
+  const tileContent = ({ date }) => {
+    const holiday = holidaysList.find((h) =>
+      moment(h.date).isSame(date, "day")
+    );
+    return holiday ? (
+      <div
+        className="holiday-marker"
+        style={{ marginTop: "-8px", transform: "scale(0.45)" }}
+      >
+        {holiday.name}
+      </div>
+    ) : null;
+  };
+
   return (
-    <>
+    <div style={{ overflow: "hidden !important" }}>
       <Navbar />
+      <br />
+      <br />
       {isLoading && (
         <div className="loader-overlay">
           <div className="bouncing-loader">
@@ -296,12 +393,15 @@ export default function Timesheet() {
       )}
 
       <div className="row">
-        <div className="col-lg-1 mt-6">
+        <div className="custom-col-0">
           <SideNav />
         </div>
-        <div className="col-lg-11 mt-6">
+        <div
+          className="custom-col-12"
+          style={{ minWidth: "610px", maxWidth: "92%" }}
+        >
           <div className="timesheet-container">
-            <div className="d-flex justify-content-between p-4">
+            <div className="d-flex justify-content-between ps-4 pt-3 pb-3 pe-2">
               <span
                 className="h1"
                 style={{ fontWeight: "350", verticalAlign: "middle" }}
@@ -330,14 +430,27 @@ export default function Timesheet() {
                 </button>
 
                 {isCalendarOpen && (
-                  <div className="calendar-overlay" onClick={handleCalendarClick}>
+                  <div
+                    className="calendar-overlay"
+                    onClick={handleCalendarClick}
+                  >
                     <div className={`calendar-container`}>
                       <Calendar
                         className={`${isCalendarOpen ? "calendar-active" : ""}`}
                         onChange={handleDateChange}
                         value={date}
+                        tileClassName={tileClassName}
+                        tileContent={tileContent}
                       />
-
+                      <div className="calendar-footer">
+                        <div className="yellow-box"></div>
+                        <div
+                          style={{ fontWeight: "450" }}
+                          className="holiday-label m-1"
+                        >
+                          Holidays
+                        </div>
+                      </div>
                       <div className="d-flex justify-content-center">
                         <button
                           className="btn btn-dark m-3"
@@ -354,13 +467,13 @@ export default function Timesheet() {
                   Previous Week
                 </button>
 
-                <button onClick={nextWeek} className="btn btn-outline-dark m-1">
+                <button onClick={nextWeek} className="btn btn-outline-dark ">
                   Next Week
                 </button>
               </span>
             </div>
 
-            <table className="table">
+            <table className="table ms-4">
               <thead className="table-secondary">
                 <tr>
                   <th
@@ -406,15 +519,17 @@ export default function Timesheet() {
                       {projectHours &&
                         projectHours.map((pHour, dayIndex) => {
                           return (
-                            <td key={dayIndex} className={`col-xs-2 ${(dayIndex == 5 || dayIndex == 6) ? "table-warning" : ""}`}>
+                            <td key={dayIndex} className="col-xs-2">
                               <input
+                                disabled={isTimesheetDisabled}
                                 type="number"
                                 value={pHour}
                                 onChange={(e) => {
-                                  if (e.target.value > 24 || e.target.value < 0) {
-                                    setError(true);
+                                  if (
+                                    e.target.value > 24 ||
+                                    e.target.value < 0
+                                  ) {
                                     setMessage("Enter a valid value!");
-
                                     setShowToast(true);
                                   } else {
                                     handleInputChange(
@@ -424,8 +539,27 @@ export default function Timesheet() {
                                     );
                                   }
                                 }}
-                                className={`timesheet-input no-spinners shadow ${pHour < 0 || pHour > 24 ? "is-invalid" : ""
-                                  }`}
+                                className={
+                                  `${
+                                    holidayIndex.includes(dayIndex)
+                                      ? "holiday-input"
+                                      : ""
+                                  }` +
+                                  " " +
+                                  `${
+                                    dayIndex === 5 || dayIndex === 6
+                                      ? "input-weekend"
+                                      : ""
+                                  }` +
+                                  " " +
+                                  `${
+                                    isTimesheetDisabled ? "disabled-input" : ""
+                                  }` +
+                                  " " +
+                                  `timesheet-input no-spinners shadow ${
+                                    pHour < 0 || pHour > 24 ? "is-invalid" : ""
+                                  }`
+                                }
                                 min="0"
                                 max="24"
                               />
@@ -438,7 +572,7 @@ export default function Timesheet() {
               </tbody>
             </table>
 
-            <div className="p-4">
+            <div className="py-2 ps-4 pe-0">
               <textarea
                 onChange={handleComment}
                 className="form-control border border-secondary"
@@ -447,43 +581,29 @@ export default function Timesheet() {
               ></textarea>
             </div>
 
-            {enableButton && (
-              <div className="d-flex justify-content-end p-4">
-                <button onClick={handleSave} className="btn btn-outline-dark m-1">
-                  Save
-                </button>
-
-                <button onClick={handleSubmit} className="btn btn-dark m-1">
-                  Submit
-                </button>
-              </div>
-            )}
-
-            {!enableButton && (
-              <div className="d-flex justify-content-end p-4">
-                <button
-                  disabled
-                  onClick={handleSave}
-                  className="btn btn-outline-dark m-1"
-                >
-                  Save
-                </button>
-
-                <button
-                  disabled
-                  onClick={handleSubmit}
-                  className="btn btn-dark m-1"
-                >
-                  Submit
-                </button>
-              </div>
-            )}
+            <div className="d-flex justify-content-end p-4">
+              <button
+                disabled={isTimesheetDisabled || !enableButton}
+                onClick={handleSave}
+                className={"btn btn-outline-dark m-1"}
+              >
+                Save
+              </button>
+              <button
+                disabled={isSubmitDisabled || !enableButton}
+                onClick={handleSubmit}
+                className="btn btn-dark m-1 "
+              >
+                Submit
+              </button>
+            </div>
           </div>
         </div>
       </div>
       <Toast
         show={showToast}
-        delay={5000} autohide
+        delay={5000}
+        autohide
         onClose={toggleShowToast}
         style={{
           position: "fixed",
@@ -493,7 +613,9 @@ export default function Timesheet() {
           width: "400px", // Adjust the width as per your requirement
         }}
       >
-        <Toast.Body className={error ? "bg-danger text-white" : "bg-success text-white"}>
+        <Toast.Body
+          className={error ? "bg-danger text-white" : "bg-success text-white"}
+        >
           <strong>
             <MdInfoOutline size={25} /> {message}
           </strong>
@@ -504,6 +626,6 @@ export default function Timesheet() {
           ></button>
         </Toast.Body>
       </Toast>
-    </>
+    </div>
   );
 }

@@ -1,15 +1,15 @@
 body {
   overflow-x: hidden;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -43,13 +43,13 @@ input:focus-visible {
 }
 
 .subheading {
-  color: #E37815;
+  color: #e37815;
   font-weight: 500;
   font-size: 22px;
 }
 
 .forgot {
-  color: #E37815;
+  color: #e37815;
   font-size: 16px;
   font-weight: 500;
 }
@@ -66,7 +66,7 @@ input:focus-visible {
   color: white;
   font-size: 22px;
   font-weight: 600;
-  background-color: #E37815;
+  background-color: #e37815;
 }
 
 .button-small-primary {
@@ -78,7 +78,7 @@ input:focus-visible {
   color: white;
   font-size: 16px;
   font-weight: 600;
-  background-color: #E37815;
+  background-color: #e37815;
 }
 
 .button-primary:hover {
@@ -140,6 +140,7 @@ li {
 
 .table-container {
   width: -webkit-fill-available;
+  padding-left: 10%;
 }
 
 .project-card1 {
@@ -172,7 +173,6 @@ li {
 .projectName {
   min-width: 250px;
 }
-
 
 /* Styling for the calendar overlay */
 .calendar-overlay {
@@ -217,20 +217,20 @@ li {
   justify-content: center;
 }
 
-.bouncing-loader>div {
+.bouncing-loader > div {
   width: 1rem;
   height: 1rem;
   margin: 3rem 0.2rem;
-  background: #FF7D55;
+  background: #ff7d55;
   border-radius: 50%;
   animation: bouncing-loader 0.6s infinite alternate;
 }
 
-.bouncing-loader>div:nth-child(2) {
+.bouncing-loader > div:nth-child(2) {
   animation-delay: 0.2s;
 }
 
-.bouncing-loader>div:nth-child(3) {
+.bouncing-loader > div:nth-child(3) {
   animation-delay: 0.4s;
 }
 
@@ -261,7 +261,7 @@ li {
   border-radius: 12px;
   border: 1px solid #043365;
 }
-.text-bg-primary{
+.text-bg-primary {
   color: #043365 !important;
 }
 
@@ -305,39 +305,49 @@ li {
   cursor: pointer;
   /* Show hand cursor on hover */
 }
-.timesheetTable{
+.timesheetTable {
   height: 40px;
 }
 
-.vishalmodal{
+.vishalmodal {
   width: 100%;
 }
-.hamburger{
+.hamburger {
   display: none;
 }
-a{
+a {
   text-decoration: none !important;
-  
 }
-.smallDropdown{
+.smallDropdown {
   text-align: left !important;
 }
 
-
-  /* Css for small screen  */
-@media only screen and (max-width: 500px) {
-.mt-6 {
+/* Css for small screen  */
+@media only screen and (max-width: 575px) {
+  
+  .login-input{
+    min-width: 235px;
+  }
+  .login-container{
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .login-col{
+    padding-right: 0px;
+  }
+  .loginbanner{
+    display: none;
+  }
+  .mt-6 {
     margin-top: 22px !important;
     padding-right: 0px !important;
-    
   }
-  .side-nav{
+  .side-nav {
     display: none;
   }
-  .navbarIcon{
+  .navbarIcon {
     display: none;
   }
-  .hamburger{
+  .hamburger {
     display: flex;
   }
 }

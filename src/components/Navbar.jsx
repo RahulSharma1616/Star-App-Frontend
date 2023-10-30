@@ -6,10 +6,13 @@ import Modal from "react-modal";
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
+import ChatbotTry from "./ChatbotTry";
 
 export default function Navbar() {
   const [image, setImage] = useState({});
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [manager, setManager] = useState(false);
+  const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
     if (cookies.token) {
@@ -21,6 +24,36 @@ export default function Navbar() {
         },
       }).then((response) => {
         setImage(response.data.image);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cookies.token) {
+      axios({
+        method: "get",
+
+        url: "http://localhost:4000/user/isManager",
+
+        headers: {
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      }).then((response) => {
+        setManager(response.data.manager);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cookies.token) {
+      axios({
+        method: "get",
+        url: "http://localhost:4000/user/isAdmin",
+        headers: {
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      }).then((response) => {
+        setAdmin(response.data.isAdmin);
       });
     }
   }, []);
@@ -49,10 +82,15 @@ export default function Navbar() {
             backgroundColor: "rgba(0, 0, 0, 0.5)", // Background overlay color
           },
           content: {
+            minWidth: "330px",
+            minHeight: "430px",
+            maxHeight: "450px",
             width: "40%", // Width of the modal
             height: "83%",
-            left: "30%", // Position from the left
+            left: "50%", // Position from the left
+            overflowY: "hidden",
             top: "12%",
+            transform: "translate(-50%)",
           },
         }}
       >
@@ -82,7 +120,8 @@ export default function Navbar() {
               </div>
             </Link>
             {cookies.token && (
-              <div>
+              <div className="d-flex">
+                <ChatbotTry />
                 <div className="dropdown">
                   <img
                     src={image.url}
@@ -118,43 +157,105 @@ export default function Navbar() {
                     <li>
                       <hr className="dropdown-divider" />
                     </li>
-
-                    
                     <li>
                       <Link className="text-decoration-none" to="/">
-                        <a className="dropdown-item smallDropdown text-dark" >Home</a>
-
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/tickets">
-
-                        <a className="dropdown-item smallDropdown text-dark" href="">Tickets</a>
-
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/projects">
-                        <a className="dropdown-item smallDropdown text-dark" href="">Projects</a>
-
+                        <a className="dropdown-item smallDropdown text-dark">
+                          Home
+                        </a>
                       </Link>
                     </li>
                     <li>
                       <Link to="/create-timesheet">
-                        <a className="dropdown-item smallDropdown text-dark" href="">Timesheet</a>
-
+                        <a
+                          className="dropdown-item smallDropdown text-dark"
+                          href=""
+                        >
+                          Create Timesheet
+                        </a>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/manager-dashboard">
-                        <a className="dropdown-item smallDropdown text-dark" href="">Manager's desk</a>
+                      <Link to="/tickets">
+                        <a
+                          className="dropdown-item smallDropdown text-dark"
+                          href=""
+                        >
+                          Tickets
+                        </a>
                       </Link>
                     </li>
+                    {admin && (
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                    )}
+                    {admin && (
+                      <li>
+                        <Link to="/admin-dashboard">
+                          <a
+                            className="dropdown-item smallDropdown text-dark"
+                            href=""
+                          >
+                            Admin's Desk
+                          </a>
+                        </Link>
+                      </li>
+                    )}
+                    {admin && (
+                      <li>
+                        <Link to="/analytics">
+                          <a
+                            className="dropdown-item smallDropdown text-dark"
+                            href=""
+                          >
+                            Analytics
+                          </a>
+                        </Link>
+                      </li>
+                    )}
+                    {admin && (
+                      <li>
+                        <Link to="/holidays">
+                          <a
+                            className="dropdown-item smallDropdown text-dark"
+                            href=""
+                          >
+                            Holidays
+                          </a>
+                        </Link>
+                      </li>
+                    )}
+                    {manager && (
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                    )}
+                    {manager && (
+                      <li>
+                        <Link to="/manager-dashboard">
+                          <a
+                            className="dropdown-item smallDropdown text-dark"
+                            href=""
+                          >
+                            Manager's desk
+                          </a>
+                        </Link>
+                      </li>
+                    )}
+                    {manager && (
+                      <li>
+                        <Link to="/tickets-received">
+                          <a
+                            className="dropdown-item smallDropdown text-dark"
+                            href=""
+                          >
+                            Tickets Received
+                          </a>
+                        </Link>
+                      </li>
+                    )}
                     <li>
-                      <Link to="/tickets-received">
-                        <a className="dropdown-item smallDropdown text-dark" href="">Tickets Received</a>
-
-                      </Link>
+                      <hr className="dropdown-divider" />
                     </li>
                     <li>
                       <Link to="/">
