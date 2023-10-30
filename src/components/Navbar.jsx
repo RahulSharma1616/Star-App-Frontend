@@ -116,7 +116,7 @@ export default function Navbar() {
             </Link>
             {cookies.token && (
               <div className="d-flex">
-                <ChatbotTry/>
+                {/* <ChatbotTry/> */}
                 <div className="dropdown">
                   <img
                     src={image.url}
