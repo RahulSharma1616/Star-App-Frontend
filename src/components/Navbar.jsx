@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import { useEffect, useState } from "react";
 import logo from "../images/LOGO.png";
 import axios from "axios";
@@ -6,14 +7,22 @@ import Modal from "react-modal";
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
-import ChatbotTry from "./ChatbotTry";
+import ChatBot from "./ChatBot";
 
 export default function Navbar() {
+  // State variable to manage the image data
   const [image, setImage] = useState({});
+
+  // Extracting the 'token' cookie and related functions using the useCookies hook
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+
+  // State variable to manage the manager status, initially set to false
   const [manager, setManager] = useState(false);
+
+  // State variable to manage the admin status, initially set to false
   const [admin, setAdmin] = useState(false);
 
+  // useEffect hook to fetch the user's profile image from the server
   useEffect(() => {
     if (cookies.token) {
       axios({
@@ -28,13 +37,12 @@ export default function Navbar() {
     }
   }, []);
 
+  // useEffect hook to determine if the current user is a manager
   useEffect(() => {
     if (cookies.token) {
       axios({
         method: "get",
-
         url: "http://localhost:4000/user/isManager",
-
         headers: {
           Authorization: `Bearer ${cookies.token}`,
         },
@@ -44,6 +52,7 @@ export default function Navbar() {
     }
   }, []);
 
+  // useEffect hook to determine if the current user is an admin
   useEffect(() => {
     if (cookies.token) {
       axios({
@@ -58,16 +67,20 @@ export default function Navbar() {
     }
   }, []);
 
+  // State variable to manage the modal's open/close state, initially set to false
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  // Function to open the modal
   const openModal = () => {
     setModalIsOpen(true);
   };
 
+  // Function to close the modal
   const closeModal = () => {
     setModalIsOpen(false);
   };
 
+  // Function to handle the logout action by removing the 'token' cookie
   function handleLogout() {
     removeCookie("token");
   }
@@ -82,15 +95,10 @@ export default function Navbar() {
             backgroundColor: "rgba(0, 0, 0, 0.5)", // Background overlay color
           },
           content: {
-            minWidth: "330px",
-            minHeight: "430px",
-            maxHeight: "450px",
             width: "40%", // Width of the modal
             height: "83%",
-            left: "50%", // Position from the left
-            overflowY: "hidden",
+            left: "30%", // Position from the left
             top: "12%",
-            transform: "translate(-50%)",
           },
         }}
       >
@@ -121,7 +129,7 @@ export default function Navbar() {
             </Link>
             {cookies.token && (
               <div className="d-flex">
-                <ChatbotTry />
+                <ChatBot />
                 <div className="dropdown">
                   <img
                     src={image.url}
@@ -159,101 +167,58 @@ export default function Navbar() {
                     </li>
                     <li>
                       <Link className="text-decoration-none" to="/">
-                        <a className="dropdown-item smallDropdown text-dark">
-                          Home
-                        </a>
+                        <a className="dropdown-item smallDropdown text-dark" >Home</a>
+
                       </Link>
                     </li>
                     <li>
                       <Link to="/create-timesheet">
-                        <a
-                          className="dropdown-item smallDropdown text-dark"
-                          href=""
-                        >
-                          Create Timesheet
-                        </a>
+                        <a className="dropdown-item smallDropdown text-dark" href="">Create Timesheet</a>
                       </Link>
                     </li>
                     <li>
                       <Link to="/tickets">
-                        <a
-                          className="dropdown-item smallDropdown text-dark"
-                          href=""
-                        >
-                          Tickets
-                        </a>
+
+                        <a className="dropdown-item smallDropdown text-dark" href="">Tickets</a>
+
                       </Link>
                     </li>
-                    {admin && (
-                      <li>
-                        <hr className="dropdown-divider" />
-                      </li>
-                    )}
-                    {admin && (
-                      <li>
-                        <Link to="/admin-dashboard">
-                          <a
-                            className="dropdown-item smallDropdown text-dark"
-                            href=""
-                          >
-                            Admin's Desk
-                          </a>
-                        </Link>
-                      </li>
-                    )}
-                    {admin && (
-                      <li>
-                        <Link to="/analytics">
-                          <a
-                            className="dropdown-item smallDropdown text-dark"
-                            href=""
-                          >
-                            Analytics
-                          </a>
-                        </Link>
-                      </li>
-                    )}
-                    {admin && (
-                      <li>
-                        <Link to="/holidays">
-                          <a
-                            className="dropdown-item smallDropdown text-dark"
-                            href=""
-                          >
-                            Holidays
-                          </a>
-                        </Link>
-                      </li>
-                    )}
-                    {manager && (
-                      <li>
-                        <hr className="dropdown-divider" />
-                      </li>
-                    )}
-                    {manager && (
-                      <li>
-                        <Link to="/manager-dashboard">
-                          <a
-                            className="dropdown-item smallDropdown text-dark"
-                            href=""
-                          >
-                            Manager's desk
-                          </a>
-                        </Link>
-                      </li>
-                    )}
-                    {manager && (
-                      <li>
-                        <Link to="/tickets-received">
-                          <a
-                            className="dropdown-item smallDropdown text-dark"
-                            href=""
-                          >
-                            Tickets Received
-                          </a>
-                        </Link>
-                      </li>
-                    )}
+                    {
+                      admin && (
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                      )
+                    }
+                    {admin && (<li>
+                      <Link to="/admin-dashboard">
+                        <a className="dropdown-item smallDropdown text-dark" href="">Admin's Desk</a>
+
+                      </Link>
+                    </li>)}
+                    {admin && (<li>
+                      <Link to="/analytics">
+                        <a className="dropdown-item smallDropdown text-dark" href="">Analytics</a>
+
+                      </Link>
+                    </li>)}
+                    {
+                      manager && (
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                      )
+                    }
+                    {manager && <li>
+                      <Link to="/manager-dashboard">
+                        <a className="dropdown-item smallDropdown text-dark" href="">Manager's desk</a>
+                      </Link>
+                    </li>}
+                    {manager && <li>
+                      <Link to="/tickets-received">
+                        <a className="dropdown-item smallDropdown text-dark" href="">Tickets Received</a>
+                      </Link>
+                    </li>}
                     <li>
                       <hr className="dropdown-divider" />
                     </li>
