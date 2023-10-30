@@ -9,9 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FiEdit } from "react-icons/fi";
 import HolidayInputModal from "./HolidayInputModal";
 import HolidayEditModal from "./HolidayEditModal";
-
 import Modal from "react-modal";
-import AdminDashboard from "../AdminDashboard";
 import Navbar from "../Navbar";
 import SideNav from "../SideNav";
 
@@ -177,19 +175,19 @@ function Holidays() {
         <div className="row">
           <div className="col-sm-2 col-md-1"></div>
           <div className="col-sm-10 col-md-11">
-            <h1>Manage Holidays </h1>
+          <h1 className="mb-4" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Manage Holidays </h1>
 
-            <table className="table table-striped">
+            <table className="table">
               <thead>
                 <tr>
                   <th style={{ backgroundColor: "#3f68d9", color: "white" }}>
-                    Name
+                    Occasion
                   </th>
                   <th style={{ backgroundColor: "#3f68d9", color: "white" }}>
                     Date
                   </th>
                   <th style={{ backgroundColor: "#3f68d9", color: "white" }}>
-                    Edit
+                    Modify
                   </th>
                 </tr>
               </thead>
@@ -201,6 +199,7 @@ function Holidays() {
                     <td>{moment(holiday.date).format("DD-MM-YYYY")}</td>
                     <td>
                       <FiEdit
+                        className="clickable-cell"
                         style={{ color: "blue", opacity: "0.5" }}
                         onClick={() =>
                           handleEdit(holiday._id, holiday.name, holiday.date)
@@ -227,10 +226,10 @@ function Holidays() {
               <div className="d-flex justify-content-between">
                 <div>
                   <button
-                    className="btn btn-success btn-sm float-lefts"
+                    className="btn btn-outline-dark float-lefts"
                     onClick={openModal}
                   >
-                    Add
+                    Add Holiday
                   </button>
                 </div>
                 {/* Pagination logic */}
@@ -244,9 +243,8 @@ function Holidays() {
                       .map((_, index) => (
                         <li
                           key={index}
-                          className={`page-item ${
-                            index + 1 === currentPage ? "active" : ""
-                          }`}
+                          className={`page-item ${index + 1 === currentPage ? "active" : ""
+                            }`}
                         >
                           <button
                             className="page-link"

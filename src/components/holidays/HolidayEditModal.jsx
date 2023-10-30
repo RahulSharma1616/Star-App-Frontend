@@ -67,37 +67,6 @@ const HolidayEditModal = ({
     setIsModified(false);
   }, [holidayData]);
 
-  const tileContent = ({ date }) => {
-    const holiday = holidays.find((h) => moment(h.date).isSame(date, "day"));
-
-    let truncatedName = "";
-    const words = holiday ? holiday.name.split(" ") : "";
-    if (words !== "") {
-      truncatedName =
-        words.length > 2 ? words.slice(0, 2).join(" ") + "..." : holiday.name;
-    }
-
-    return holiday ? (
-      <div
-        className="holiday-marker"
-        style={{
-          maxWidth: "100%",
-          whiteSpace: "normal",
-          overflow: "visible",
-          fontSize: "0.5rem",
-          lineHeight: "0.5rem",
-        }}
-      >
-        {truncatedName}
-      </div>
-    ) : null;
-  };
-
-  const tileClassName = ({ date }) =>
-    holidays.some((holiday) => moment(holiday.date).isSame(date, "day"))
-      ? "holiday-tile"
-      : null;
-
   return (
     <Modal
       isOpen={isOpen}
@@ -107,50 +76,40 @@ const HolidayEditModal = ({
       style={{
         content: {
           width: "60%",
-          minWidth: "310px",
+          minWidth: "400px",
           maxHeight: "521px",
-          minHeight: "435px",
           margin: "auto",
           overflow: "hidden",
-          marginTop: "1em",
-          paddingTop: "1.5em",
+          top: "120px",
+          bottom: "80px"
         },
         overlay: {
           backgroundColor: "rgba(0, 0, 0, 0.3)",
         },
       }}
     >
-      <h2
-        className="mb-5"
-        style={{ fontWeight: "350", verticalAlign: "middle" }}
-      >
-        Edit Holiday
-      </h2>
+      <h2 className="mb-5" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Edit Holiday</h2>
       <div className="form-group row" style={{ transform: "scale(0.9)" }}>
-        <label className="col-2 col-form-label me-2 ms-sm-0">Occasion:</label>
+        <label className="col-2 col-form-label">Occasion:</label>
         <div className="col-8">
           <input
             type="text"
-            className="form-control ms-2 ms-sm-2"
+            className="form-control"
             value={name}
             onChange={handleNameChange}
             style={{ fontSize: "0.85rem" }}
           />
         </div>
       </div>
-
       <div
         className="form-group row"
-        style={{
-          transform: "scale(0.9)",
-          marginTop: "5%",
-        }}
+        style={{ height: "40px", transform: "scale(0.9)", marginTop: "5%" }}
       >
-        <label className="col-2 col-form-label me-2 ms-sm-0">Date:</label>
+        <label className="col-2 col-form-label">Date:</label>
         <div className="col-4">
           <input
             type="text"
-            className="form-control ms-2 ms-sm-2"
+            className="form-control"
             value={moment(date).format("DD-MM-YYYY")}
             style={{ fontSize: "0.85rem" }}
             readOnly
@@ -160,6 +119,7 @@ const HolidayEditModal = ({
           <button
             className="btn btn-outline-primary btn-sm"
             onClick={handleOpenCalendar}
+            style={{ marginLeft: "10%" }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -181,22 +141,37 @@ const HolidayEditModal = ({
               transform: "scale(0.9)",
               marginTop: "-9px",
               marginLeft: "20%",
-              position: "absolute",
-              top: "35px",
-              zIndex: " 999",
             }}
           >
             <Calendar
               value={date}
               onChange={handleDateChange}
-              tileContent={tileContent}
-              tileClassName={tileClassName}
+              tileContent={({ date }) => {
+                const holiday = holidays.find((h) =>
+                  moment(h.date).isSame(date, "day")
+                );
+                return holiday ? (
+                  <div
+                    className="holiday-marker"
+                    style={{ marginTop: "-8px", transform: "scale(0.5)" }}
+                  >
+                    {holiday.name}
+                  </div>
+                ) : null;
+              }}
+              tileClassName={({ date }) =>
+                holidays.some((holiday) =>
+                  moment(holiday.date).isSame(date, "day")
+                )
+                  ? "holiday-tile"
+                  : null
+              }
             />
           </div>
         )}
       </div>
       <div
-        className="modal-footer-holiday"
+        className="modal-footer2"
         style={{ padding: "1% 2% 1%", background: "#f0f0f0" }}
       >
         <button
@@ -207,10 +182,7 @@ const HolidayEditModal = ({
         >
           Update
         </button>
-        <button
-          className="btn btn-outline-danger btn-sm"
-          onClick={handleDelete}
-        >
+        <button className="btn btn-outline-danger btn-sm" onClick={handleDelete}>
           Delete
         </button>
         <button
