@@ -3,20 +3,22 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import Projects from "./components/Projects";
-import Timesheet from "./components/timesheet/Timesheet";
+// import Timesheet from "./components/timesheet/Timesheet";
 import Tickets from "./components/Tickets";
 import { useCookies } from "react-cookie";
 import ApprovalPage from "./components/ApprovalPage";
 import Activities from "./components/Activities";
 import AdminDashboard from "./components/AdminDashboard";
 import TicketsReceived from "./components/TicketsReceived";
-import Analytics from "./components/analytics/Analytics";
+// import Analytics from "./components/analytics/Analytics";
 import ChatBot from "./components/ChatBot";
 import TicketCenter from "./components/TicketCenter";
 import PageNotFound from "./components/PageNotFound";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Holidays from "./components/holidays/Holidays";
+import Timesheet from "./components/Timesheet";
+import Analytics from "./components/Analytics";
 
 function App() {
   const [cookies] = useCookies(["token"]);
