@@ -4,8 +4,8 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import Navbar from "../Navbar";
-import SideNav from "../SideNav";
+import Navbar from "./Navbar";
+import SideNav from "./SideNav";
 import Toast from "react-bootstrap/Toast";
 import { MdInfoOutline } from "react-icons/md";
 import "./timesheet.css";
@@ -222,11 +222,9 @@ export default function Timesheet() {
 
       return (
         <td key={date}>
-          <div style={{ minWidth: "80px" }}>
-            <span style={{ fontWeight: "600" }}>{day[0]}</span>
-            <br />
-            <span style={{ fontWeight: "400" }}>{day[1]}</span>
-          </div>
+          <span style={{ fontWeight: "600" }}>{day[0]}</span>
+          <br />
+          <span style={{ fontWeight: "400" }}>{day[1]}</span>
         </td>
       );
     });
@@ -352,7 +350,7 @@ export default function Timesheet() {
     }
 
     setHolidayIndex(updatedHolidayIndex);
-  }, [currentWeekStartDate, isLoading]);
+  }, [currentWeekStartDate,isLoading]);
 
   //Mark holidays on Calendar
   const tileClassName = ({ date }) => {
@@ -378,10 +376,8 @@ export default function Timesheet() {
   };
 
   return (
-    <div style={{ overflow: "hidden !important" }}>
+    <>
       <Navbar />
-      <br />
-      <br />
       {isLoading && (
         <div className="loader-overlay">
           <div className="bouncing-loader">
@@ -393,15 +389,12 @@ export default function Timesheet() {
       )}
 
       <div className="row">
-        <div className="custom-col-0">
+        <div className="col-lg-1 mt-6">
           <SideNav />
         </div>
-        <div
-          className="custom-col-12"
-          style={{ minWidth: "610px", maxWidth: "92%" }}
-        >
+        <div className="col-lg-11 mt-6">
           <div className="timesheet-container">
-            <div className="d-flex justify-content-between ps-4 pt-3 pb-3 pe-2">
+            <div className="d-flex justify-content-between p-4">
               <span
                 className="h1"
                 style={{ fontWeight: "350", verticalAlign: "middle" }}
@@ -444,12 +437,7 @@ export default function Timesheet() {
                       />
                       <div className="calendar-footer">
                         <div className="yellow-box"></div>
-                        <div
-                          style={{ fontWeight: "450" }}
-                          className="holiday-label m-1"
-                        >
-                          Holidays
-                        </div>
+                        <div style={{fontWeight: "450"}} className="holiday-label m-1">Holidays</div>
                       </div>
                       <div className="d-flex justify-content-center">
                         <button
@@ -467,13 +455,13 @@ export default function Timesheet() {
                   Previous Week
                 </button>
 
-                <button onClick={nextWeek} className="btn btn-outline-dark ">
+                <button onClick={nextWeek} className="btn btn-outline-dark m-1">
                   Next Week
                 </button>
               </span>
             </div>
 
-            <table className="table ms-4">
+            <table className="table">
               <thead className="table-secondary">
                 <tr>
                   <th
@@ -572,7 +560,7 @@ export default function Timesheet() {
               </tbody>
             </table>
 
-            <div className="py-2 ps-4 pe-0">
+            <div className="p-4">
               <textarea
                 onChange={handleComment}
                 className="form-control border border-secondary"
@@ -581,6 +569,37 @@ export default function Timesheet() {
               ></textarea>
             </div>
 
+            {/* {enableButton && (
+              <div className="d-flex justify-content-end p-4">
+                <button onClick={handleSave} className="btn btn-outline-dark m-1">
+                  Save
+                </button>
+
+                <button onClick={handleSubmit} className="btn btn-dark m-1">
+                  Submit
+                </button>
+              </div>
+            )}
+
+            {!enableButton && (
+              <div className="d-flex justify-content-end p-4">
+                <button
+                  disabled
+                  onClick={handleSave}
+                  className="btn btn-outline-dark m-1"
+                >
+                  Save
+                </button>
+
+                <button
+                  disabled
+                  onClick={handleSubmit}
+                  className="btn btn-dark m-1"
+                >
+                  Submit
+                </button>
+              </div>
+            )} */}
             <div className="d-flex justify-content-end p-4">
               <button
                 disabled={isTimesheetDisabled || !enableButton}
@@ -626,6 +645,6 @@ export default function Timesheet() {
           ></button>
         </Toast.Body>
       </Toast>
-    </div>
+    </>
   );
 }
