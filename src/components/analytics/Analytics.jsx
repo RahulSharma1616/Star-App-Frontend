@@ -1,26 +1,32 @@
+// Import necessary libraries 
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import SideNav from "../SideNav";
-import Navbar from "../Navbar";
+import SideNav from "./SideNav";
+import Navbar from "./Navbar";
 import Toast from "react-bootstrap/Toast";
 import { MdInfoOutline } from "react-icons/md";
-import TimesheetsFilled from "../graphs/TimesheetsFilled";
-import TicketsStat from "../graphs/TicketsStat";
-import VerticalWorkTime from "../graphs/VerticalWorkTime";
-import BillableChart from "../graphs/BillableChart";
-import ProjectsChart from "../graphs/ProjectsChart";
-import VerticalsChart from "../graphs/VerticalsChart";
-import ManagersChart from "../graphs/ManagersChart";
+import TimesheetsFilled from "./graphs/TimesheetsFilled";
+import TicketsStat from "./graphs/TicketsStat";
+import VerticalWorkTime from "./graphs/VerticalWorkTime";
+import BillableChart from "./graphs/BillableChart";
+import ProjectsChart from "./graphs/ProjectsChart";
+import VerticalsChart from "./graphs/VerticalsChart";
+import ManagersChart from "./graphs/ManagersChart";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import "./analytics.css";
 
 export default function Analytics({ closeWin }) {
+
+  // State variable to manage whether the page is currently loading, initially set to true
   const [isLoading, setIsLoading] = useState(true);
+
+  // Extracting the 'token' cookie using the useCookies hook
   const [cookies, setCookie] = useCookies(["token"]);
 
-  let [message, setMessage] = useState(""); // State variable for managing a message
+  // State variable for managing a message
+  let [message, setMessage] = useState("");
 
   // This state variable manages the visibility of the toast.
   const [showToast, setShowToast] = useState(false);
@@ -37,7 +43,7 @@ export default function Analytics({ closeWin }) {
         Authorization: `Bearer ${cookies.token}`,
       },
     }).then(
-      function (response) {},
+      function (response) { },
       function (error) {
         console.log("error: ", error);
       }
@@ -69,15 +75,15 @@ export default function Analytics({ closeWin }) {
         </h3>
       </div>
       <div className="row">
-        <div className="col-1 pt-0" style={{ marginTop: "-70px" }}>
+        <div className="col-2 pt-0" style={{ marginTop: "-70px" }}>
           <SideNav />
         </div>
-        <div className="col-11">
+        <div className="col-10">
           <div className="col-11 mt-3">
             {/* divide the activities and business analytics */}
             <Tabs>
               <TabList>
-                <Tab>Activities Analytics</Tab>
+                <Tab>Overall Analytics</Tab>
                 <Tab>Business Analytics</Tab>
               </TabList>
               <TabPanel>
@@ -147,11 +153,11 @@ export default function Analytics({ closeWin }) {
                   </h3>
                   <div className="row">
                     <div className="col-12 py-3">
-                      <div className="row my-1 custom-row">
+                      <div className="row my-1">
                         <ProjectsChart />
                       </div>
                       <hr style={{ marginRight: "-40px" }} />
-                      <div className="row my-3 pt-5 custom-row">
+                      <div className="row my-3 pt-5">
                         <div className="col-lg-7">
                           <ManagersChart />
                         </div>
@@ -160,7 +166,7 @@ export default function Analytics({ closeWin }) {
                         </div>
                       </div>
                       <hr style={{ marginRight: "-40px" }} />
-                      <div className="row my-3 pt-5 custom-row">
+                      <div className="row my-3 pt-5">
                         <div className="col-12">
                           <VerticalsChart />
                         </div>
