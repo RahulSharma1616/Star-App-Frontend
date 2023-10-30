@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import Calendar from "react-calendar";
 import Modal from "react-modal";
-import "./holidays.css";
 
 // Add Modal
 function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
@@ -63,25 +62,16 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
 
   const tileContent = ({ date }) => {
     const holiday = holidays.find((h) => moment(h.date).isSame(date, "day"));
-    let truncatedName = "";
-    const words = holiday ? holiday.name.split(" ") : "";
-    if (words !== "") {
-      truncatedName =
-        words.length > 2 ? words.slice(0, 2).join(" ") + "..." : holiday.name;
-    }
-
     return holiday ? (
       <div
         className="holiday-marker"
         style={{
-          maxWidth: "100%",
-          whiteSpace: "normal",
-          overflow: "visible",
-          fontSize: "0.5rem",
-          lineHeight: "0.5rem",
+          marginTop: "-8px",
+          transform: "scale(0.5)",
+          whiteSpace: "pre-wrap",
         }}
       >
-        {truncatedName}
+        {holiday.name}
       </div>
     ) : null;
   };
@@ -95,32 +85,24 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
         style={{
           content: {
             width: "60%",
-            minWidth: "310px",
-            minHeight: "435px",
+            minWidth: "400px",
             maxHeight: "521px",
             margin: "auto",
             overflow: "hidden",
-            marginTop: "1em",
-            paddingTop: "1.5em",
           },
           overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.3)",
           },
         }}
       >
-        <h2
-          className="mb-5"
-          style={{ fontWeight: "350", verticalAlign: "middle" }}
-        >
-          Add Holiday
-        </h2>
+        <h2>Add Holiday</h2>
 
         <div className="form-group row" style={{ transform: "scale(0.9)" }}>
-          <label className="col-2 col-form-label me-2 ms-sm-0">Name:</label>
+          <label className="col-2 col-form-label">Name:</label>
           <div className="col-8">
             <input
               type="text"
-              className="form-control ms-2 ms-sm-2"
+              className="form-control"
               value={name}
               onChange={handleNameChange}
               style={{ fontSize: "0.85rem" }}
@@ -132,11 +114,11 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
           className="form-group row"
           style={{ marginTop: "5%", transform: "scale(0.9)" }}
         >
-          <label className="col-2 col-form-label me-2 ms-sm-0">Date:</label>
+          <label className="col-2 col-form-label">Date:</label>
           <div className="col-4">
             <input
               type="text"
-              className="form-control ms-2 ms-sm-2"
+              className="form-control"
               value={moment(date).format("DD-MM-YYYY")}
               style={{ fontSize: "0.85rem" }}
               readOnly
@@ -144,9 +126,9 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
           </div>
           <div className="col-1">
             <button
-              className="btn btn-outline-primary btn-sm "
+              className="btn btn-outline-primary btn-sm calendar-button"
               onClick={handleOpenCalendar}
-              // style={{ marginTop: "1px" }}
+              style={{ marginTop: "2px" }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -167,8 +149,8 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
           <div
             className="calendar-container"
             style={{
-              transform: "scale(0.83)",
-              marginTop: "-19px",
+              transform: "scale(0.9)",
+              marginTop: "-9px",
               marginLeft: "20%",
             }}
           >
@@ -182,7 +164,7 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
         )}
 
         <div
-          className="modal-footer-holiday"
+          className="modal-footer2"
           style={{
             padding: "1% 2% 1%",
             background: "#f0f0f0",
