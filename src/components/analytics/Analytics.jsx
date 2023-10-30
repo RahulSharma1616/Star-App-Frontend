@@ -6,13 +6,13 @@ import SideNav from "./SideNav";
 import Navbar from "./Navbar";
 import Toast from "react-bootstrap/Toast";
 import { MdInfoOutline } from "react-icons/md";
-import TimesheetsFilled from "./graphs/TimesheetsFilled";
-import TicketsStat from "./graphs/TicketsStat";
-import VerticalWorkTime from "./graphs/VerticalWorkTime";
-import BillableChart from "./graphs/BillableChart";
-import ProjectsChart from "./graphs/ProjectsChart";
-import VerticalsChart from "./graphs/VerticalsChart";
-import ManagersChart from "./graphs/ManagersChart";
+// import TimesheetsFilled from "./graphs/TimesheetsFilled";
+// import TicketsStat from "./graphs/TicketsStat";
+// import VerticalWorkTime from "./graphs/VerticalWorkTime";
+// import BillableChart from "./graphs/BillableChart";
+// import ProjectsChart from "./graphs/ProjectsChart";
+// import VerticalsChart from "./graphs/VerticalsChart";
+// import ManagersChart from "./graphs/ManagersChart";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import "./analytics.css";
@@ -102,7 +102,7 @@ export default function Analytics({ closeWin }) {
                                 Timesheets Filled On-Time vs Not On-Time
                               </h6>
                               <div>
-                                <TimesheetsFilled />
+                                <TimesheetFilled/>
                               </div>
                             </div>
                           </div>
