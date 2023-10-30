@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
+import ChatbotTry from "./ChatbotTry";
 
 export default function Navbar() {
   const [image, setImage] = useState({});
@@ -81,9 +82,9 @@ export default function Navbar() {
             backgroundColor: "rgba(0, 0, 0, 0.5)", // Background overlay color
           },
           content: {
-            width: "40%", // Width of the modal
-            height: "83%",
-            left: "30%", // Position from the left
+            width: "71%", // Width of the modal
+            height: "68%",
+            left: "22%", // Position from the left
             top: "12%",
           },
         }}
@@ -114,7 +115,8 @@ export default function Navbar() {
               </div>
             </Link>
             {cookies.token && (
-              <div>
+              <div className="d-flex">
+                <ChatbotTry/>
                 <div className="dropdown">
                   <img
                     src={image.url}
