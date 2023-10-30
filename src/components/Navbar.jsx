@@ -88,9 +88,9 @@ export default function Navbar() {
             width: "40%", // Width of the modal
             height: "83%",
             left: "50%", // Position from the left
-
+            overflowY: "hidden",
             top: "12%",
-            transform:"translate(-50%)"
+            transform: "translate(-50%)",
           },
         }}
       >
@@ -121,7 +121,7 @@ export default function Navbar() {
             </Link>
             {cookies.token && (
               <div className="d-flex">
-                <ChatbotTry/>
+                <ChatbotTry />
                 <div className="dropdown">
                   <img
                     src={image.url}
