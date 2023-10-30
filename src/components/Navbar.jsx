@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
+import ChatbotTry from "./ChatbotTry";
 
 export default function Navbar() {
   const [image, setImage] = useState({});
@@ -87,6 +88,7 @@ export default function Navbar() {
             width: "40%", // Width of the modal
             height: "83%",
             left: "50%", // Position from the left
+
             top: "12%",
             transform:"translate(-50%)"
           },
@@ -118,7 +120,8 @@ export default function Navbar() {
               </div>
             </Link>
             {cookies.token && (
-              <div>
+              <div className="d-flex">
+                <ChatbotTry/>
                 <div className="dropdown">
                   <img
                     src={image.url}

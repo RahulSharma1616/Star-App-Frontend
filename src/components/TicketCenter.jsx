@@ -103,7 +103,7 @@ export default function TicketCenter() {
                                                         <div className="shadow-lg p-3 ticketcard">
                                                             <div className="d-flex">
                                                                 <div><img src={ticket.image.url} alt="User" className="user-image mb-3" style={{ width: "70px", height: "70px", borderRadius: "50%" }} /></div>
-                                                                <div className="p-3"> <span className="h3" style={{ fontWeight: "500" }}>{ticket.name} </span></div>
+                                                                <div className="p-3"> <span className="h3 p-0" style={{ fontWeight: "500" }}>{ticket.name} </span></div>
                                                             </div>
                                                             <div className="mb-3">
                                                                 <div><strong>Subject: </strong>{ticket.subject}</div>
@@ -147,7 +147,7 @@ export default function TicketCenter() {
                 </div>
                 <Toast
                     show={showToast}
-                    delay={5000} autohide
+                    delay={2000} autohide
                     className="px-0"
                     onClose={toggleShowToast}
                     style={{

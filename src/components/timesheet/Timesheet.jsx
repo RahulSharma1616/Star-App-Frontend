@@ -442,7 +442,7 @@ export default function Timesheet() {
                       />
                       <div className="calendar-footer">
                         <div className="yellow-box"></div>
-                        <div className="holiday-label">Holidays</div>
+                        <div style={{fontWeight: "450"}} className="holiday-label m-1">Holidays</div>
                       </div>
                       <div className="d-flex justify-content-center">
                         <button
