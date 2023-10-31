@@ -1,4 +1,4 @@
-import banner from "../images/STAR (1).gif";
+import banner from "../images/landingPage.gif";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,6 +6,7 @@ import { useCookies } from "react-cookie";
 import Navbar from "./Navbar";
 import Toast from 'react-bootstrap/Toast';
 import { MdInfoOutline } from "react-icons/md";
+import starLogo from "../images/Logo.gif"
 
 export default function LoginPage() {
   const [isLoading, setLoading] = useState(false);
@@ -75,15 +76,16 @@ export default function LoginPage() {
     <>
       <Navbar />
       <div className="">
-        <div className="row">
+        <div className="row p-0">
           <div className="col-lg-6 p-6" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <img className="loginbanner" style={{ width: "600px", height: "400px" }} src={banner} alt="" />
+            <img className="loginbanner" style={{ width: "600px", height: "400px",marginTop: "55px", marginLeft:"115px" }} src={banner} alt="" />
           </div>
           <div className="col-lg-6 login-col">
             <div className="login-container">
               <div className="  loginform text-center">
                 <div className=" my-3">
-                  <h4 className="heading">Welcome to Star App</h4>
+                  {/* <h4 className="heading">Welcome to Star App</h4> */}
+                  <img src={starLogo} alt="" />
                 </div>
                 <div className="my-2">
                   <p className="subheading">Your ultimate shift companion</p>
