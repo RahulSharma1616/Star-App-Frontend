@@ -33,11 +33,14 @@ function Holidays() {
     setIsEditModalOpen(true);
     setEditHolidayData(holidayData);
   }
+ 
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
 
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:4000/holidays/all",
+      url: baseURL + "/holidays/all",
       // headers : {
       //     Authorizaton : `Bearer ${cookies.token}`
       // }
@@ -106,7 +109,7 @@ function Holidays() {
 
     // make api call to save holiday
     axios
-      .post("http://localhost:4000/holidays/save", newHoliday)
+      .post(baseURL + "/holidays/save", newHoliday)
       .then(() => {
         toast.success(
           `Holiday "${newHoliday.name}" on ${moment(newHoliday.date).format(
@@ -129,7 +132,7 @@ function Holidays() {
   // handle delete action
   function handleDelete(id) {
     axios
-      .delete(`http://localhost:4000/holidays/remove/${id}`)
+      .delete(`${baseURL}/holidays/remove/${id}`)
       .then(() => {
         toast.success("Holiday deleted successfully", {
           position: toast.POSITION.BOTTOM_CENTER,
@@ -147,7 +150,7 @@ function Holidays() {
   function handleEditHoliday(editedHoliday) {
     axios
       .put(
-        `http://localhost:4000/holidays/update/${editedHoliday._id}`,
+        `${baseURL}/holidays/update/${editedHoliday._id}`,
         editedHoliday
       )
       .then(() => {

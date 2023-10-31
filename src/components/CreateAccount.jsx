@@ -6,6 +6,9 @@ export default function CreateAccount({ closeWin, setMessage, setShowToast }) {
     // State variable to manage whether the page is currently loading, initially set to false
     const [isLoading, setIsLoading] = useState(false);
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
     // State variable to manage user data, with initial fields set to empty strings
     const [userData, setUserData] = useState({
         name: '',
@@ -28,7 +31,7 @@ export default function CreateAccount({ closeWin, setMessage, setShowToast }) {
         // Send a POST request to the server for user signup
         axios({
             method: "post",
-            url: "http://localhost:4000/user/signup",
+            url: baseURL + "/user/signup",
             data: userData,
         })
             .then((response) => {

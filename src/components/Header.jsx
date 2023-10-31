@@ -16,6 +16,11 @@ export default function Header({ isManager, render, setRender }) {
     // State variable for managing an error, initially set to false
     let [error, setError] = useState(false);
 
+
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
+
     // State variable to manage the visibility of the toast, initially set to false
     const [showToast, setShowToast] = useState(false);
 

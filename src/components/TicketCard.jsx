@@ -8,6 +8,9 @@ export default function TicketCard({ ticket }) {
     // State variable to manage the image data
     const [image, setImage] = useState({});
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
     // Extracting the 'token' cookie using the useCookies hook
     const [cookies] = useCookies(['token']);
 
@@ -31,7 +34,7 @@ export default function TicketCard({ ticket }) {
         if (cookies.token) {
             axios({
                 method: "get",
-                url: "http://localhost:4000/user/profile",
+                url: baseURL + "/user/profile",
                 headers: {
                     'Authorization': `Bearer ${cookies.token}`,
                 }

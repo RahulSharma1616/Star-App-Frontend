@@ -15,6 +15,9 @@ export default function TicketCenter() {
     // State variable to manage cookies, specifically the "token" cookie
     const [cookies, setCookie] = useCookies(["token"]);
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
     // State variable to manage an array of tickets
     const [tickets, setTickets] = useState([]);
 
@@ -38,7 +41,7 @@ export default function TicketCenter() {
         setIsLoading(true);
         axios({
             method: "get",
-            url: "http://localhost:4000/ticket/elevated",
+            url: baseURL + "/ticket/elevated",
             headers: {
                 Authorization: `Bearer ${cookies.token}`,
             },
@@ -58,7 +61,7 @@ export default function TicketCenter() {
         setIsLoading(true);
         axios({
             method: "patch",
-            url: "http://localhost:4000/ticket/status",
+            url: baseURL + "/ticket/status",
             data: {
                 ticketID: ticketID,
                 status: "Closed",

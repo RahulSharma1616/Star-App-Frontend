@@ -21,6 +21,9 @@ const HolidayEditModal = ({
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isModified, setIsModified] = useState(false);
 
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
   // functions to handle events
   const handleNameChange = (e) => {
     setName(e.target.value);

@@ -28,6 +28,9 @@ export default function Analytics({ closeWin }) {
   // State variable for managing a message
   let [message, setMessage] = useState("");
 
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
   // This state variable manages the visibility of the toast.
   const [showToast, setShowToast] = useState(false);
 
@@ -38,7 +41,7 @@ export default function Analytics({ closeWin }) {
     setIsLoading(false);
     axios({
       method: "get",
-      url: "http://localhost:4000/project/all",
+      url: baseURL + "/project/all",
       headers: {
         Authorization: `Bearer ${cookies.token}`,
       },

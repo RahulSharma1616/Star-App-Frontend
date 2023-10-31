@@ -13,6 +13,9 @@ export default function SideNav() {
   // Extracting the 'token' cookie using the useCookies hook
   const [cookies] = useCookies(["token"]);
 
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
   // State variable to manage the manager status, initially set to false
   const [manager, setManager] = useState(false);
 
@@ -21,7 +24,7 @@ export default function SideNav() {
     // Send a request to the server to check if the user is a manager
     axios({
       method: "get",
-      url: "http://localhost:4000/user/isManager",
+      url: baseURL + "/user/isManager",
       headers: {
         Authorization: `Bearer ${cookies.token}`, // Including the authorization token in the headers
       },

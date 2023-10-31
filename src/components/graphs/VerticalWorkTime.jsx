@@ -10,10 +10,13 @@ export default function VerticalWorkTime() {
     const [cookies] = useCookies(['token']);
     const [data, setData] = useState({});
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
     useEffect(() => {
         axios({
             method: "get",
-            url: "http://localhost:4000/analytics/vertical-time",
+            url: baseURL + "/analytics/vertical-time",
             headers: {
                 'Authorization': `Bearer ${cookies.token}`,
             }
@@ -24,15 +27,15 @@ export default function VerticalWorkTime() {
                     {
                         label: 'Overtime',
                         data: response.data.greaterThanExpected,
-                        backgroundColor: 'rgb(54, 162, 235, 0.51)',
-                        borderColor: 'rgba(54, 162, 235, 1)', // Add the borderColor property here
+                        backgroundColor: 'rgb(12, 173, 155)',
+                        borderColor: 'rgba(12, 173, 155)', // Add the borderColor property here
                         borderWidth: 1, // You can specify the width of the border if needed
                     },
                     {
                         label: 'Undertime',
                         data: response.data.smallerThanExpected,
-                        backgroundColor: 'rgba(255, 72, 0, 0.3)',
-                        borderColor: 'rgba(255, 72, 0, 1)', // Add the borderColor property here
+                        backgroundColor: 'rgb(60, 123, 207, 1)',
+                        borderColor: 'rgb(60, 123, 207, 1)', // Add the borderColor property here
                         borderWidth: 1, // You can specify the width of the border if needed
                     },
                 ],

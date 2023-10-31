@@ -9,6 +9,7 @@ import Toast from 'react-bootstrap/Toast';
 import { MdInfoOutline } from "react-icons/md";
 
 export default function LoginPage() {
+  
   // State variable to manage whether the page is currently loading, initially set to false
   const [isLoading, setLoading] = useState(false);
 
@@ -20,6 +21,9 @@ export default function LoginPage() {
 
   // Function to navigate to different routes
   const navigation = useNavigate();
+
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000'; //window.location.host
 
   // State variable to manage user data, initially set to an empty email and password
   const [user, setUser] = useState({ email: '', password: '' });
@@ -51,7 +55,7 @@ export default function LoginPage() {
     } else {
       axios({
         method: "post",
-        url: "http://localhost:4000/user/login",
+        url: baseURL + "/user/login",
         data: user,
       }).then(
         function (response) {

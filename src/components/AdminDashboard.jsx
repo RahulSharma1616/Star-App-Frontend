@@ -36,6 +36,9 @@ export default function AdminDashboard() {
         setProjectModal(true);
     };
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
     // Function to close the project modal
     const closeProjectModal = () => {
         setProjectModal(false);

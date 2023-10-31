@@ -43,6 +43,9 @@ export default function Activities() {
     // Extracting the 'token' cookie using the useCookies hook
     const [cookies] = useCookies(['token']);
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
     // State variable to manage an array of timesheets, initially set to an empty array
     const [timesheets, setTimesheets] = useState([]);
 
@@ -82,7 +85,7 @@ export default function Activities() {
         setIsLoading(true)
         axios({
             method: "get",
-            url: "http://localhost:4000/timesheet/manager",
+            url: baseURL + "/timesheet/manager",
             headers: {
                 'Authorization': `Bearer ${cookies.token}`,
             }
@@ -96,7 +99,7 @@ export default function Activities() {
     function handleAccept(timesheetID) {
         axios({
             method: "post",
-            url: "http://localhost:4000/timesheet/status",
+            url: baseURL + "/timesheet/status",
             data: {
                 ID: timesheetID,
                 sheet: selectedTimesheet,
@@ -117,7 +120,7 @@ export default function Activities() {
     function handleReject(timesheetID) {
         axios({
             method: "post",
-            url: "http://localhost:4000/timesheet/status",
+            url: baseURL + "/timesheet/status",
             data: {
                 ID: timesheetID,
                 sheet: selectedTimesheet,

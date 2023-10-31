@@ -18,6 +18,9 @@ export default function TicketForm({ closeWin, setMessage, setShowToast, setErro
     // State variables for managing the project field's visibility
     const [showProjectField, setShowProjectField] = useState(false);
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
     // State variables for managing the form submission status
     const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -28,7 +31,7 @@ export default function TicketForm({ closeWin, setMessage, setShowToast, setErro
     useEffect(() => {
         axios({
             method: "get",
-            url: "http://localhost:4000/project/all",
+            url: baseURL + "/project/all",
             headers: {
                 'Authorization': `Bearer ${cookies.token}`, // Setting the Authorization header with the token
             }
@@ -79,7 +82,7 @@ export default function TicketForm({ closeWin, setMessage, setShowToast, setErro
         // Sending form data to the server
         axios({
             method: "post",
-            url: "http://localhost:4000/ticket/create",
+            url: baseURL + "/ticket/create",
             data: {
                 subject,
                 category,

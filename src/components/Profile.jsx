@@ -14,6 +14,9 @@ export default function Profile({ closeWin }) {
     // State variable to manage user data, initially set to null
     const [user, setUser] = useState(null);
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
     // State variable to manage whether the password is being edited, initially set to false
     const [isEditingPassword, setIsEditingPassword] = useState(false);
 
@@ -45,7 +48,7 @@ export default function Profile({ closeWin }) {
     useEffect(() => {
         axios({
             method: "get",
-            url: "http://localhost:4000/user/profile",
+            url: baseURL + "/user/profile",
             headers: {
                 'Authorization': `Bearer ${cookies.token}`,
             }
@@ -78,7 +81,7 @@ export default function Profile({ closeWin }) {
         } else {
             axios({
                 method: "post",
-                url: "http://localhost:4000/user/password",
+                url: baseURL + "/user/password",
                 data: {
                     password: newPassword
                 },
@@ -112,7 +115,7 @@ export default function Profile({ closeWin }) {
             formData.append('photo', selectedImage);
 
             try {
-                const response = await axios.post('http://localhost:4000/user/image', formData, {
+                const response = await axios.post(baseURL + '/user/image', formData, {
                     headers: {
                         'Authorization': `Bearer ${cookies.token}`,
                         'Content-Type': 'multipart/form-data', // Important for file upload
@@ -182,7 +185,7 @@ export default function Profile({ closeWin }) {
                 </div>
             )}
             {imageEdit &&
-                <form action="http://localhost:4000/user/image" method="POST" encType="multipart/form-data" onSubmit={handleFormSubmit}>
+                <form action={baseURL + "/user/image"} method="POST" encType="multipart/form-data" onSubmit={handleFormSubmit}>
                     <div className="mb-3">
                         <label htmlFor="formFile" className="form-label"><strong>Select Profile Picture:</strong></label>
                         <input name="photo" className="form-control" onChange={handleFileChange} type="file" id="formFile" accept=".jpg, .jpeg, .png, .gif" />

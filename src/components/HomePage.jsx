@@ -61,6 +61,9 @@ export default function HomePage() {
   // State variable to manage whether the page is currently loading, initially set to true
   let [isLoading, setIsLoading] = useState(true);
 
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
   // State variable to manage the number of timesheets that have been deleted, initially set to 0
   let [isDeleted, setIsDeleted] = useState(0);
 
@@ -75,7 +78,7 @@ export default function HomePage() {
     setIsLoading(true);
     axios({
       method: "get",
-      url: "http://localhost:4000/timesheet/",
+      url: baseURL + "/timesheet/",
       headers: {
         'Authorization': `Bearer ${cookies.token}`,
       }
@@ -90,7 +93,7 @@ export default function HomePage() {
     setIsLoading(true);
     axios({
       method: "delete",
-      url: "http://localhost:4000/timesheet/",
+      url: baseURL + "/timesheet/",
       data: {
         _id: timesheetID
       },

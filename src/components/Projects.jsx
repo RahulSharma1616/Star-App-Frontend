@@ -19,6 +19,9 @@ export default function Projects() {
   // Extracting the 'token' cookie using the useCookies hook
   const [cookies] = useCookies(["token"]);
 
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
   // State variable to manage the visibility of a modal, initially set to false
   const [modalShow, setModalShow] = useState(false);
 
@@ -115,7 +118,7 @@ export default function Projects() {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:4000/project/all",
+      url: baseURL + "/project/all",
       headers: {
         Authorization: `Bearer ${cookies.token}`,
       },
@@ -134,7 +137,7 @@ export default function Projects() {
   useEffect(() => {
     axios({
       method: "post",
-      url: "http://localhost:4000/project/resources",
+      url: baseURL + "/project/resources",
       data: {
         projectID: selectedProject._id
       },
@@ -156,7 +159,7 @@ export default function Projects() {
   function onRemove(resource) {
     axios({
       method: "delete",
-      url: `http://localhost:4000/project/resources/${resource._id}`,
+      url: `${baseURL}/project/resources/${resource._id}`,
       headers: {
         Authorization: `Bearer ${cookies.token}`,
       },
@@ -171,7 +174,7 @@ export default function Projects() {
 
     axios({
       method: "post",
-      url: "http://localhost:4000/user/CheckUser",
+      url: baseURL + "/user/CheckUser",
       data: {
         email: email
       },
@@ -182,7 +185,7 @@ export default function Projects() {
       if (response.data.user) {
         axios({
           method: "post",
-          url: `http://localhost:4000/project/add/${email}`,
+          url: `${baseURL}/project/add/${email}`,
           data: {
             projectID: selectedProject._id,
             expectedHours: hours

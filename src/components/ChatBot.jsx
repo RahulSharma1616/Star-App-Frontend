@@ -1,5 +1,5 @@
+// Import necessary libraries 
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
@@ -12,62 +12,74 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import {BiSolidMessageDetail} from "react-icons/bi";
- 
+import { BiSolidMessageDetail } from "react-icons/bi";
+
 function ChatBot() {
-  const values = [ "md-down"];
+
+  // Extracting the 'token' cookie using the useCookies hook
+  const [cookies] = useCookies(["token"]);
+
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
+  const values = ["md-down"];
   const [fullscreen, setFullscreen] = useState(true);
   const [show, setShow] = useState(false);
- 
+
   function handleShow(breakpoint) {
     setFullscreen(breakpoint);
     setShow(true);
   }
- 
+
+  // Initializing the state for the chat history. It is an array of objects, each representing a message.
   const [chatHistory, setChatHistory] = useState([
-    { role: "assistant", content: "Hi,, How can I help you?" },
+    { role: "assistant", content: "Hi, How can I help you?" }, // Initial message from the assistant
   ]);
+
+  // Initializing the state for the typing indicator. It is a boolean value representing whether the assistant is typing or not.
   const [isTyping, setIsTyping] = useState(false);
- 
-  const [cookies] = useCookies(["token"]);
- 
+
+  // Function to handle sending a message
   const handleSend = async (message) => {
-    setIsTyping(true);
- 
+    setIsTyping(true); // Set the typing indicator to true
+
+    // Update the chat history with the user's message
     const updatedChatHistory = [
       ...chatHistory,
       { role: "user", content: message },
     ];
- 
+
     setChatHistory(updatedChatHistory); // Update the chat history with the user's message immediately
- 
+
+    // Send a post request to the specified URL using the axios library
     axios({
       method: "post",
-      url: "http://localhost:4000/chat",
+      url: baseURL + "/chat", // URL for the post request
       data: {
-        messages: updatedChatHistory,
+        messages: updatedChatHistory, // Data to be sent in the post request
       },
       headers: {
-        Authorization: `Bearer ${cookies.token}`,
+        Authorization: `Bearer ${cookies.token}`, // Set the authorization token in the headers
       },
     }).then((response) => {
+      // When the request is successful, update the chat history with the received response
       const newChatHistory = [...updatedChatHistory, response.data.reply];
-      setChatHistory(newChatHistory);
-      setIsTyping(false);
+      setChatHistory(newChatHistory); // Update the chat history with the response
+      setIsTyping(false); // Set the typing indicator to false
     });
   };
- 
+
+
   return (
     <>
       {values.map((v, idx) => (
-        <BiSolidMessageDetail  size={30} key={idx} className="mx-4" onClick={() => handleShow(v)}
-         
-          />
-       
+        <BiSolidMessageDetail size={30} key={idx} className="mx-4" onClick={() => handleShow(v)}
+        />
+
       ))}
       <Modal show={show} fullscreen={fullscreen} onHide={() => setShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Your assistant</Modal.Title>
+          <Modal.Title>Star Assistant</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {" "}
@@ -108,5 +120,5 @@ function ChatBot() {
     </>
   );
 }
- 
+
 export default ChatBot;

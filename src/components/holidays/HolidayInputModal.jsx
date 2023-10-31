@@ -25,6 +25,10 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
     setIsCalendarOpen(false);
   };
 
+  
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
   const handleSubmit = () => {
     const newHoliday = {
       name: name,

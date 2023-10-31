@@ -13,6 +13,9 @@ export default function Navbar() {
   // State variable to manage the image data
   const [image, setImage] = useState({});
 
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
   // Extracting the 'token' cookie and related functions using the useCookies hook
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
@@ -27,7 +30,7 @@ export default function Navbar() {
     if (cookies.token) {
       axios({
         method: "get",
-        url: "http://localhost:4000/user/profile",
+        url: baseURL + "/user/profile",
         headers: {
           Authorization: `Bearer ${cookies.token}`,
         },
@@ -42,7 +45,7 @@ export default function Navbar() {
     if (cookies.token) {
       axios({
         method: "get",
-        url: "http://localhost:4000/user/isManager",
+        url: baseURL + "/user/isManager",
         headers: {
           Authorization: `Bearer ${cookies.token}`,
         },
@@ -57,7 +60,7 @@ export default function Navbar() {
     if (cookies.token) {
       axios({
         method: "get",
-        url: "http://localhost:4000/user/isAdmin",
+        url: baseURL + "/user/isAdmin",
         headers: {
           Authorization: `Bearer ${cookies.token}`,
         },

@@ -19,6 +19,9 @@ export default function Tickets() {
     // State variable for managing ticket data
     const [ticketsData, setTicketsData] = useState([]);
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
     // State variable for managing a re-render trigger
     const [render, setRender] = useState(0);
 
@@ -26,7 +29,7 @@ export default function Tickets() {
     useEffect(() => {
         axios({
             method: "get",
-            url: "http://localhost:4000/ticket/raised",
+            url: baseURL + "/ticket/raised",
             headers: {
                 'Authorization': `Bearer ${cookies.token}`, // Setting the Authorization header with the token
             }

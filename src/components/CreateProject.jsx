@@ -25,6 +25,10 @@ export default function CreateProject({ closeWin, setMessage, setShowToast }) {
         setProject({ ...project, [name]: value });
     }
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
+
     // Function to handle form submission
     function handleSubmit(e) {
         e.preventDefault();
@@ -32,7 +36,7 @@ export default function CreateProject({ closeWin, setMessage, setShowToast }) {
         // Check if the provided manager's email is valid
         axios({
             method: "post",
-            url: "http://localhost:4000/user/CheckManager",
+            url: baseURL + "/user/CheckManager",
             data: {
                 email: project.managerID
             },
@@ -44,7 +48,7 @@ export default function CreateProject({ closeWin, setMessage, setShowToast }) {
             if (response.data.manager) {
                 axios({
                     method: "post",
-                    url: "http://localhost:4000/project/create",
+                    url: baseURL + "/project/create",
                     data: project,
                     headers: {
                         Authorization: `Bearer ${cookies.token}`,

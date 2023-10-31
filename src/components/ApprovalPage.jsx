@@ -26,6 +26,9 @@ export default function ApprovalPage() {
     // State variable to manage whether the page is currently loading, initially set to true
     let [isLoading, setIsLoading] = useState(true);
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
     // State variable to manage the number of renders, initially set to 0
     let [render, setRender] = useState(0);
 
@@ -84,7 +87,7 @@ export default function ApprovalPage() {
         setIsLoading(true)
         axios({
             method: "get",
-            url: "http://localhost:4000/timesheet/manager",
+            url: baseURL + "/timesheet/manager",
             headers: {
                 'Authorization': `Bearer ${cookies.token}`,
             }
@@ -97,7 +100,7 @@ export default function ApprovalPage() {
     function handleAccept(timesheetID) {
         axios({
             method: "post",
-            url: "http://localhost:4000/timesheet/status",
+            url: baseURL + "/timesheet/status",
             data: {
                 ID: timesheetID,
                 sheet: selectedTimesheet,
@@ -118,7 +121,7 @@ export default function ApprovalPage() {
     function handleReject(timesheetID) {
         axios({
             method: "post",
-            url: "http://localhost:4000/timesheet/status",
+            url: baseURL + "/timesheet/status",
             data: {
                 ID: timesheetID,
                 sheet: selectedTimesheet,
