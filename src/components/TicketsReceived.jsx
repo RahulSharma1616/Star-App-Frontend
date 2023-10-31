@@ -124,7 +124,8 @@ export default function TicketsReceived() {
                                             <div key={ticket._id} className="m-6" style={{ width: '83vw' }}>
                                                 <ul>
                                                     <li>
-                                                        <div className="shadow-lg p-3 ticketcard">
+                                                        <div className="shadow-lg p-3 row ticketcard">
+                                                           <div className="col-lg-4">
                                                             <div className="d-flex">
                                                                 <div><img src={ticket.image.url} alt="User" className="user-image mb-3" style={{ width: "70px", height: "70px", borderRadius: "50%" }} /></div>
                                                                 <div className="p-3"> <span className="h3 p-0" style={{ fontWeight: "500" }}>{ticket.name} </span><span className={`badge text-bg-${statusClass} text-white`}>{ticket.status}</span></div>
@@ -138,12 +139,16 @@ export default function TicketsReceived() {
                                                                     )
                                                                 }
                                                             </div>
+                                                            </div>
+                                                            <div className="col-lg-8">
                                                             <p>{ticket.description}</p>
                                                             {ticket.status == "Pending" && <div style={{ display: 'flex', justifyContent: 'center' }}>
                                                                 <input
                                                                     type="text"
-                                                                    onChange={(e) => { setRemarks(e.target.value) }}
-                                                                    className="form-control mb-4"
+
+                                                                    onChange={(e) => {setRemarks(e.target.value)}}
+                                                                    className=" mb-4"
+
                                                                     style={{ width: '50%', margin: 'auto' }}
                                                                     placeholder="Write Your Remarks!"
                                                                 />
@@ -156,6 +161,7 @@ export default function TicketsReceived() {
                                                                     Reject
                                                                 </button>
                                                             </div>}
+                                                            </div>
                                                         </div>
                                                     </li>
                                                 </ul>

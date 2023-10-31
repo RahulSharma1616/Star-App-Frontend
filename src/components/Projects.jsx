@@ -55,7 +55,7 @@ export default function Projects() {
 
   function MydModalWithGrid(props) {
     return (
-      <Modal {...props} aria-labelledby="contained-modal-title-vcenter">
+      <Modal id="profile-modal" {...props} aria-labelledby="contained-modal-title-vcenter">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             {selectedProject.projectName}

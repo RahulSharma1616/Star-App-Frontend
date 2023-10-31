@@ -97,7 +97,7 @@ export default function LoginPage() {
           <div className="col-lg-6 p-6" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <img className="loginbanner" style={{ width: "600px", height: "400px" }} src={banner} alt="" />
           </div>
-          <div className="col-lg-6">
+          <div className="col-lg-6 login-col">
             <div className="login-container">
               <div className="  loginform text-center">
                 <div className=" my-3">

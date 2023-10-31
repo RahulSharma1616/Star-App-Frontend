@@ -110,7 +110,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Modal className="modal" show={show} onHide={handleClose} animation={false}>
+      <Modal id="profile-modal" className="modal" show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Activity</Modal.Title>
         </Modal.Header>

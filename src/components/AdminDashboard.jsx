@@ -99,6 +99,8 @@ export default function AdminDashboard() {
                                                             <p className="card-text">Create new user accounts to streamline access and collaboration within the organization.</p>
                                                             <a onClick={openUserModal} className="btn btn-outline-primary">Create Account</a>
                                                             <Modal
+                                                               
+                                                               id="profile-modal"
                                                                 isOpen={userModal}
                                                                 onRequestClose={closeUserModal}
                                                                 style={{

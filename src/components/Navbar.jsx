@@ -7,7 +7,10 @@ import Modal from "react-modal";
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
+
 import ChatBot from "./ChatBot";
+
+
 
 export default function Navbar() {
   // State variable to manage the image data
@@ -91,6 +94,7 @@ export default function Navbar() {
   return (
     <>
       <Modal
+      id="profile-modal"
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={{
@@ -98,9 +102,9 @@ export default function Navbar() {
             backgroundColor: "rgba(0, 0, 0, 0.5)", // Background overlay color
           },
           content: {
-            width: "40%", // Width of the modal
-            height: "83%",
-            left: "30%", // Position from the left
+            width: "50%", // Width of the modal
+            height: "71%",
+            left: "22%", // Position from the left
             top: "12%",
           },
         }}
@@ -132,7 +136,9 @@ export default function Navbar() {
             </Link>
             {cookies.token && (
               <div className="d-flex">
+
                 <ChatBot />
+
                 <div className="dropdown">
                   <img
                     src={image.url}
