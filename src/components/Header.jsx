@@ -1,26 +1,38 @@
+// Import necessary libraries 
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import TicketForm from './TicketForm';
 import Toast from 'react-bootstrap/Toast';
 import { MdInfoOutline } from "react-icons/md";
 
-export default function Header({isManager, render, setRender}) {
+export default function Header({ isManager, render, setRender }) {
 
+    // State variable to manage the modal's open/close state, initially set to false
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    
-    let [message, setMessage] = useState(""); // State variable for managing a message
-    let [error, setError] = useState(false); // State variable for managing an error
 
-    // This state variable manages the visibility of the toast. 
+    // State variable for managing a message, initially set to an empty string
+    let [message, setMessage] = useState("");
+
+    // State variable for managing an error, initially set to false
+    let [error, setError] = useState(false);
+
+
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
+
+    // State variable to manage the visibility of the toast, initially set to false
     const [showToast, setShowToast] = useState(false);
 
-    // This function is responsible for toggling the state of the showToast variable.
+    // Function to toggle the state of the showToast variable
     const toggleShowToast = () => setShowToast(!showToast);
 
+    // Function to open the modal
     const openModal = () => {
         setModalIsOpen(true);
     };
 
+    // Function to close the modal
     const closeModal = () => {
         setModalIsOpen(false);
     };

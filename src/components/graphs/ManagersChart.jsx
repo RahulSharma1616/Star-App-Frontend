@@ -1,8 +1,13 @@
+// Import necessary libraries 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ReactApexChart from "react-apexcharts";
 
 function ManagersChart() {
+  
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
   const [options, setOptions] = useState({
     // render loading... text
     noData: {
@@ -67,7 +72,7 @@ function ManagersChart() {
   // render data from api
   useEffect(() => {
     axios
-      .get("http://localhost:4000/analytics/getDataOfManagers") 
+      .get(baseURL + "/analytics/getDataOfManagers") 
       .then((response) => {
         const managersData = response.data.managersData;
 

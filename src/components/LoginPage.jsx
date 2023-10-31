@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import banner from "../images/STAR (1).gif";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,61 +9,78 @@ import Toast from 'react-bootstrap/Toast';
 import { MdInfoOutline } from "react-icons/md";
 
 export default function LoginPage() {
+  
+  // State variable to manage whether the page is currently loading, initially set to false
   const [isLoading, setLoading] = useState(false);
+
+  // State variable to manage any potential errors, initially set to an empty string
   const [error, setError] = useState("");
+
+  // Extracting the 'token' cookie and related function using the useCookies hook
   const [cookies, setCookie] = useCookies(["token"]);
+
+  // Function to navigate to different routes
   const navigation = useNavigate();
+
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000'; //window.location.host
+
+  // State variable to manage user data, initially set to an empty email and password
   const [user, setUser] = useState({ email: '', password: '' });
 
-  // This state variable manages the visibility of the toast. 
+  // State variable to manage the visibility of the toast
   const [showToast, setShowToast] = useState(false);
 
-  // This function is responsible for toggling the state of the showToast variable.
+  // Function to toggle the state of the showToast variable
   const toggleShowToast = () => setShowToast(!showToast);
 
+  // Function to handle changes in the email input field
   function handleEmailChange(e) {
     setUser({ ...user, email: e.target.value });
   }
 
+  // Function to handle changes in the password input field
   function handlePasswordChange(e) {
     setUser({ ...user, password: e.target.value });
   }
 
+  // Function to handle the login process
   function login() {
     setLoading(true);
 
-    if(user.email == "" || user.password == "") {
+    if (user.email == "" || user.password == "") {
       setError("Enter Credentials!");
       setShowToast(true);
       setLoading(false);
-    }
-
-    else {
+    } else {
       axios({
         method: "post",
-        url: "http://localhost:4000/user/login",
+        url: baseURL + "/user/login",
         data: user,
       }).then(
         function (response) {
           setLoading(false);
-  
+
           if (response.data.token) {
-  
+            // Set the token cookie with an expiration time of 24 hours
             const expirationTime = new Date();
             expirationTime.setHours(expirationTime.getHours() + 24);
-  
             setCookie("token", response.data.token, { path: "/", expires: expirationTime });
-            navigation("/")
+
+            // Navigate to the specified route upon successful login
+            navigation("/");
             setError("");
           } else {
             setError("Invalid Credentials");
+            // Reset the user data if the credentials are invalid
             setUser({ ...user, email: "", password: "" });
             setShowToast(true);
           }
         },
         function (error) {
           setLoading(false);
-          setError(error.response.data.message)
+          // Set the error message and reset the user data on error
+          setError(error.response.data.message);
           setShowToast(true);
           setUser({ ...user, email: "", password: "" });
           console.log("error: ", error);

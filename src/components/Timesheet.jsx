@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import { useEffect, useState } from "react";
 import moment from "moment";
 import axios from "axios";
@@ -28,6 +29,9 @@ export default function Timesheet() {
   const [currentWeekStartDate, setCurrentWeekStartDate] = useState(
     moment().startOf("week")
   ); // State variable for storing the start date of the current week
+
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
 
   let [dateChange, setDateChange] = useState(0); // State variable for tracking date changes
   let [hours, setHours] = useState([]); // State variable for managing daily working hours
@@ -79,7 +83,7 @@ export default function Timesheet() {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:4000/holidays/all",
+      url: baseURL + "/holidays/all",
       // headers: {
       //   Authorization: `Bearer ${cookies.token}`,
       // },
@@ -99,7 +103,7 @@ export default function Timesheet() {
     setIsLoading(true);
     axios({
       method: "get",
-      url: "http://localhost:4000/project/resource",
+      url: baseURL + "/project/resource",
       headers: {
         Authorization: `Bearer ${cookies.token}`,
       },
@@ -134,7 +138,7 @@ export default function Timesheet() {
     setIsLoading(true);
     axios({
       method: "post",
-      url: "http://localhost:4000/timesheet/getAttendance",
+      url: baseURL + "/timesheet/getAttendance",
       data: {
         date: dateContainer[0],
       },
@@ -242,7 +246,7 @@ export default function Timesheet() {
 
     axios({
       method: "post",
-      url: "http://localhost:4000/timesheet/saveAttendance",
+      url: baseURL + "/timesheet/saveAttendance",
       data: {
         weekStartDate: dateContainer[0],
         hours: projectInputValues,
@@ -278,7 +282,7 @@ export default function Timesheet() {
 
     axios({
       method: "post",
-      url: "http://localhost:4000/timesheet/submitTimesheet",
+      url: baseURL + "/timesheet/submitTimesheet",
       data: {
         weekStartDate: dateContainer[0],
         hours: projectInputValues,

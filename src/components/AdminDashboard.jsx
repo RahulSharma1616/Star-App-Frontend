@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Modal from 'react-modal';
@@ -12,39 +13,52 @@ import { MdInfoOutline } from "react-icons/md";
 
 export default function AdminDashboard() {
 
+    // State variable to manage whether the page is currently loading, initially set to true
     let [isLoading, setIsLoading] = useState(true);
+
+    // Extracting the 'token' cookie using the useCookies hook
     const [cookies, setCookie] = useCookies(['token']);
 
+    // State variable to manage the project modal's open/close state, initially set to false
     const [projectModal, setProjectModal] = useState(false);
 
-    let [message, setMessage] = useState(""); // State variable for managing a message
+    // State variable to manage a message, initially set to an empty string
+    let [message, setMessage] = useState("");
 
-    // This state variable manages the visibility of the toast. 
+    // State variable to manage the visibility of the toast, initially set to false
     const [showToast, setShowToast] = useState(false);
 
-    // This function is responsible for toggling the state of the showToast variable.
+    // Function to toggle the state of the showToast variable
     const toggleShowToast = () => setShowToast(!showToast);
 
+    // Function to open the project modal
     const openProjectModal = () => {
         setProjectModal(true);
     };
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
+    // Function to close the project modal
     const closeProjectModal = () => {
         setProjectModal(false);
     };
 
+    // State variable to manage the user modal's open/close state, initially set to false
     const [userModal, setUserModal] = useState(false);
 
+    // Function to open the user modal
     const openUserModal = () => {
         setUserModal(true);
     };
 
+    // Function to close the user modal
     const closeUserModal = () => {
         setUserModal(false);
     };
 
-    useEffect(() => {
 
+    useEffect(() => {
         setIsLoading(false);
     }, [])
 
@@ -194,7 +208,7 @@ export default function AdminDashboard() {
                             </div>
                         </div>
                     </div>
-                    <Toast className="p-0" show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+                    <Toast className="p-0" show={showToast} delay={5000} autohide onClose={toggleShowToast} style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', width: '500px', maxWidth: '90%' }}>
                         <Toast.Body className="bg-success text-white">
                             <strong><MdInfoOutline size={25} /> {message}</strong>
                             <button type="button" className="btn-close btn-close-white float-end" onClick={toggleShowToast}></button>

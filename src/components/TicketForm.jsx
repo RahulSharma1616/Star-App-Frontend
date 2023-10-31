@@ -1,70 +1,88 @@
+// Import necessary libraries 
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Select from 'react-select'
 
-export default function TicketForm({closeWin, setMessage, setShowToast, setError, render, setRender}) {
+export default function TicketForm({ closeWin, setMessage, setShowToast, setError, render, setRender }) {
 
+    // Using cookies to get the token
     const [cookies] = useCookies(['token']);
+
+    // State variables for form fields
     const [subject, setSubject] = useState("");
     const [category, setCategory] = useState("");
     const [projectID, setProjectID] = useState("");
     const [description, setDescription] = useState("");
 
+    // State variables for managing the project field's visibility
     const [showProjectField, setShowProjectField] = useState(false);
+
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+
+    // State variables for managing the form submission status
     const [formSubmitted, setFormSubmitted] = useState(false);
 
-    const [projectOptions, setProjectOptions] = useState([])
+    // State variable for storing project options fetched from the server
+    const [projectOptions, setProjectOptions] = useState([]);
 
+    // Fetching all projects from the server when the component mounts
     useEffect(() => {
         axios({
             method: "get",
-            url: "http://localhost:4000/project/all",
+            url: baseURL + "/project/all",
             headers: {
-                'Authorization': `Bearer ${cookies.token}`,
+                'Authorization': `Bearer ${cookies.token}`, // Setting the Authorization header with the token
             }
         }).then(function (response) {
             setProjectOptions(response.data.map((item) => {
                 return ({
                     value: item._id,
                     label: item.id
-                })
-            }))
-            
+                });
+            }));
         }, function (error) {
-            console.log("error: ", error)
-        })
-    }, [])
+            console.log("error: ", error);
+        });
+    }, []);
 
+    // Event handler for the subject field
     const handleSubject = (e) => {
         setSubject(e.target.value);
-    }
+    };
 
+    // Event handler for the category field
     const handleCategory = (e) => {
         setCategory(e.target.value);
+        // Show project field only if the category is "Projects Inquiries"
         if (e.target.value === "Projects Inquiries") {
             setShowProjectField(true);
         } else {
             setShowProjectField(false);
         }
-    }
+    };
 
+    // Event handler for the project ID field
     const handleProjectID = (option) => {
-        setProjectID(option)
-    }
+        setProjectID(option);
+    };
 
+    // Event handler for the description field
     const handleDescription = (e) => {
         setDescription(e.target.value);
-    }
+    };
 
+    // Event handler for form submission
     const handleSubmit = (e) => {
         e.preventDefault();
         setError(false);
         setFormSubmitted(true);
 
+        // Sending form data to the server
         axios({
             method: "post",
-            url: "http://localhost:4000/ticket/create",
+            url: baseURL + "/ticket/create",
             data: {
                 subject,
                 category,
@@ -72,26 +90,27 @@ export default function TicketForm({closeWin, setMessage, setShowToast, setError
                 description,
             },
             headers: {
-                'Authorization': `Bearer ${cookies.token}`,
+                'Authorization': `Bearer ${cookies.token}`, // Setting the Authorization header with the token
             }
         }).then(function (response) {
+            // Handling response and setting necessary states
             setMessage(response.data.message);
             setShowToast(true);
 
-            if(setRender) {
+            if (setRender) {
                 setRender(render + 1);
             }
 
-            if(response.data.error) {
+            if (response.data.error) {
                 setError(true);
             }
 
-            closeWin();
+            closeWin(); // Assuming you have a closeWin function defined somewhere
         }, function (error) {
             setError(true);
             console.log("error: ", error);
-        })
-    }
+        });
+    };
 
     return (
         <div>

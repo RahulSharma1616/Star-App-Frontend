@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import Calendar from "react-calendar";
@@ -23,6 +24,10 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
     setDate(selectedDate);
     setIsCalendarOpen(false);
   };
+
+  
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
 
   const handleSubmit = () => {
     const newHoliday = {
@@ -89,13 +94,15 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
             maxHeight: "521px",
             margin: "auto",
             overflow: "hidden",
+            top: "120px",
+            bottom: "80px"
           },
           overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.3)",
           },
         }}
       >
-        <h2>Add Holiday</h2>
+        <h2 className="mb-5" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Add Holiday</h2>
 
         <div className="form-group row" style={{ transform: "scale(0.9)" }}>
           <label className="col-2 col-form-label">Name:</label>
@@ -177,7 +184,7 @@ function HolidayInputModal({ isOpen, onRequestClose, onSubmit, holidays }) {
           >
             Submit
           </button>
-          <button className="btn btn-sm btn-secondary" onClick={handleClose}>
+          <button className="btn btn-sm btn-outline-dark" onClick={handleClose}>
             Cancel
           </button>
         </div>
