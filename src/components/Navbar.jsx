@@ -137,7 +137,6 @@ export default function Navbar() {
             {cookies.token && (
               <div className="d-flex">
 
-                <ChatBot />
 
                 <div className="dropdown">
                   <img
@@ -228,6 +227,11 @@ export default function Navbar() {
                         <a className="dropdown-item smallDropdown text-dark" href="">Tickets Received</a>
                       </Link>
                     </li>}
+                    <li>
+                      <a href="#"><ChatBot /></a>
+                
+
+                    </li>
                     <li>
                       <hr className="dropdown-divider" />
                     </li>
