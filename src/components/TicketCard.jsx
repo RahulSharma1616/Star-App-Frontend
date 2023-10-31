@@ -8,9 +8,6 @@ export default function TicketCard({ ticket }) {
     // State variable to manage the image data
     const [image, setImage] = useState({});
 
-    //Set the baseURL
-    const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
-
     // Extracting the 'token' cookie using the useCookies hook
     const [cookies] = useCookies(['token']);
 
@@ -34,7 +31,7 @@ export default function TicketCard({ ticket }) {
         if (cookies.token) {
             axios({
                 method: "get",
-                url: baseURL + "/user/profile",
+                url: "http://localhost:4000/user/profile",
                 headers: {
                     'Authorization': `Bearer ${cookies.token}`,
                 }
@@ -46,31 +43,26 @@ export default function TicketCard({ ticket }) {
     }, []);
 
     return (
-
         <div className="m-6" style={{ width: '83vw' }}>
             <ul>
                 <li>
-                    <div className="shadow-lg p-3 row ticketcard">
-                        <div className="col-lg-4">
-                            <div className="d-flex">
-                                <div><img src={image.url} alt="User" className="user-image mb-3" style={{ width: "70px", height: "70px", borderRadius: "50%" }} /></div>
-                                <div className="p-3"> <span className="h3 p-0" style={{ fontWeight: "500" }}>{ticket.subject} </span><span className={`badge text-bg-${statusClass} text-white`}>{ticket.status}</span></div>
-                            </div>
-                            <div className="mb-3">
-                                <div><strong>Category: </strong>{ticket.category}</div>
-                                {
-                                    ticket.category == "Projects Inquiries" && (
-                                        <div><strong>Project Code: </strong>{ticket.projectCode}</div>
-                                    )
-                                }
-                            </div>
+                    <div className="shadow-lg p-3 ticketcard">
+                        <div className="d-flex">
+                            <div><img src={image.url} alt="User" className="user-image mb-3" style={{ width: "70px", height: "70px", borderRadius: "50%" }} /></div>
+                            <div className="p-3"> <span className="h3 p-0" style={{ fontWeight: "500" }}>{ticket.subject} </span><span className={`badge text-bg-${statusClass} text-white`}>{ticket.status}</span></div>
                         </div>
-                        <div className="col-lg-8">
-                            <p>{ticket.description}</p>
-                            {ticket.remarks !== "" && (
-                                <p className="my-2"><strong>Remarks:</strong> {ticket.remarks}</p>
-                            )}
+                        <div className="mb-3">
+                            <div><strong>Category: </strong>{ticket.category}</div>
+                            {
+                                ticket.category == "Projects Inquiries" && (
+                                    <div><strong>Project Code: </strong>{ticket.projectCode}</div>
+                                )
+                            }
                         </div>
+                        <p>{ticket.description}</p>
+                        {ticket.remarks !== "" && (
+                            <p className="my-2"><strong>Remarks:</strong> {ticket.remarks}</p>
+                        )}
                     </div>
                 </li>
             </ul>

@@ -65,22 +65,14 @@ function App() {
         />
         <Route path="/create-timesheet" element={<Timesheet />} />
         <Route path="/tickets" element={<Tickets />} />
-        {manager && (
-          <Route path="/manager-dashboard" element={<ApprovalPage />} />
-        )}
-        {manager && (
-          <Route path="/manager-activities" element={<Activities />} />
-        )}
-        {manager && (
-          <Route path="/tickets-received" element={<TicketsReceived />} />
-        )}
-        {admin && (
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        )}
-        {admin && <Route path="/projects" element={<Projects />} />}
-        {admin && <Route path="/analytics" element={<Analytics />} />}
-        {admin && <Route path="/ticket-center" element={<TicketCenter />} />}
-        {admin && <Route path="/holidays" element={<Holidays />} />}
+        <Route path="/manager-dashboard" element={<ApprovalPage />} />
+        <Route path="/manager-activities" element={<Activities />} />
+        <Route path="/tickets-received" element={<TicketsReceived />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/analytics" element={<Analytics />} />
+        <Route path="/ticket-center" element={<TicketCenter />} />
+        <Route path="/holidays" element={<Holidays />} />
         <Route path="/chatbot" element={<ChatBot />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
