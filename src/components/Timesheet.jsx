@@ -461,6 +461,8 @@ export default function Timesheet() {
               </span>
             </div>
 
+            <div className="calender-table">
+
             <table className="table">
               <thead className="table-secondary">
                 <tr>
@@ -559,6 +561,7 @@ export default function Timesheet() {
                 })}
               </tbody>
             </table>
+            </div>
 
             <div className="p-4">
               <textarea

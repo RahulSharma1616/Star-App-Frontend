@@ -321,9 +321,22 @@ a {
 .smallDropdown {
   text-align: left !important;
 }
+.login-col{
+  padding-right: 0px;
+}
 
 /* Css for small screen  */
-@media only screen and (max-width: 575px) {
+@media only screen and (max-width: 800px) {
+
+  #profile-modal{
+    height: 50% !important; 
+    width: 71% !important;
+    left: 56px !important;
+  }
+
+  .calender-table{
+    overflow-x: scroll;
+  }
   
   .login-input{
     min-width: 235px;

@@ -37,7 +37,8 @@ export default function TicketCard({ticket}) {
             <div className="m-6" style={{ width: '83vw' }}>
                 <ul>
                     <li>
-                        <div className="shadow-lg p-3 ticketcard">
+                        <div className="shadow-lg p-3 row ticketcard">
+                            <div className="col-lg-4">
                             <div className="d-flex">
                                 <div><img src={image.url} alt="User" className="user-image mb-3" style={{ width: "70px", height: "70px", borderRadius: "50%" }} /></div>
                                 <div className="p-3"> <span className="h3 p-0" style={{ fontWeight: "500"}}>{ticket.subject} </span><span className={`badge text-bg-${statusClass} text-white`}>{ticket.status}</span></div>                     
@@ -50,10 +51,13 @@ export default function TicketCard({ticket}) {
                                 )
                             }
                             </div>
+                            </div>
+                            <div className="col-lg-8">
                             <p>{ticket.description}</p>
                             {ticket.remarks !== "" && (
                                 <p className="my-2"><strong>Remarks:</strong> {ticket.remarks}</p>
                             )}
+                            </div>
                         </div>
                     </li>
                 </ul>
