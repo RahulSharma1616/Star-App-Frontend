@@ -75,6 +75,7 @@ export default function Navbar() {
   return (
     <>
       <Modal
+      id="profile-modal"
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={{
@@ -82,8 +83,8 @@ export default function Navbar() {
             backgroundColor: "rgba(0, 0, 0, 0.5)", // Background overlay color
           },
           content: {
-            width: "71%", // Width of the modal
-            height: "68%",
+            width: "50%", // Width of the modal
+            height: "71%",
             left: "22%", // Position from the left
             top: "12%",
           },

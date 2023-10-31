@@ -65,7 +65,7 @@ function ChatbotTry() {
           />
         
       ))}
-      <Modal show={show} fullscreen={fullscreen} onHide={() => setShow(false)}>
+      <Modal id='profile-modal' show={show} fullscreen={fullscreen} onHide={() => setShow(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Your assistant</Modal.Title>
         </Modal.Header>

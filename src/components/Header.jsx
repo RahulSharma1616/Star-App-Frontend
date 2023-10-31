@@ -32,6 +32,7 @@ export default function Header({isManager, render, setRender}) {
                 <div>
                     <button onClick={openModal} className="btn btn-outline-dark m-2">Raise a ticket</button>
                     <Modal
+                    id='profile-modal'
                         isOpen={modalIsOpen}
                         onRequestClose={closeModal}
                         style={{
