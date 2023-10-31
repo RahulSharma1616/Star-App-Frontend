@@ -23,7 +23,7 @@ export default function LoginPage() {
   const navigation = useNavigate();
 
   //Set the baseURL
-  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000'; //window.location.host
+  const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000'; //window.location.host
 
   // State variable to manage user data, initially set to an empty email and password
   const [user, setUser] = useState({ email: '', password: '' });
@@ -80,7 +80,7 @@ export default function LoginPage() {
         function (error) {
           setLoading(false);
           // Set the error message and reset the user data on error
-          setError(error.response.data.message);
+          setError(error.response);
           setShowToast(true);
           setUser({ ...user, email: "", password: "" });
           console.log("error: ", error);

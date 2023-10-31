@@ -31,7 +31,7 @@ export default function Timesheet() {
   ); // State variable for storing the start date of the current week
 
   //Set the baseURL
-  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+  const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
 
   let [dateChange, setDateChange] = useState(0); // State variable for tracking date changes
   let [hours, setHours] = useState([]); // State variable for managing daily working hours

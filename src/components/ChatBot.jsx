@@ -20,7 +20,7 @@ function ChatBot() {
   const [cookies] = useCookies(["token"]);
 
   //Set the baseURL
-  const baseURL = process.env.NODE_ENV === 'production' ? 'http://3.108.23.98' : 'http://localhost:4000';
+  const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
 
   const values = ["md-down"];
   const [fullscreen, setFullscreen] = useState(true);
