@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
@@ -5,10 +6,13 @@ import ReactApexChart from "react-apexcharts";
 function BillableChart() {
   const [data, setData] = useState({});
 
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
+
   // api call to get data
   useEffect(() => {
     axios
-      .get("http://localhost:4000/analytics/getDataforPlotting")
+      .get(baseURL + "/analytics/getDataforPlotting")
       .then((response) => {
         setData(response.data);
       })

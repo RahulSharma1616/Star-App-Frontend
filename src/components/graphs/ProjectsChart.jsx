@@ -1,8 +1,13 @@
+// Import necessary libraries 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReactApexChart from "react-apexcharts";
 
 function ProjectChart() {
+  
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
+
   const [data, setData] = useState([]);
   const [options, setOptions] = useState({
     // style the chart labels and titles
@@ -58,7 +63,7 @@ function ProjectChart() {
   useEffect(() => {
     // Make an Axios call to get project data
     axios
-      .get("http://localhost:4000/analytics/getDataOfProjects") 
+      .get(baseURL + "/analytics/getDataOfProjects") 
       .then((response) => {
         const projectArray = response.data.projectArray;
         const projectNames = [];

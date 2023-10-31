@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import SideNav from "./SideNav";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -12,16 +13,37 @@ import { MdInfoOutline } from "react-icons/md";
 
 export default function Projects() {
 
+  // State variable to manage whether the page is currently loading
   const [isLoading, setIsLoading] = useState(true);
+
+  // Extracting the 'token' cookie using the useCookies hook
   const [cookies] = useCookies(["token"]);
+
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
+
+  // State variable to manage the visibility of a modal, initially set to false
   const [modalShow, setModalShow] = useState(false);
+
+  // State variable to manage an array of projects, initially set to an empty array
   const [projects, setProjects] = useState([]);
+
+  // State variable to manage the currently selected project, initially set to an empty object
   const [selectedProject, setSelectedProject] = useState({});
+
+  // State variable to manage an array of resources, initially set to an empty array
   const [resources, setResources] = useState([]);
-  const [render, setRender] = useState(0)
-  let email = ""
+
+  // State variable to manage a render count, initially set to 0
+  const [render, setRender] = useState(0);
+
+  // Variable to store an email
+  let email = "";
+
+  // Variable to store hours; the value is not initialized here
   let hours;
-      
+
+
   let [message, setMessage] = useState(""); // State variable for managing a message
 
   // This state variable manages the visibility of the toast. 
@@ -77,8 +99,8 @@ export default function Projects() {
               <h5 className="my-2 px-1">
                 Add Resource
               </h5>
-              <input onChange={(e) => email = e.target.value} type="email" className="form-control mb-2 px-2" placeholder="Enter Email Address" required/>
-              <input type="number" onChange={(e) => hours = e.target.value} className="form-control mb-2 px-2" placeholder="Enter Expected Hours" required/>
+              <input onChange={(e) => email = e.target.value} type="email" className="form-control mb-2 px-2" placeholder="Enter Email Address" required />
+              <input type="number" onChange={(e) => hours = e.target.value} className="form-control mb-2 px-2" placeholder="Enter Expected Hours" required />
               <div className="d-flex justify-content-end px-1"><button onClick={onAdd} className="btn btn-outline-primary">Add</button></div>
             </Row>
           </Container>
@@ -96,7 +118,7 @@ export default function Projects() {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:4000/project/all",
+      url: baseURL + "/project/all",
       headers: {
         Authorization: `Bearer ${cookies.token}`,
       },
@@ -115,7 +137,7 @@ export default function Projects() {
   useEffect(() => {
     axios({
       method: "post",
-      url: "http://localhost:4000/project/resources",
+      url: baseURL + "/project/resources",
       data: {
         projectID: selectedProject._id
       },
@@ -137,7 +159,7 @@ export default function Projects() {
   function onRemove(resource) {
     axios({
       method: "delete",
-      url: `http://localhost:4000/project/resources/${resource._id}`,
+      url: `${baseURL}/project/resources/${resource._id}`,
       headers: {
         Authorization: `Bearer ${cookies.token}`,
       },
@@ -149,21 +171,40 @@ export default function Projects() {
   }
 
   function onAdd() {
+
     axios({
       method: "post",
-      url: `http://localhost:4000/project/add/${email}`,
+      url: baseURL + "/user/CheckUser",
       data: {
-        projectID: selectedProject._id,
-        expectedHours: hours
+        email: email
       },
       headers: {
         Authorization: `Bearer ${cookies.token}`,
       },
     }).then((response) => {
-      setMessage(response.data.message);
-      setShowToast(true);
-      setRender(render + 1);
-    })
+      if (response.data.user) {
+        axios({
+          method: "post",
+          url: `${baseURL}/project/add/${email}`,
+          data: {
+            projectID: selectedProject._id,
+            expectedHours: hours
+          },
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }).then((response) => {
+          setMessage(response.data.message);
+          setShowToast(true);
+          setRender(render + 1);
+        })
+      } else {
+        setMessage("Resource Not Added. Invalid Resource's Email Provided!");
+        setShowToast(true);
+      }
+    });
+
+
   }
 
   return (
@@ -180,29 +221,29 @@ export default function Projects() {
       )}
       <div className="row">
         <div className="col-lg-1 mt-6">
-        <SideNav />
+          <SideNav />
         </div>
         <div className="col-lg-11 mt-6">
-        <div className="table-container">
-          <div className="timesheet-header d-flex justify-content-between">
-            <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Projects</h3>
-          </div>
-          <div className="row m-4">
-            {projects.map((project) => {
-              return (
-                <div key={project._id} onClick={() => {
-                  setSelectedProject(project)
-                  setModalShow(true)
-                }} className="col-lg-4">
-                  <div className="project-card1 clickable-cell shadow-lg text-center mb-4">
-                    <h3 className="projectHeading ">{project.projectName}</h3>
-                    <h3 className="projectSubheading">{project.id}</h3>
+          <div className="table-container">
+            <div className="timesheet-header d-flex justify-content-between">
+              <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Projects</h3>
+            </div>
+            <div className="row m-4">
+              {projects.map((project) => {
+                return (
+                  <div key={project._id} onClick={() => {
+                    setSelectedProject(project)
+                    setModalShow(true)
+                  }} className="col-lg-4">
+                    <div className="project-card1 clickable-cell shadow-lg text-center mb-4">
+                      <h3 className="projectHeading ">{project.projectName}</h3>
+                      <h3 className="projectSubheading">{project.id}</h3>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
         </div>
       </div>
       <MydModalWithGrid show={modalShow} onHide={() => setModalShow(false)} />

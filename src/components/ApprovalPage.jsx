@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Modal from 'react-bootstrap/Modal';
@@ -16,25 +17,44 @@ import Card from 'react-bootstrap/Card';
 
 export default function ApprovalPage() {
 
+    // State variable to manage the selected timesheet, initially set to null
     const [selectedTimesheet, setSelectedTimesheet] = useState(null);
+
+    // State variable to manage the level, initially set to 1
     const [level, setLevel] = useState(1);
 
+    // State variable to manage whether the page is currently loading, initially set to true
     let [isLoading, setIsLoading] = useState(true);
-    let [render, setRender] = useState(0)
+
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
+
+    // State variable to manage the number of renders, initially set to 0
+    let [render, setRender] = useState(0);
+
+    // Extracting the 'token' cookie using the useCookies hook
     const [cookies] = useCookies(['token']);
+
+    // State variable to manage an array of timesheets, initially set to an empty array
     const [timesheets, setTimesheets] = useState([]);
 
+    // Determine steps based on the selected timesheet
     const steps = selectedTimesheet
         ? [`Submitted on ${moment(selectedTimesheet.submissionDate).format('MMM D, YYYY')}`, `Project Manager\n${selectedTimesheet.status}`, 'Approved']
         : ['Manager Approval', 'Approved'];
 
+    // State variable to manage the modal's open/close state, initially set to false
     const [show, setShow] = useState(false);
 
+    // Function to handle the closing of the modal
     const handleClose = () => setShow(false);
+
+    // Function to handle the opening of the modal
     const handleShow = () => setShow(true);
 
+
     const [message, setMessage] = useState(""); // State variable for managing a message
-    const [remarks, setRemarks] = useState("");
+    const [remarks, setRemarks] = useState(""); // State variable for managing remarks added by the manager
 
     // This state variable manages the visibility of the toast. 
     const [showToast, setShowToast] = useState(false);
@@ -67,7 +87,7 @@ export default function ApprovalPage() {
         setIsLoading(true)
         axios({
             method: "get",
-            url: "http://localhost:4000/timesheet/manager",
+            url: baseURL + "/timesheet/manager",
             headers: {
                 'Authorization': `Bearer ${cookies.token}`,
             }
@@ -80,7 +100,7 @@ export default function ApprovalPage() {
     function handleAccept(timesheetID) {
         axios({
             method: "post",
-            url: "http://localhost:4000/timesheet/status",
+            url: baseURL + "/timesheet/status",
             data: {
                 ID: timesheetID,
                 sheet: selectedTimesheet,
@@ -101,7 +121,7 @@ export default function ApprovalPage() {
     function handleReject(timesheetID) {
         axios({
             method: "post",
-            url: "http://localhost:4000/timesheet/status",
+            url: baseURL + "/timesheet/status",
             data: {
                 ID: timesheetID,
                 sheet: selectedTimesheet,
@@ -202,7 +222,7 @@ export default function ApprovalPage() {
                         style={{ borderColor: "#043365", width: '18rem', borderWidth: '3px' }}
                         className="mx-4 mb-3"
                     >
-                        <Card.Header>Resource's Comment:</Card.Header>
+                        <Card.Header>Comment:</Card.Header>
                         <Card.Body className="p-3">
                             <Card.Text>
                                 {selectedTimesheet && selectedTimesheet.comment && (selectedTimesheet.comment)}
@@ -305,7 +325,7 @@ export default function ApprovalPage() {
                         </table>
                         {
                             pendingTimesheets.length == 0 && (
-                                <div className="fs-5 d-flex justify-content-center" style={{color: "grey"}}>Looks like there are no timesheets to show right now!</div>
+                                <div className="fs-5 d-flex justify-content-center" style={{ color: "grey" }}>Looks like there are no timesheets to show right now!</div>
                             )
                         }
                     </div>

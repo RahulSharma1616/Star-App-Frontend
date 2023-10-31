@@ -1,9 +1,13 @@
+// Import necessary libraries 
 import axios from "axios";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 
 export default function CreateProject({ closeWin, setMessage, setShowToast }) {
+    // Extracting the 'token' cookie using the useCookies hook
     const [cookies] = useCookies(["token"]);
+
+    // State variable to manage the project data, with initial fields set to empty strings
     const [project, setProject] = useState({
         projectName: "",
         description: "",
@@ -15,29 +19,56 @@ export default function CreateProject({ closeWin, setMessage, setShowToast }) {
         customerID: "",
     });
 
+    // Function to handle changes in the input fields
     function handleChange(e) {
         const { name, value } = e.target;
         setProject({ ...project, [name]: value });
     }
 
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
+
+
+    // Function to handle form submission
     function handleSubmit(e) {
         e.preventDefault();
+
+        // Check if the provided manager's email is valid
         axios({
             method: "post",
-            url: "http://localhost:4000/project/create",
-            data: project,
+            url: baseURL + "/user/CheckManager",
+            data: {
+                email: project.managerID
+            },
             headers: {
                 Authorization: `Bearer ${cookies.token}`,
             },
-        })
-            .then((response) => {
-                setMessage(response.data.message);
+        }).then((response) => {
+            // If the manager's email is valid, create the project
+            if (response.data.manager) {
+                axios({
+                    method: "post",
+                    url: baseURL + "/project/create",
+                    data: project,
+                    headers: {
+                        Authorization: `Bearer ${cookies.token}`,
+                    },
+                })
+                    .then((response) => {
+                        setMessage(response.data.message);
+                        setShowToast(true);
+                        closeWin(); // Assuming this closes the window
+                    })
+                    .catch((error) => {
+                        console.log("error: ", error);
+                    });
+            } else {
+                // If the manager's email is invalid, display an error message
+                setMessage("Project Not Created. Invalid Manager's Email Provided!");
                 setShowToast(true);
-                closeWin();
-            })
-            .catch((error) => {
-                console.log("error: ", error);
-            });
+                closeWin(); // Assuming this closes the window
+            }
+        });
     }
 
     return (

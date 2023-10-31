@@ -1,9 +1,12 @@
+// Import necessary libraries 
 import SideNav from "./SideNav";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 export default function PageNotFound() {
+    
+    // Extracting the 'token' cookie using the useCookies hook
     const [cookies] = useCookies(['token']);
 
     return (

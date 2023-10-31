@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import axios from "axios";
@@ -32,17 +33,19 @@ function Holidays() {
     setIsEditModalOpen(true);
     setEditHolidayData(holidayData);
   }
+ 
+  //Set the baseURL
+  const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
 
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:4000/holidays/all",
+      url: baseURL + "/holidays/all",
       // headers : {
       //     Authorizaton : `Bearer ${cookies.token}`
       // }
     })
       .then((response) => {
-        console.log(response.data);
         setHolidays(response.data);
       })
       .catch((error) => {
@@ -80,6 +83,7 @@ function Holidays() {
   function handleSubmit(newHoliday) {
     let isDuplicateName = false;
     let isDuplicateDate = false;
+    
     // checking the holiday name or date does not already exists
     holidays.forEach((holiday) => {
       if (holiday.date === newHoliday.date) {
@@ -102,9 +106,10 @@ function Holidays() {
       alert("Holiday with same name already exists");
       return;
     }
+
     // make api call to save holiday
     axios
-      .post("http://localhost:4000/holidays/save", newHoliday)
+      .post(baseURL + "/holidays/save", newHoliday)
       .then(() => {
         toast.success(
           `Holiday "${newHoliday.name}" on ${moment(newHoliday.date).format(
@@ -123,10 +128,11 @@ function Holidays() {
     setActionOccurred(true);
     setIsModalOpen(false);
   }
+
   // handle delete action
   function handleDelete(id) {
     axios
-      .delete(`http://localhost:4000/holidays/remove/${id}`)
+      .delete(`${baseURL}/holidays/remove/${id}`)
       .then(() => {
         toast.success("Holiday deleted successfully", {
           position: toast.POSITION.BOTTOM_CENTER,
@@ -144,7 +150,7 @@ function Holidays() {
   function handleEditHoliday(editedHoliday) {
     axios
       .put(
-        `http://localhost:4000/holidays/update/${editedHoliday._id}`,
+        `${baseURL}/holidays/update/${editedHoliday._id}`,
         editedHoliday
       )
       .then(() => {

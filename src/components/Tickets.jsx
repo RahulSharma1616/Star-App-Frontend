@@ -1,3 +1,4 @@
+// Import necessary libraries 
 import { Link } from "react-router-dom";
 import SideNav from "./SideNav";
 import Header from "./Header";
@@ -9,23 +10,34 @@ import Navbar from "./Navbar";
 
 export default function Tickets() {
 
+    // State variable for managing the loading state
     const [isLoading, setIsLoading] = useState(false);
+
+    // Using cookies to get the token
     const [cookies] = useCookies(['token']);
+
+    // State variable for managing ticket data
     const [ticketsData, setTicketsData] = useState([]);
+
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
+
+    // State variable for managing a re-render trigger
     const [render, setRender] = useState(0);
 
+    // This useEffect hook fetches the raised tickets from the server.
     useEffect(() => {
         axios({
             method: "get",
-            url: "http://localhost:4000/ticket/raised",
+            url: baseURL + "/ticket/raised",
             headers: {
-                'Authorization': `Bearer ${cookies.token}`,
+                'Authorization': `Bearer ${cookies.token}`, // Setting the Authorization header with the token
             }
         }).then((response) => {
-            setTicketsData(response.data.tickets);
-            setIsLoading(false);
-        })
-    })
+            setTicketsData(response.data.tickets); // Set the fetched tickets in the state
+            setIsLoading(false); // Set loading to false after fetching the tickets
+        });
+    });
 
     return (
         <>

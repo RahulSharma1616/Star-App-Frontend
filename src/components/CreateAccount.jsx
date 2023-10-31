@@ -1,8 +1,15 @@
+// Import necessary libraries 
 import React, { useState } from 'react';
 import axios from 'axios';
 
 export default function CreateAccount({ closeWin, setMessage, setShowToast }) {
+    // State variable to manage whether the page is currently loading, initially set to false
     const [isLoading, setIsLoading] = useState(false);
+
+    //Set the baseURL
+    const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
+
+    // State variable to manage user data, with initial fields set to empty strings
     const [userData, setUserData] = useState({
         name: '',
         email: '',
@@ -10,27 +17,32 @@ export default function CreateAccount({ closeWin, setMessage, setShowToast }) {
         designation: '',
     });
 
+    // Function to handle changes in the input fields
     function handleChange(e) {
         const { name, value } = e.target;
         setUserData({ ...userData, [name]: value });
     }
 
+    // Function to handle form submission
     function handleSubmit(e) {
         e.preventDefault();
         setIsLoading(true);
 
+        // Send a POST request to the server for user signup
         axios({
             method: "post",
-            url: "http://localhost:4000/user/signup",
+            url: baseURL + "/user/signup",
             data: userData,
         })
             .then((response) => {
+                // Display the response message and show a toast
                 setMessage(response.data.message);
                 setShowToast(true);
-                closeWin()
+                closeWin(); // Assuming this closes the window
                 setIsLoading(false);
             })
             .catch((error) => {
+                // Log any errors and set isLoading to false
                 console.error(error);
                 setIsLoading(false);
             });
