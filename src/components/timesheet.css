@@ -4,8 +4,8 @@
 }
 /* styling weekends */
 .input-weekend {
-  background-color: rgb(185, 237, 249);
-  color: rgb(90, 88, 88);
+  background-color: #e2e3e5;
+  color: black;
 }
 
 .holiday-tile {
