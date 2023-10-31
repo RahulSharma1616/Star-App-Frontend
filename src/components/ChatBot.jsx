@@ -12,7 +12,7 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { BiSolidMessageDetail } from "react-icons/bi";
+// import { BiSolidMessageDetail } from "react-icons/bi";
 
 function ChatBot() {
 
@@ -73,8 +73,9 @@ function ChatBot() {
   return (
     <>
       {values.map((v, idx) => (
-        <BiSolidMessageDetail size={30} key={idx} className="mx-4" onClick={() => handleShow(v)}
-        />
+        // <BiSolidMessageDetail size={30} key={idx} className="mx-4" onClick={() => handleShow(v)}
+        // />
+        <a className="text-left dropdown-item smallDropdown text-dark" onClick={() => handleShow(v)}>Star Assistant</a>
 
       ))}
       <Modal show={show} fullscreen={fullscreen} onHide={() => setShow(false)}>
@@ -100,9 +101,9 @@ function ChatBot() {
                     {chatHistory.map((element, i) => {
                       const message = {
                         message: element.content,
-                        sender: element.role == "user" ? "user" : "ChatGPT",
+                        sender: element.role === "user" ? "user" : "ChatGPT",
                         direction:
-                          element.role == "user" ? "outgoing" : "incoming",
+                          element.role === "user" ? "outgoing" : "incoming",
                       };
                       return <Message key={i} model={message} />;
                     })}
