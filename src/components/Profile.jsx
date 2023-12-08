@@ -159,7 +159,9 @@ export default function Profile({ closeWin }) {
                     }
 
                     <h4 className="fs-3 mb-1">{user.name}</h4>
-                    <p className="fs-6">{user.designation}</p>
+                    <p className="fs-6">{user.designation} | {user.location[0].toUpperCase() + user.location.slice(1)}</p>
+                    {user && user.shift == "night" && <span className={`badge bg-primary text-light mx-2`}>Night Shift</span>}
+                    {user && user.shift == "day" && <span className={`badge bg-primary text-light mx-2`}>Day Shift</span>}
                 </div>
             )}
             <hr style={{ margin: "30px" }} />

@@ -103,7 +103,7 @@ export default function Navbar() {
           },
           content: {
             width: "50%", // Width of the modal
-            height: "71%",
+            height: "79%",
             left: "22%", // Position from the left
             top: "12%",
           },

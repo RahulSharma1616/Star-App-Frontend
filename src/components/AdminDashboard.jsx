@@ -19,6 +19,9 @@ export default function AdminDashboard() {
     // Extracting the 'token' cookie using the useCookies hook
     const [cookies, setCookie] = useCookies(['token']);
 
+    // State variable to store all users
+    const [users, setUsers] = useState([]);
+
     // State variable to manage the project modal's open/close state, initially set to false
     const [projectModal, setProjectModal] = useState(false);
 
@@ -44,6 +47,24 @@ export default function AdminDashboard() {
         setProjectModal(false);
     };
 
+    function handleShiftChange(shift, id) {
+        setShiftChange(shiftChange + 1);
+        let newShift = shift == "day" ? "night" : "day";
+        axios({
+            method: "post",
+            url: baseURL + "/user/shift",
+            data: {
+                id: id,
+                shift: newShift
+            },
+            headers: {
+                Authorization: `Bearer ${cookies.token}`,
+            },
+        }).then((response) => {
+            /* console.log(response.data) */
+        })
+    }
+
     // State variable to manage the user modal's open/close state, initially set to false
     const [userModal, setUserModal] = useState(false);
 
@@ -57,10 +78,20 @@ export default function AdminDashboard() {
         setUserModal(false);
     };
 
+    let [shiftChange, setShiftChange] = useState(0);
 
     useEffect(() => {
+        axios({
+            method: "get",
+            url: baseURL + "/user/get",
+            headers: {
+                'Authorization': `Bearer ${cookies.token}`,
+            }
+        }).then((response) => {
+            setUsers(response.data);
+        })
         setIsLoading(false);
-    }, [])
+    }, [shiftChange])
 
     return (
         <>
@@ -99,8 +130,8 @@ export default function AdminDashboard() {
                                                             <p className="card-text">Create new user accounts to streamline access and collaboration within the organization.</p>
                                                             <a onClick={openUserModal} className="btn btn-outline-primary">Create Account</a>
                                                             <Modal
-                                                               
-                                                               id="profile-modal"
+
+                                                                id="profile-modal"
                                                                 isOpen={userModal}
                                                                 onRequestClose={closeUserModal}
                                                                 style={{
@@ -120,6 +151,69 @@ export default function AdminDashboard() {
                                                                     <button type="button" className="btn-close" aria-label="Close" onClick={closeUserModal}></button>
                                                                 </div>
                                                                 <CreateAccount setMessage={setMessage} setShowToast={setShowToast} closeWin={closeUserModal} />
+                                                            </Modal>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-sm-6 mb-3 mb-sm-0">
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <h5 className="card-title">Manage Profiles</h5>
+                                                            <p className="card-text">Manage and Update user accounts registered within the organization.</p>
+                                                            <a onClick={openUserModal} className="btn btn-outline-primary">Manage Profiles</a>
+                                                            <Modal
+                                                                id="profile-modal2"
+                                                                isOpen={userModal}
+                                                                onRequestClose={closeUserModal}
+                                                                style={{
+                                                                    overlay: {
+                                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Background overlay color
+                                                                    },
+                                                                    content: {
+                                                                        width: '50%', // Width of the modal
+                                                                        left: '25%', // Position from the left
+                                                                        top: '12%',
+                                                                        bottom: '2%'
+                                                                    },
+                                                                }}
+                                                            >
+
+                                                                <div className='d-flex justify-content-between'>
+                                                                    <span className='h2 mb-4' style={{ fontWeight: "350", verticalAlign: 'middle' }}>User Profiles</span>
+                                                                    <button type="button" className="btn-close" aria-label="Close" onClick={closeUserModal}></button>
+                                                                </div>
+                                                                <table className="table table-striped">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col" style={{ textAlign: "center" }}>Name</th>
+                                                                            <th scope="col" style={{ textAlign: "center" }}>Email</th>
+                                                                            <th scope="col" style={{ textAlign: "center" }}>Shift</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {users && users.map((user, index) => (
+                                                                            <tr key={user._id}>
+                                                                                <td style={{ textAlign: "center", verticalAlign: "middle" }}>
+                                                                                    <img className="modal-icon rounded-circle mb-3" src={user.image.url} alt="" />
+                                                                                </td>
+                                                                                <td style={{ textAlign: "center", verticalAlign: "middle" }}>
+                                                                                    {user.name}
+                                                                                </td>
+                                                                                <td style={{ textAlign: "center", verticalAlign: "middle", }}>
+                                                                                    <label className="switch">
+                                                                                        <input type="checkbox" checked={user.shift == "night" ? true : false} onClick={() => handleShiftChange(user.shift, user._id)} />
+                                                                                        <span className="slider round">
+                                                                                            <span className="slider-text">{user.shift[0].toUpperCase() + user.shift.slice(1)}</span>
+                                                                                        </span>
+                                                                                    </label>
+                                                                                </td>
+
+                                                                            </tr>
+                                                                        ))}
+                                                                    </tbody>
+                                                                </table>
+
+
                                                             </Modal>
                                                         </div>
                                                     </div>

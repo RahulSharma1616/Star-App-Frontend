@@ -1,6 +1,4 @@
-
-import banner from "../images/landingPage.gif";
-
+import banner from "../images/landing.jpg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";

@@ -15,6 +15,8 @@ export default function CreateAccount({ closeWin, setMessage, setShowToast }) {
         email: '',
         password: '',
         designation: '',
+        shift: '',
+        location: ''
     });
 
     // Function to handle changes in the input fields
@@ -52,7 +54,7 @@ export default function CreateAccount({ closeWin, setMessage, setShowToast }) {
         <div>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label className="form-label">Name</label>
+                    <label className="form-label">Name:</label>
                     <input
                         className="form-control"
                         name="name"
@@ -62,7 +64,7 @@ export default function CreateAccount({ closeWin, setMessage, setShowToast }) {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Email</label>
+                    <label className="form-label">Email:</label>
                     <input
                         type="email"
                         className="form-control"
@@ -73,7 +75,7 @@ export default function CreateAccount({ closeWin, setMessage, setShowToast }) {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Password</label>
+                    <label className="form-label">Password:</label>
                     <input
                         type="password"
                         className="form-control"
@@ -84,7 +86,7 @@ export default function CreateAccount({ closeWin, setMessage, setShowToast }) {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Designation</label>
+                    <label className="form-label">Designation:</label>
                     <input
                         type="text"
                         className="form-control"
@@ -93,6 +95,32 @@ export default function CreateAccount({ closeWin, setMessage, setShowToast }) {
                         onChange={handleChange}
                         required
                     />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Location:</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        name="location"
+                        value={userData.location}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="mb-3 d-flex justify-content-between">
+                    <label className="form-label">Shift:</label>
+                    <div class="form-check">
+                        <input className="form-check-input" type="radio" name="shift" id="day" checked onChange={handleChange} value="day"/>
+                            <label className="form-check-label" htmlFor="day">
+                                Day
+                            </label>
+                    </div>
+                    <div className="form-check">
+                        <input className="form-check-input" type="radio" name="shift" id="night" onChange={handleChange} value="night"/>
+                            <label className="form-check-label" for="night">
+                                Night
+                            </label>
+                    </div>
                 </div>
                 <button type="submit" className="btn btn-outline-primary">
                     Sign Up
