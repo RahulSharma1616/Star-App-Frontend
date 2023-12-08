@@ -13,6 +13,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Navbar from "./Navbar";
 import Card from 'react-bootstrap/Card';
+import { BsMoonFill } from "react-icons/bs";
 
 export default function HomePage() {
 
@@ -186,6 +187,10 @@ export default function HomePage() {
               return accumulator + currentValue;
             }, 0)}
           </span>
+          <br />
+          <span>
+            <strong>Shift:</strong> {selectedTimesheet.shift.charAt(0).toUpperCase() + selectedTimesheet.shift.slice(1)}
+          </span>
         </div>}
         {selectedTimesheet && selectedTimesheet.comment && (<div>
           <Card
@@ -248,6 +253,7 @@ export default function HomePage() {
             <table className="table">
               <thead>
                 <tr style={{ fontWeight: "600" }}>
+                  <th scope="col" style={{ textAlign: "center" }}></th>
                   <th scope="col" style={{ textAlign: "center" }}>Time Period</th>
                   <th scope="col" style={{ textAlign: "center" }}>Project</th>
                   <th scope="col" style={{ textAlign: "center" }}>Total Hours</th>
@@ -276,8 +282,7 @@ export default function HomePage() {
                     return (
 
                       <tr style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
-
-
+                        <td scope=" d-flex" style={{ textAlign: "center" }}>{timesheet.shift == "night" ? <BsMoonFill /> : ""}</td>
                         <td scope=" d-flex" style={{ textAlign: "center" }}>{moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
                         <td style={{ textAlign: "center" }}>{timesheet.projectName}</td>
                         <td style={{ textAlign: "center" }}>{hours}</td>

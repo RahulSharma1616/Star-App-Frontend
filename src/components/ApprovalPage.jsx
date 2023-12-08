@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import Toast from 'react-bootstrap/Toast';
 import { MdInfoOutline } from "react-icons/md";
 import Card from 'react-bootstrap/Card';
+import { BsMoonFill } from "react-icons/bs";
 
 export default function ApprovalPage() {
 
@@ -62,6 +63,30 @@ export default function ApprovalPage() {
     // This function is responsible for toggling the state of the showToast variable.
     const toggleShowToast = () => setShowToast(!showToast);
 
+    // State variable to manage the selected timesheet IDs
+    const [selectedTimesheetIds, setSelectedTimesheetIds] = useState([]);
+
+    // Function to handle checkbox change
+    const handleCheckboxChange = (timesheetId) => {
+        // Check if the timesheetId is already selected
+        if (selectedTimesheetIds.includes(timesheetId)) {
+            // If selected, remove it from the array
+            setSelectedTimesheetIds((prevIds) =>
+                prevIds.filter((id) => id !== timesheetId)
+            );
+
+            // Uncheck the header checkbox when any timesheet is unchecked
+            setSelectAllChecked(false);
+        } else {
+            // If not selected, add it to the array
+            setSelectedTimesheetIds((prevIds) => [...prevIds, timesheetId]);
+
+            if(selectedTimesheetIds.length + 1 == pendingTimesheets.length) {
+                setSelectAllChecked(true);
+            }
+        }
+    };
+
     // Function to handle row click and set submission date
     const handleRowClick = (timesheet) => {
         setSelectedTimesheet(timesheet);
@@ -82,6 +107,23 @@ export default function ApprovalPage() {
     const pendingTimesheets = timesheets.filter((timesheet) => {
         return timesheet.status === "Pending";
     });
+
+    // State variable to manage the checked state of the header checkbox
+    const [selectAllChecked, setSelectAllChecked] = useState(false);
+
+    // Function to handle checkbox change in the table header
+    const handleSelectAllChange = () => {
+        // Toggle the state of selectAllChecked
+        setSelectAllChecked(!selectAllChecked);
+
+        // If selectAllChecked is false, unselect all timesheets; otherwise, select all timesheets
+        if (!selectAllChecked) {
+            const allTimesheetIds = pendingTimesheets.map((timesheet) => timesheet._id);
+            setSelectedTimesheetIds(allTimesheetIds);
+        } else {
+            setSelectedTimesheetIds([]);
+        }
+    };
 
     useEffect(() => {
         setIsLoading(true)
@@ -126,6 +168,44 @@ export default function ApprovalPage() {
                 ID: timesheetID,
                 sheet: selectedTimesheet,
                 remarks: remarks,
+                status: "Rejected"
+            },
+            headers: {
+                'Authorization': `Bearer ${cookies.token}`,
+            }
+        }).then((response) => {
+            setMessage(response.data.message);
+            setShowToast(true);
+            setShow(false);
+            setRender(render + 1);
+        })
+    }
+
+    function handleAcceptAll() {
+        axios({
+            method: "post",
+            url: baseURL + "/timesheet/updateAll",
+            data: {
+                sheets: selectedTimesheetIds,
+                status: "Accepted"
+            },
+            headers: {
+                'Authorization': `Bearer ${cookies.token}`,
+            }
+        }).then((response) => {
+            setMessage(response.data.message);
+            setShowToast(true);
+            setShow(false);
+            setRender(render + 1);
+        })
+    }
+
+    function handleRejectAll() {
+        axios({
+            method: "post",
+            url: baseURL + "/timesheet/updateAll",
+            data: {
+                sheets: selectedTimesheetIds,
                 status: "Rejected"
             },
             headers: {
@@ -216,6 +296,10 @@ export default function ApprovalPage() {
                     <span>
                         <strong>Expected Hours:</strong> {selectedTimesheet.expectedHours}
                     </span>
+                    <br />
+                    <span>
+                        <strong>Shift:</strong> {selectedTimesheet.shift.charAt(0).toUpperCase() + selectedTimesheet.shift.slice(1)}
+                    </span>
                 </div>}
                 <div>
                     <Card
@@ -286,13 +370,21 @@ export default function ApprovalPage() {
                     <div className="table-container">
                         <div className="timesheet-header d-flex justify-content-between">
                             <h3 className="h2 m-2" style={{ fontWeight: "350", verticalAlign: 'middle' }}>Manager's Desk</h3>
-                            <Link to="/manager-activities">
-                                <button className="btn btn-outline-dark m-2">Activities</button>
-                            </Link>
+                            <div className="d-flex justify-content-center">
+                                {selectedTimesheetIds && selectedTimesheetIds.length > 0 && <div>
+                                    <button className="btn btn-outline-success m-2" onClick={handleAcceptAll}>Accept</button>
+                                    <button className="btn btn-outline-danger m-2" onClick={handleRejectAll}>Reject</button>
+                                </div>}
+                                <Link to="/manager-activities">
+                                    <button className="btn btn-outline-dark m-2 mx-4">Activities</button>
+                                </Link>
+                            </div>
                         </div>
                         <table className="table">
                             <thead>
                                 <tr style={{ fontWeight: "600" }}>
+                                    <th scope="col" style={{ textAlign: "center" }}>{pendingTimesheets && pendingTimesheets.length > 0 && <input type="checkbox" checked={selectAllChecked} onChange={handleSelectAllChange} />}</th>
+                                    <th scope="col" style={{ textAlign: "center" }}></th>
                                     <th scope="col" style={{ textAlign: "center" }}>Time Period</th>
                                     <th scope="col" style={{ textAlign: "center" }}>Project</th>
                                     <th scope="col" style={{ textAlign: "center" }}>Member</th>
@@ -310,6 +402,8 @@ export default function ApprovalPage() {
 
                                         return (
                                             <tr style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
+                                                <td scope=" d-flex" style={{ textAlign: "center" }}><input type="checkbox" checked={selectedTimesheetIds.includes(timesheet._id)} onChange={() => handleCheckboxChange(timesheet._id)} /></td>
+                                                <td scope=" d-flex" style={{ textAlign: "center" }}>{timesheet.shift == "night" ? <BsMoonFill /> : ""}</td>
                                                 <td scope=" d-flex" style={{ textAlign: "center" }}>{moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
                                                 <td style={{ textAlign: "center" }}>{timesheet.projectName}</td>
                                                 <td style={{ textAlign: "center" }}>{timesheet.name}</td>

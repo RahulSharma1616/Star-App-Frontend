@@ -14,6 +14,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Card from 'react-bootstrap/Card';
 import Toast from 'react-bootstrap/Toast';
 import { MdInfoOutline } from "react-icons/md";
+import { BsMoonFill } from "react-icons/bs";
 
 export default function Activities() {
 
@@ -220,6 +221,10 @@ export default function Activities() {
                     <span>
                         <strong>Expected Hours:</strong> {selectedTimesheet.expectedHours}
                     </span>
+                    <br />
+                    <span>
+                        <strong>Shift:</strong> {selectedTimesheet.shift.charAt(0).toUpperCase() + selectedTimesheet.shift.slice(1)}
+                    </span>
                 </div>}
                 <div>
                     <Card
@@ -304,6 +309,7 @@ export default function Activities() {
                                     <th scope="col" style={{ textAlign: "center" }}>Member</th>
                                     <th scope="col" style={{ textAlign: "center" }}>Total Hours</th>
                                     <th scope="col" style={{ textAlign: "center" }}>Status</th>
+                                    <th scope="col" style={{ textAlign: "center" }}></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -326,12 +332,13 @@ export default function Activities() {
 
                                         return (
                                             <tr style={{ fontWeight: "350", verticalAlign: 'middle' }} key={timesheet._id}>
-                                                <td className="clickable-cell" onClick={() => handleRowClick(timesheet)} style={{ textAlign: "center" }}><span><FcInfo size={24} /></span></td>
+                                                <td scope=" d-flex" style={{ textAlign: "center" }}>{timesheet.shift == "night" ? <BsMoonFill /> : ""}</td>
                                                 <td scope=" d-flex" style={{ textAlign: "center" }}>{moment(timesheet.startDate).format("MMM D")} - {moment(timesheet.endDate).format("MMM D, YY")}</td>
                                                 <td style={{ textAlign: "center" }}>{timesheet.projectName}</td>
                                                 <td style={{ textAlign: "center" }}>{timesheet.name}</td>
                                                 <td style={{ textAlign: "center" }}>{hours}</td>
                                                 <td style={{ textAlign: "center" }}><span className={`badge bg-${statusClass} text-light`}>{timesheet.status}</span></td>
+                                                <td className="clickable-cell" onClick={() => handleRowClick(timesheet)} style={{ textAlign: "center" }}><span><FcInfo size={24} /></span></td>
                                             </tr>
                                         )
                                     })

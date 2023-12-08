@@ -397,3 +397,77 @@ a {
 .modal {
   margin: 40px auto;
 }
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #00b3ff;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+/* Text inside the slider */
+.slider-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000; /* Set the color of the text */
+  font-size: 14px; /* Adjust the font size as needed */
+  font-weight: bold;
+}
+
+/* Initial state for the text when the checkbox is not checked */
+/* .slider-text:before {
+  content: "Day";
+} */
+
+/* Update the text when the checkbox is checked */
+input:checked + .slider .slider-text:before {
+  color: #ffffff;
+}
+
+input:checked + .slider {
+  background-color: #6390b5;
+  color: #ffffff;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #6390b5;
+  color: #ffffff;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

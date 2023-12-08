@@ -75,7 +75,7 @@ function ChatBot() {
       {values.map((v, idx) => (
         // <BiSolidMessageDetail size={30} key={idx} className="mx-4" onClick={() => handleShow(v)}
         // />
-        <a className="text-left dropdown-item smallDropdown text-dark" onClick={() => handleShow(v)}>Star Assistant</a>
+        <a key={idx} className="text-left dropdown-item smallDropdown text-dark" onClick={() => handleShow(v)}>Star Assistant</a>
 
       ))}
       <Modal show={show} fullscreen={fullscreen} onHide={() => setShow(false)}>
@@ -108,10 +108,10 @@ function ChatBot() {
                       return <Message key={i} model={message} />;
                     })}
                   </MessageList>
-                  <MessageInput
+                  {/* <MessageInput
                     placeholder="Type message here"
                     onSend={handleSend}
-                  />
+                  /> */}
                 </ChatContainer>
               </MainContainer>
             </div>

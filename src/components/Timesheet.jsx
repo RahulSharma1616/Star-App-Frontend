@@ -30,6 +30,9 @@ export default function Timesheet() {
     moment().startOf("week")
   ); // State variable for storing the start date of the current week
 
+  const [user, setUser] = useState({});
+  let [shift, setShift] = useState("");
+
   //Set the baseURL
   const baseURL = process.env.NODE_ENV === 'production' ? 'https://3.108.23.98/API' : 'http://localhost:4000';
 
@@ -141,6 +144,7 @@ export default function Timesheet() {
       url: baseURL + "/timesheet/getAttendance",
       data: {
         date: dateContainer[0],
+        shift
       },
       headers: {
         Authorization: `Bearer ${cookies.token}`,
@@ -167,7 +171,20 @@ export default function Timesheet() {
         console.log("error: ", error);
       }
     );
-  }, [dateChange]);
+  }, [dateChange, shift]);
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: baseURL + "/user/profile",
+      headers: {
+        Authorization: `Bearer ${cookies.token}`,
+      },
+    }).then((response) => {
+      setUser(response.data);
+      setShift(response.data.shift);
+    })
+  }, [])
 
   // useEffect to merge 'hours' data into 'projectInputValues'
   useEffect(() => {
@@ -249,6 +266,7 @@ export default function Timesheet() {
       url: baseURL + "/timesheet/saveAttendance",
       data: {
         weekStartDate: dateContainer[0],
+        shift: shift,
         hours: projectInputValues,
       },
 
@@ -286,6 +304,7 @@ export default function Timesheet() {
       data: {
         weekStartDate: dateContainer[0],
         hours: projectInputValues,
+        shift: shift,
         comment: comment,
       },
       headers: {
@@ -354,7 +373,7 @@ export default function Timesheet() {
     }
 
     setHolidayIndex(updatedHolidayIndex);
-  }, [currentWeekStartDate,isLoading]);
+  }, [currentWeekStartDate, isLoading]);
 
   //Mark holidays on Calendar
   const tileClassName = ({ date }) => {
@@ -399,14 +418,25 @@ export default function Timesheet() {
         <div className="col-lg-11 mt-6">
           <div className="timesheet-container">
             <div className="d-flex justify-content-between p-4">
-              <span
-                className="h1"
-                style={{ fontWeight: "350", verticalAlign: "middle" }}
-              >
-                Create Timesheet
-              </span>
-
+              <div>
+                <span
+                  className="h1"
+                  style={{ fontWeight: "350", verticalAlign: "middle" }}
+                >
+                  Create Timesheet
+                </span>
+                {/* {user && user.shift == "night" && <span className={`badge bg-primary text-light mx-2`}>Night Shift</span>} */}
+              </div>
               <span>
+                <div class="btn-group mx-3">
+                  <button type="button" class="btn btn-light border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    {shift && shift[0].toUpperCase() + shift.slice(1) + " Shift  "}
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item clickable-cell" onClick={() => (setShift("day"))}>Day Shift</a></li>
+                    <li><a class="dropdown-item clickable-cell" onClick={() => (setShift("night"))}>Night Shift</a></li>
+                  </ul>
+                </div>
                 <button
                   style={{ padding: "2px 12px 10px 12px" }}
                   className="btn btn-outline-dark calander-btn m-1"
@@ -441,7 +471,7 @@ export default function Timesheet() {
                       />
                       <div className="calendar-footer">
                         <div className="yellow-box"></div>
-                        <div style={{fontWeight: "450"}} className="holiday-label m-1">Holidays</div>
+                        <div style={{ fontWeight: "450" }} className="holiday-label m-1">Holidays</div>
                       </div>
                       <div className="d-flex justify-content-center">
                         <button
@@ -467,104 +497,100 @@ export default function Timesheet() {
 
             <div className="calender-table">
 
-            <table className="table">
-              <thead className="table-secondary">
-                <tr>
-                  <th
-                    style={{
-                      fontSize: "26px",
-                      fontWeight: "350",
-                      verticalAlign: "middle",
-                    }}
-                    scope="col"
-                  >
-                    Projects
-                  </th>
+              <table className="table">
+                <thead className="table-secondary">
+                  <tr>
+                    <th
+                      style={{
+                        fontSize: "26px",
+                        fontWeight: "350",
+                        verticalAlign: "middle",
+                      }}
+                      scope="col"
+                    >
+                      Projects
+                    </th>
 
-                  {renderWeekDates()}
-                </tr>
-              </thead>
+                    {renderWeekDates()}
+                  </tr>
+                </thead>
 
-              <tbody>
-                {projects.map((project) => {
-                  let projectHours = [];
+                <tbody>
+                  {projects.map((project) => {
+                    let projectHours = [];
 
-                  let data = projectInputValues[project._id] ?? [];
+                    let data = projectInputValues[project._id] ?? [];
 
-                  if (data.length == 0) {
-                    projectHours = Array(7).fill(0);
-                  } else {
-                    projectHours = data;
-                  }
+                    if (data.length == 0) {
+                      projectHours = Array(7).fill(0);
+                    } else {
+                      projectHours = data;
+                    }
 
-                  return (
-                    <tr key={project.id}>
-                      <th
-                        className="p-3 projectName"
-                        style={{ fontWeight: "350", verticalAlign: "middle" }}
-                      >
-                        {project.projectName}
+                    return (
+                      <tr key={project.id}>
+                        <th
+                          className="p-3 projectName"
+                          style={{ fontWeight: "350", verticalAlign: "middle" }}
+                        >
+                          {project.projectName}
 
-                        <br />
+                          <br />
 
-                        {project.id}
-                      </th>
+                          {project.id}
+                        </th>
 
-                      {projectHours &&
-                        projectHours.map((pHour, dayIndex) => {
-                          return (
-                            <td key={dayIndex} className="col-xs-2">
-                              <input
-                                disabled={isTimesheetDisabled}
-                                type="number"
-                                value={pHour}
-                                onChange={(e) => {
-                                  if (
-                                    e.target.value > 24 ||
-                                    e.target.value < 0
-                                  ) {
-                                    setMessage("Enter a valid value!");
-                                    setShowToast(true);
-                                  } else {
-                                    handleInputChange(
-                                      project._id,
-                                      dayIndex,
-                                      e.target.value
-                                    );
-                                  }
-                                }}
-                                className={
-                                  `${
-                                    holidayIndex.includes(dayIndex)
+                        {projectHours &&
+                          projectHours.map((pHour, dayIndex) => {
+                            return (
+                              <td key={dayIndex} className="col-xs-2">
+                                <input
+                                  disabled={isTimesheetDisabled}
+                                  type="number"
+                                  value={pHour}
+                                  onChange={(e) => {
+                                    if (
+                                      e.target.value > 24 ||
+                                      e.target.value < 0
+                                    ) {
+                                      setMessage("Enter a valid value!");
+                                      setShowToast(true);
+                                    } else {
+                                      handleInputChange(
+                                        project._id,
+                                        dayIndex,
+                                        e.target.value
+                                      );
+                                    }
+                                  }}
+                                  className={
+                                    `${holidayIndex.includes(dayIndex)
                                       ? "holiday-input"
                                       : ""
-                                  }` +
-                                  " " +
-                                  `${
-                                    dayIndex === 5 || dayIndex === 6
+                                    }` +
+                                    " " +
+                                    `${dayIndex === 5 || dayIndex === 6
                                       ? "input-weekend"
                                       : ""
-                                  }` +
-                                  " " +
-                                  `${
-                                    isTimesheetDisabled ? "disabled-input" : ""
-                                  }` +
-                                  " " +
-                                  `timesheet-input no-spinners shadow ${
-                                    pHour < 0 || pHour > 24 ? "is-invalid" : ""
-                                  }`
-                                }
-                                min="0"
-                                max="24"
-                              />
-                            </td>
-                          );
-                        })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                                    }` +
+                                    " " +
+                                    `${isTimesheetDisabled ? "disabled-input" : ""
+                                    }` +
+                                    " " +
+                                    `timesheet-input no-spinners shadow ${pHour < 0 || pHour > 24 ? "is-invalid" : ""
+                                    }`
+                                  }
+                                  min="0"
+                                  max="24"
+                                />
+                              </td>
+                            );
+                          })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
 
             <div className="p-4">
